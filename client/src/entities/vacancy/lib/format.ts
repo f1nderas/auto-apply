@@ -1,4 +1,4 @@
-import type { Salary } from '../model/types';
+import type { SalaryDto } from '@dto';
 
 const SCHEDULE_LABELS: Record<string, string> = {
   remote: 'Удалённо',
@@ -8,7 +8,7 @@ const SCHEDULE_LABELS: Record<string, string> = {
   flyInFlyOut: 'Вахта',
 };
 
-const formatSalary = (salary: Salary | null): string => {
+const formatSalary = (salary: SalaryDto | null): string => {
   if (!salary) return 'Зарплата не указана';
   const { from, to, currency, gross } = salary;
   const cur = currency === 'RUR' ? '₽' : currency;

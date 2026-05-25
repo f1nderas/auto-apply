@@ -7,6 +7,9 @@ dist/
 server/dist/
 client/dist/
 
+# Generated API types (rebuild with: bun run gen:types)
+client/src/shared/dto/
+
 # Environment variables — один файл в корне для всего монорепо
 .env
 .env.local

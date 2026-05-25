@@ -13,7 +13,8 @@
       "@pages/*":    ["src/pages/*"],
       "@features/*": ["src/features/*"],
       "@entities/*": ["src/entities/*"],
-      "@shared/*":   ["src/shared/*"]
+      "@shared/*":   ["src/shared/*"],
+      "@dto":        ["src/shared/dto/index.ts"]
     }
   },
   "include": ["src"]

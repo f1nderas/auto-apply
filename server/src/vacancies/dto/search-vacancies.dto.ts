@@ -1,39 +1,26 @@
 import { IsString, IsOptional, IsInt, Min, Max } from 'class-validator';
 import { Type } from 'class-transformer';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-/**
- * Query-параметры для поиска вакансий.
- * Пример запроса: GET /vacancies?text=Frontend&area=1&page=0&perPage=20
- */
 export class SearchVacanciesDto {
-  /** Поисковый запрос. Например: "Frontend разработчик" */
+  @ApiProperty({ example: 'Frontend разработчик' })
   @IsString()
   text: string;
 
-  /**
-   * ID региона HH.ru.
-   * 1 = Москва, 2 = Санкт-Петербург, 160 = Казахстан и т.д.
-   * Полный список: https://api.hh.ru/areas
-   */
+  @ApiPropertyOptional({ type: Number, default: 1, example: 1 })
   @IsOptional()
   @Type(() => Number)
   @IsInt()
   area?: number = 1;
 
-  /**
-   * Номер страницы (начиная с 0).
-   * HH.ru возвращает не более 2000 вакансий (40 страниц по 50).
-   */
+  @ApiPropertyOptional({ type: Number, default: 0, minimum: 0 })
   @IsOptional()
   @Type(() => Number)
   @IsInt()
   @Min(0)
   page?: number = 0;
 
-  /**
-   * Кол-во вакансий на странице.
-   * Максимум 100 по ограничениям HH.ru API.
-   */
+  @ApiPropertyOptional({ type: Number, default: 20, minimum: 1, maximum: 100 })
   @IsOptional()
   @Type(() => Number)
   @IsInt()

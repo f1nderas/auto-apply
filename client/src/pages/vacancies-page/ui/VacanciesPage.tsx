@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { SearchForm } from '@features/vacancy-search';
 import { VacancyCard, searchVacancies } from '@entities/vacancy';
-import type { Vacancy } from '@entities/vacancy';
+import type { VacancyDto } from '@dto';
 import './vacancies-page.scss';
 
 const VacanciesPage = () => {
   // #region STATE
-  const [vacancies, setVacancies] = useState<Vacancy[]>([]);
+  const [vacancies, setVacancies] = useState<VacancyDto[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

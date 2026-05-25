@@ -1,18 +1,24 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Глобальная валидация query-параметров и body через class-validator
   app.useGlobalPipes(
     new ValidationPipe({
-      transform: true, // автоматически преобразует строки в числа (для @Type)
-      whitelist: true, // игнорирует лишние поля, которых нет в DTO
+      transform: true,
+      whitelist: true,
       forbidNonWhitelisted: false,
     }),
   );
+
+  const document = SwaggerModule.createDocument(
+    app,
+    new DocumentBuilder().setTitle('Auto Apply API').setVersion('1.0').build(),
+  );
+  SwaggerModule.setup('api', app, document);
 
   app.enableCors({ origin: 'http://localhost:3000' });
   await app.listen(process.env.PORT ?? 4200);

@@ -1,124 +1,87 @@
-/**
- * Зарплатная вилка вакансии.
- * Оба поля могут быть null, если работодатель не указал зарплату.
- */
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+
 export class SalaryDto {
-  /** Зарплата от (нижняя граница). null если не указана */
+  @ApiPropertyOptional({ type: Number, nullable: true })
   from: number | null;
 
-  /** Зарплата до (верхняя граница). null если не указана */
+  @ApiPropertyOptional({ type: Number, nullable: true })
   to: number | null;
 
-  /** Валюта: "RUR" | "USD" | "EUR" | "KZT" и т.д. */
+  @ApiProperty()
   currency: string;
 
-  /**
-   * Тип суммы:
-   * true  = gross (до вычета НДФЛ 13%)
-   * false = net   (на руки)
-   */
+  @ApiProperty()
   gross: boolean;
 }
 
-/**
- * Краткая информация о работодателе.
- */
 export class EmployerDto {
-  /** Внутренний ID работодателя на HH.ru */
+  @ApiProperty()
   id: string;
 
-  /** Название компании */
+  @ApiProperty()
   name: string;
 
-  /** Ссылка на страницу компании на HH.ru */
+  @ApiProperty()
   url: string;
 
-  /**
-   * Аккредитованный ли IT-работодатель Минцифрой РФ.
-   * Влияет на льготы для сотрудников.
-   */
+  @ApiProperty()
   accreditedIt: boolean;
 }
 
-/**
- * Вакансия — основной объект ответа.
- */
 export class VacancyDto {
-  /** Уникальный ID вакансии на HH.ru */
+  @ApiProperty()
   id: string;
 
-  /** Название вакансии */
+  @ApiProperty()
   name: string;
 
-  /** Прямая ссылка на вакансию в браузере */
+  @ApiProperty()
   url: string;
 
-  /** Город/регион публикации */
+  @ApiProperty()
   area: string;
 
-  /**
-   * Зарплатная вилка.
-   * null — работодатель не указал зарплату.
-   */
+  @ApiPropertyOptional({ type: SalaryDto, nullable: true })
   salary: SalaryDto | null;
 
-  /** Работодатель */
+  @ApiProperty({ type: EmployerDto })
   employer: EmployerDto;
 
-  /**
-   * Требуемый опыт.
-   * Например: "Нет опыта", "От 1 года до 3 лет", "От 3 до 6 лет"
-   */
+  @ApiProperty()
   experience: string;
 
-  /**
-   * Тип занятости.
-   * Например: "Полная занятость", "Частичная занятость", "Проектная работа"
-   */
+  @ApiProperty()
   employment: string;
 
-  /**
-   * График работы.
-   * Например: "Полный день", "Удалённая работа", "Гибкий график"
-   */
+  @ApiProperty()
   schedule: string;
 
-  /**
-   * Нужно ли писать сопроводительное письмо при отклике.
-   * true — без письма отклик не отправится.
-   */
+  @ApiProperty()
   responseLetterRequired: boolean;
 
-  /** Краткое описание требований из текста вакансии */
+  @ApiPropertyOptional({ type: String, nullable: true })
   requirement: string | null;
 
-  /** Краткое описание обязанностей из текста вакансии */
+  @ApiPropertyOptional({ type: String, nullable: true })
   responsibility: string | null;
 
-  /** Дата публикации (ISO 8601) */
+  @ApiProperty()
   publishedAt: string;
 }
 
-/**
- * Ответ эндпоинта GET /vacancies.
- * Содержит список вакансий и метаданные пагинации.
- */
 export class VacanciesResponseDto {
-  /** Список вакансий на текущей странице */
+  @ApiProperty({ type: VacancyDto, isArray: true })
   vacancies: VacancyDto[];
 
-  /** Общее кол-во найденных вакансий по запросу */
+  @ApiProperty()
   total: number;
 
-  /** Текущая страница (от 0) */
+  @ApiProperty()
   page: number;
 
-  /** Кол-во вакансий на странице */
+  @ApiProperty()
   perPage: number;
 
-  /**
-   * Всего страниц.
-   * null — внутренний Web API HH не возвращает это значение в списке.
-   */
+  @ApiPropertyOptional({ type: Number, nullable: true })
   pages: number | null;
 }

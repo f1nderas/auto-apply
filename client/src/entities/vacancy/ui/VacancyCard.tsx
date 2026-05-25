@@ -1,9 +1,9 @@
 import { cx } from '@shared/lib/cx';
 import { SCHEDULE_LABELS, formatSalary, formatDate } from '../lib/format';
-import type { Vacancy } from '../model/types';
+import type { VacancyDto } from '@dto';
 import './vacancy-card.scss';
 
-const VacancyCard = ({ vacancy }: { vacancy: Vacancy }) => {
+const VacancyCard = ({ vacancy }: { vacancy: VacancyDto }) => {
   const schedule = SCHEDULE_LABELS[vacancy.schedule] ?? vacancy.schedule;
   const hasSalary = !!vacancy.salary;
 
@@ -35,7 +35,7 @@ const VacancyCard = ({ vacancy }: { vacancy: Vacancy }) => {
       </div>
 
       <div className={cx('vacancy-card__salary', !hasSalary && 'vacancy-card__salary--empty')}>
-        {formatSalary(vacancy.salary)}
+        {formatSalary(vacancy.salary ?? null)}
       </div>
 
       <div className="vacancy-card__footer">

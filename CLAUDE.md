@@ -33,8 +33,10 @@ import { cx } from '@shared/lib/cx';
 import { VacancyCard } from '@entities/vacancy';
 import { SearchForm } from '@features/vacancy-search';
 import { VacanciesPage } from '@pages/vacancies-page';
+import type { VacancyDto } from '@dto';
 ```
-Внутри-слойные (в пределах одного слайса) — относительные: `'../model/types'`, `'../lib/format'`.
+`@dto` — короткий алиас для сгенерированных типов (`src/shared/dto/index.ts`).
+Внутри-слойные (в пределах одного слайса) — относительные: `'../lib/format'`.
 
 ## Правила кода
 - **Только именованные экспорты.** Всегда в самом низу файла: `export { Name }`
@@ -83,6 +85,16 @@ import { VacanciesPage } from '@pages/vacancies-page';
 bun run dev:server   # NestJS на http://localhost:4200
 bun run dev:client   # React  на http://localhost:3000
 ```
+
+## Генерация типов из бэкэнда
+```powershell
+# 1. Запусти бэкэнд (bun run dev:server)
+# 2. Выполни из корня:
+bun run gen:types
+```
+Типы генерируются в `client/src/shared/dto/` из OpenAPI-спека (`http://localhost:4200/api-json`). Скрипт: `scripts/gen-types.ts` — запускает генератор, переименовывает папку, создаёт barrel `index.ts`.
+Папка в `.gitignore` — пересоздаётся скриптом при изменении DTO на бэкэнде.
+Swagger UI доступен на `http://localhost:4200/api`.
 
 ## Backend — HH.ru API
 - Внутренний Web API: `https://hh.ru/search/vacancy` (не `api.hh.ru` — он требует регистрации)

@@ -1,12 +1,12 @@
 import { API_BASE } from '@shared/config/api';
-import type { VacanciesResponse } from '../model/types';
+import type { VacanciesResponseDto } from '@dto';
 
 const searchVacancies = async (
   text: string,
   area = 1,
   page = 0,
   perPage = 20,
-): Promise<VacanciesResponse> => {
+): Promise<VacanciesResponseDto> => {
   const params = new URLSearchParams({
     text,
     area: String(area),
