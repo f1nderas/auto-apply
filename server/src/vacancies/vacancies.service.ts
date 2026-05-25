@@ -1,5 +1,4 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import { SearchVacanciesDto } from './dto/search-vacancies.dto';
 import {
@@ -14,25 +13,44 @@ import {
   HhCompensation,
   HhCompany,
 } from './interfaces/hh-api.interface';
+import { SessionStore } from './session-store.service';
 
-const HH_WEB_BASE = 'https://hh.ru';
+const ESSENTIAL_COOKIES = new Set([
+  '_xsrf',
+  'hhtoken',
+  'hhuid',
+  'crypted_id',
+  'crypted_hhuid',
+  'hhul',
+  'hhrole',
+  'display',
+  'regions',
+  'redirect_host',
+  'GMT',
+  'TZ',
+  'fgsscgib-w-hh',
+  'gsscgib-w-hh',
+  'cfidsgib-w-hh',
+  '__zzatgib-w-hh',
+]);
 
 @Injectable()
 export class VacanciesService {
-  constructor(private readonly config: ConfigService) {}
+  constructor(private readonly sessionStore: SessionStore) {}
 
   async search(params: SearchVacanciesDto): Promise<VacanciesResponseDto> {
     const { text, area, page, perPage } = params;
-    const cookie = this.config.get<string>('HH_COOKIE')!;
-    const xsrfToken = this.config.get<string>('HH_XSRF_TOKEN')!;
+    const { cookie: rawCookie, xsrfToken, staticVersion, baseUrl } =
+      this.sessionStore.get();
+    const cookie = this.filterCookies(rawCookie);
 
     // GIB (Group-IB) антибот: значения берутся из соответствующих кук
-    const fgsscgib = this.extractCookie(cookie, 'fgsscgib-w-hh');
-    const gsscgib = this.extractCookie(cookie, 'gsscgib-w-hh');
+    const fgsscgib = this.extractCookie(rawCookie, 'fgsscgib-w-hh');
+    const gsscgib = this.extractCookie(rawCookie, 'gsscgib-w-hh');
 
     try {
       const { data } = await axios.get<HhWebSearchResponse>(
-        `${HH_WEB_BASE}/search/vacancy`,
+        `${baseUrl}/search/vacancy`,
         {
           params: {
             text,
@@ -47,7 +65,7 @@ export class VacanciesService {
             'accept-language': 'ru-RU,ru;q=0.9',
             'cache-control': 'no-cache',
             pragma: 'no-cache',
-            referer: 'https://hh.ru/search/vacancy',
+            referer: `${baseUrl}/search/vacancy`,
             'sec-ch-ua':
               '"Chromium";v="148", "Google Chrome";v="148", "Not/A)Brand";v="99"',
             'sec-ch-ua-mobile': '?0',
@@ -62,7 +80,7 @@ export class VacanciesService {
             'x-hhtmfrom': 'vacancy_search_list',
             'x-is-spa': 'true',
             'x-requested-with': 'XMLHttpRequest',
-            'x-static-version': '26.21.5.5',
+            'x-static-version': staticVersion,
             cookie,
             'x-xsrftoken': xsrfToken,
           },
@@ -93,6 +111,13 @@ export class VacanciesService {
   private extractCookie(cookieStr: string, name: string): string {
     const match = cookieStr.match(new RegExp(`(?:^|;\\s*)${name}=([^;]*)`));
     return match?.[1] ?? '';
+  }
+
+  private filterCookies(cookieStr: string): string {
+    return cookieStr
+      .split(/;\s*/)
+      .filter((pair) => ESSENTIAL_COOKIES.has(pair.split('=')[0]))
+      .join('; ');
   }
 
   private mapVacancy(v: HhVacancy): VacancyDto {

@@ -1,0 +1,27 @@
+@use '../../shared/styles/colors';
+@use '../../shared/styles/typography';
+
+.layout {
+  min-height: 100vh;
+  background: colors.$color-bg;
+}
+
+.layout__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  background: colors.$color-surface;
+  border-bottom: 1px solid colors.$color-border-light;
+  padding: 16px 24px;
+}
+
+.layout__title {
+  @include typography.font-heading;
+  color: colors.$color-text;
+}
+
+.layout__main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}

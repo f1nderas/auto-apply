@@ -18,7 +18,7 @@ const config: Configuration = {
       '@features': path.resolve(__dirname, 'src/features'),
       '@entities': path.resolve(__dirname, 'src/entities'),
       '@shared':   path.resolve(__dirname, 'src/shared'),
-      '@dto':      path.resolve(__dirname, 'src/shared/dto/index.ts'),
+      '@dto':      path.resolve(__dirname, 'src/shared/api/generatedApi.ts'),
     },
   },
   module: {

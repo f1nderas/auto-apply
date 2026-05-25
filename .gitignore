@@ -7,8 +7,8 @@ dist/
 server/dist/
 client/dist/
 
-# Generated API types (rebuild with: bun run gen:types)
-client/src/shared/dto/
+# Generated API (rebuild with: bun run gen:api)
+client/src/shared/api/generatedApi.ts
 
 # Environment variables — один файл в корне для всего монорепо
 .env

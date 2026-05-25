@@ -2,25 +2,6 @@
 @use '../../../shared/styles/typography';
 
 .vacancies-page {
-  min-height: 100vh;
-  background: colors.$color-bg;
-}
-
-.vacancies-page__header {
-  background: colors.$color-surface;
-  border-bottom: 1px solid colors.$color-border-light;
-  padding: 16px 24px;
-}
-
-.vacancies-page__title {
-  @include typography.font-heading;
-  color: colors.$color-text;
-}
-
-.vacancies-page__main {
-  max-width: 860px;
-  margin: 0 auto;
-  padding: 24px 16px;
 }
 
 .vacancies-page__search {

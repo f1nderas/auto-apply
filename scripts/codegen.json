@@ -1,0 +1,12 @@
+{
+  "schemaFile": "http://localhost:4200/api-json",
+  "apiFile": "../client/src/shared/api/baseApi.ts",
+  "apiImport": "baseApi",
+  "outputFile": "../client/src/shared/api/generatedApi.ts",
+  "exportName": "generatedApi",
+  "hooks": {
+    "queries": true,
+    "lazyQueries": true,
+    "mutations": true
+  }
+}

@@ -4,8 +4,10 @@ import type { VacancyDto } from '@dto';
 import './vacancy-card.scss';
 
 const VacancyCard = ({ vacancy }: { vacancy: VacancyDto }) => {
+  // #region COMPUTED
   const schedule = SCHEDULE_LABELS[vacancy.schedule] ?? vacancy.schedule;
   const hasSalary = !!vacancy.salary;
+  // #endregion
 
   return (
     <div className="vacancy-card">

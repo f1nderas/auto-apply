@@ -1,0 +1,121 @@
+@use '../../../shared/styles/colors';
+@use '../../../shared/styles/typography';
+
+.session-update__trigger {
+  @include typography.font-caption;
+  color: colors.$color-text-muted;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+
+  &:hover {
+    color: colors.$color-primary;
+  }
+}
+
+.session-update-modal__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgb(0 0 0 / 40%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.session-update-modal {
+  background: colors.$color-surface;
+  border-radius: 10px;
+  width: 560px;
+  max-width: calc(100vw - 32px);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 8px 32px rgb(0 0 0 / 12%);
+}
+
+.session-update-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.session-update-modal__title {
+  @include typography.font-title;
+  color: colors.$color-text;
+}
+
+.session-update-modal__close {
+  @include typography.font-body;
+  color: colors.$color-text-muted;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px 6px;
+  line-height: 1;
+
+  &:hover {
+    color: colors.$color-text;
+  }
+}
+
+.session-update-modal__textarea {
+  @include typography.font-caption;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid colors.$color-border;
+  border-radius: 6px;
+  background: colors.$color-bg;
+  color: colors.$color-text;
+  resize: vertical;
+  font-family: monospace;
+  box-sizing: border-box;
+
+  &::placeholder {
+    color: colors.$color-text-empty;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: colors.$color-primary;
+  }
+}
+
+.session-update-modal__footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.session-update-modal__submit {
+  @include typography.font-body;
+  padding: 8px 20px;
+  background: colors.$color-primary;
+  color: colors.$color-surface;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    opacity: 0.85;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+}
+
+.session-update-modal__status {
+  @include typography.font-caption;
+
+  &--ok {
+    color: colors.$color-success;
+  }
+
+  &--error {
+    color: colors.$color-error;
+  }
+}

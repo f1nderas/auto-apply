@@ -6,9 +6,9 @@
     "dev": "bun run --filter '*' dev",
     "dev:server": "bun run --cwd server dev",
     "dev:client": "bun run --cwd client dev",
-    "gen:types": "bun scripts/gen-types.ts"
+    "gen:api": "rtk-query-codegen-openapi scripts/codegen.json"
   },
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "^2.15.3"
+    "@rtk-query/codegen-openapi": "^2.2.0"
   }
 }

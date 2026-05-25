@@ -48,11 +48,19 @@ import type { VacancyDto } from '@dto';
   ```
 - **`#region` секции** — внутри компонентов группировать блоки через VS Code регионы:
   ```ts
+  // #region CONSTANT
+  const TABS = ['one', 'two'];
+  // #endregion
+
   // #region STATE
   const [value, setValue] = useState('');
   // #endregion
 
   // #region HOOK
+  const { data } = useQuery(...);
+  // #endregion
+
+  // #region EFFECT
   useEffect(() => { ... }, []);
   // #endregion
 
@@ -60,7 +68,8 @@ import type { VacancyDto } from '@dto';
   const handleSubmit = () => { ... };
   // #endregion
   ```
-  Порядок: STATE → HOOK → HANDLER
+  Порядок: CONSTANT → STATE → HOOK → EFFECT → COMPUTED → HANDLER
+  Пустые регионы не писать — только те, которые реально нужны в компоненте
 - **Регионы (areas) — через `useState`**, не как константа. Это позволяет динамически добавлять регионы в будущем
 - **Без тестов** — тестовые файлы не создавать, не упоминать
 - **Без лишних комментариев** — только если WHY неочевиден
@@ -86,15 +95,17 @@ bun run dev:server   # NestJS на http://localhost:4200
 bun run dev:client   # React  на http://localhost:3000
 ```
 
-## Генерация типов из бэкэнда
+## Генерация API из бэкэнда
 ```powershell
 # 1. Запусти бэкэнд (bun run dev:server)
 # 2. Выполни из корня:
-bun run gen:types
+bun run gen:api
 ```
-Типы генерируются в `client/src/shared/dto/` из OpenAPI-спека (`http://localhost:4200/api-json`). Скрипт: `scripts/gen-types.ts` — запускает генератор, переименовывает папку, создаёт barrel `index.ts`.
-Папка в `.gitignore` — пересоздаётся скриптом при изменении DTO на бэкэнде.
-Swagger UI доступен на `http://localhost:4200/api`.
+Генерируется `client/src/shared/api/generatedApi.ts` из OpenAPI-спека (`http://localhost:4200/api-json`).
+Файл содержит **и TypeScript-типы (DTO), и RTK Query хуки** — всё в одном месте.
+Конфиг: `scripts/codegen.json`. Файл в `.gitignore` — пересоздаётся при изменении DTO или эндпоинтов.
+`@dto` алиас указывает на `generatedApi.ts` — все `import type { VacancyDto } from '@dto'` работают как раньше.
+Swagger UI: `http://localhost:4200/api`.
 
 ## Backend — HH.ru API
 - Внутренний Web API: `https://hh.ru/search/vacancy` (не `api.hh.ru` — он требует регистрации)
