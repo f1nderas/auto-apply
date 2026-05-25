@@ -1,4 +1,10 @@
-import { Controller, Post, Body, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { ApiBody, ApiProperty, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SessionStore } from '../vacancies/session-store.service';
 
@@ -41,7 +47,10 @@ export class AdminController {
 
   @Post('session')
   @ApiBody({ type: UpdateSessionDto })
-  @ApiResponse({ status: 200, schema: { properties: { ok: { type: 'boolean' } } } })
+  @ApiResponse({
+    status: 200,
+    schema: { properties: { ok: { type: 'boolean' } } },
+  })
   updateSession(@Body() body: UpdateSessionDto) {
     const parsed = parseCurl(body.curl ?? '');
     if (!parsed.cookie || !parsed.xsrfToken) {

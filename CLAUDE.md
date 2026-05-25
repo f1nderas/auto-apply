@@ -103,7 +103,7 @@ bun run gen:api
 ```
 Генерируется `client/src/shared/api/generatedApi.ts` из OpenAPI-спека (`http://localhost:4200/api-json`).
 Файл содержит **и TypeScript-типы (DTO), и RTK Query хуки** — всё в одном месте.
-Конфиг: `scripts/codegen.json`. Файл в `.gitignore` — пересоздаётся при изменении DTO или эндпоинтов.
+Конфиг: `scripts/codegen.json`. Файл коммитится в репо; пересоздавать при изменении DTO или эндпоинтов.
 `@dto` алиас указывает на `generatedApi.ts` — все `import type { VacancyDto } from '@dto'` работают как раньше.
 Swagger UI: `http://localhost:4200/api`.
 

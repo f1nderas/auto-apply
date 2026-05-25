@@ -1,0 +1,97 @@
+import { baseApi as api } from './baseApi';
+const injectedRtkApi = api.injectEndpoints({
+  endpoints: (build) => ({
+    appControllerGetHello: build.query<
+      AppControllerGetHelloApiResponse,
+      AppControllerGetHelloApiArg
+    >({
+      query: () => ({ url: `/` }),
+    }),
+    vacanciesControllerSearch: build.query<
+      VacanciesControllerSearchApiResponse,
+      VacanciesControllerSearchApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/vacancies`,
+        params: {
+          text: queryArg.text,
+          area: queryArg.area,
+          page: queryArg.page,
+          perPage: queryArg.perPage,
+        },
+      }),
+    }),
+    adminControllerUpdateSession: build.mutation<
+      AdminControllerUpdateSessionApiResponse,
+      AdminControllerUpdateSessionApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/admin/session`,
+        method: 'POST',
+        body: queryArg.updateSessionDto,
+      }),
+    }),
+  }),
+  overrideExisting: false,
+});
+export { injectedRtkApi as generatedApi };
+export type AppControllerGetHelloApiResponse = unknown;
+export type AppControllerGetHelloApiArg = void;
+export type VacanciesControllerSearchApiResponse =
+  /** status 200  */ VacanciesResponseDto;
+export type VacanciesControllerSearchApiArg = {
+  text: string;
+  area?: number;
+  page?: number;
+  perPage?: number;
+};
+export type AdminControllerUpdateSessionApiResponse = /** status 200  */ {
+  ok?: boolean;
+};
+export type AdminControllerUpdateSessionApiArg = {
+  updateSessionDto: UpdateSessionDto;
+};
+export type SalaryDto = {
+  from?: number | null;
+  to?: number | null;
+  currency: string;
+  gross: boolean;
+};
+export type EmployerDto = {
+  id: string;
+  name: string;
+  url: string;
+  accreditedIt: boolean;
+};
+export type VacancyDto = {
+  id: string;
+  name: string;
+  url: string;
+  area: string;
+  salary?: SalaryDto | null;
+  employer: EmployerDto;
+  experience: string;
+  employment: string;
+  schedule: string;
+  responseLetterRequired: boolean;
+  requirement?: string | null;
+  responsibility?: string | null;
+  publishedAt: string;
+};
+export type VacanciesResponseDto = {
+  vacancies: VacancyDto[];
+  total: number;
+  page: number;
+  perPage: number;
+  pages?: number | null;
+};
+export type UpdateSessionDto = {
+  curl: string;
+};
+export const {
+  useAppControllerGetHelloQuery,
+  useLazyAppControllerGetHelloQuery,
+  useVacanciesControllerSearchQuery,
+  useLazyVacanciesControllerSearchQuery,
+  useAdminControllerUpdateSessionMutation,
+} = injectedRtkApi;

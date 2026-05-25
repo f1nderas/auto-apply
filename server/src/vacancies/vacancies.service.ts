@@ -40,8 +40,12 @@ export class VacanciesService {
 
   async search(params: SearchVacanciesDto): Promise<VacanciesResponseDto> {
     const { text, area, page, perPage } = params;
-    const { cookie: rawCookie, xsrfToken, staticVersion, baseUrl } =
-      this.sessionStore.get();
+    const {
+      cookie: rawCookie,
+      xsrfToken,
+      staticVersion,
+      baseUrl,
+    } = this.sessionStore.get();
     const cookie = this.filterCookies(rawCookie);
 
     // GIB (Group-IB) антибот: значения берутся из соответствующих кук
