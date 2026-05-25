@@ -1,28 +1,8 @@
 import { useState } from 'react';
-import { SearchForm } from '../../../features/vacancy-search';
-import { VacancyCard, searchVacancies } from '../../../entities/vacancy';
-import type { Vacancy } from '../../../entities/vacancy';
-
-const s = {
-  root: { minHeight: '100vh', background: '#f4f4f5' },
-  header: {
-    background: '#fff',
-    borderBottom: '1px solid #e4e4e7',
-    padding: '16px 24px',
-  },
-  headerTitle: { fontSize: 20, fontWeight: 700, color: '#18181b' },
-  main: { maxWidth: 860, margin: '0 auto', padding: '24px 16px' },
-  searchWrap: { marginBottom: 24 },
-  meta: { fontSize: 14, color: '#71717a', marginBottom: 16 },
-  list: { display: 'flex', flexDirection: 'column' as const, gap: 12 },
-  message: {
-    color: '#71717a',
-    padding: '40px 0',
-    textAlign: 'center' as const,
-    fontSize: 15,
-  },
-  error: { color: '#dc2626', padding: '16px 0', fontSize: 15 },
-};
+import { SearchForm } from '@features/vacancy-search';
+import { VacancyCard, searchVacancies } from '@entities/vacancy';
+import type { Vacancy } from '@entities/vacancy';
+import './vacancies-page.scss';
 
 const VacanciesPage = () => {
   // #region STATE
@@ -49,29 +29,35 @@ const VacanciesPage = () => {
   // #endregion
 
   return (
-    <div style={s.root}>
-      <header style={s.header}>
-        <div style={s.headerTitle}>Auto Apply</div>
+    <div className="vacancies-page">
+      <header className="vacancies-page__header">
+        <div className="vacancies-page__title">Auto Apply</div>
       </header>
 
-      <main style={s.main}>
-        <div style={s.searchWrap}>
+      <main className="vacancies-page__main">
+        <div className="vacancies-page__search">
           <SearchForm onSearch={handleSearch} loading={loading} />
         </div>
 
         {!loading && !error && vacancies.length > 0 && (
-          <div style={s.meta}>
+          <div className="vacancies-page__meta">
             Найдено: {total.toLocaleString('ru')} вакансий
           </div>
         )}
 
-        {loading && <div style={s.message}>Загрузка...</div>}
-        {error && <div style={s.error}>Ошибка: {error}</div>}
+        {loading && (
+          <div className="vacancies-page__message">Загрузка...</div>
+        )}
+        {error && (
+          <div className="vacancies-page__error">Ошибка: {error}</div>
+        )}
         {!loading && !error && vacancies.length === 0 && (
-          <div style={s.message}>Введите запрос и нажмите «Найти»</div>
+          <div className="vacancies-page__message">
+            Введите запрос и нажмите «Найти»
+          </div>
         )}
 
-        <div style={s.list}>
+        <div className="vacancies-page__list">
           {vacancies.map((v) => (
             <VacancyCard key={v.id} vacancy={v} />
           ))}

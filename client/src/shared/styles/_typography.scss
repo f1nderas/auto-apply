@@ -1,0 +1,22 @@
+// Font size
+$font-size-xs:   12px;
+$font-size-sm:   13px;
+$font-size-md:   14px;
+$font-size-base: 15px;
+$font-size-lg:   16px;
+$font-size-xl:   20px;
+
+// Font weight
+$font-weight-normal:   400;
+$font-weight-medium:   500;
+$font-weight-semibold: 600;
+$font-weight-bold:     700;
+
+// Mixins
+@mixin font-heading   { font-size: $font-size-xl;   font-weight: $font-weight-bold; }
+@mixin font-title     { font-size: $font-size-lg;   font-weight: $font-weight-semibold; }
+@mixin font-strong    { font-size: $font-size-base; font-weight: $font-weight-semibold; }
+@mixin font-body      { font-size: $font-size-base; font-weight: $font-weight-normal; }
+@mixin font-secondary { font-size: $font-size-md;   font-weight: $font-weight-normal; }
+@mixin font-caption   { font-size: $font-size-sm;   font-weight: $font-weight-normal; }
+@mixin font-badge     { font-size: $font-size-xs;   font-weight: $font-weight-medium; }

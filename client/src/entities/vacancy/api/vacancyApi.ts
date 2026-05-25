@@ -1,4 +1,4 @@
-import { API_BASE } from '../../../shared/config/api';
+import { API_BASE } from '@shared/config/api';
 import type { VacanciesResponse } from '../model/types';
 
 const searchVacancies = async (

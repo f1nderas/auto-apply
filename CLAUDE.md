@@ -26,6 +26,16 @@ shared/    ← константы, утилиты, базовое API
 ```
 Каждый слой имеет публичный `index.ts` — импортируй только из него, не из внутренних путей.
 
+## Алиасы импортов
+Кросс-слойные импорты — через алиасы (не относительные пути):
+```ts
+import { cx } from '@shared/lib/cx';
+import { VacancyCard } from '@entities/vacancy';
+import { SearchForm } from '@features/vacancy-search';
+import { VacanciesPage } from '@pages/vacancies-page';
+```
+Внутри-слойные (в пределах одного слайса) — относительные: `'../model/types'`, `'../lib/format'`.
+
 ## Правила кода
 - **Только именованные экспорты.** Всегда в самом низу файла: `export { Name }`
 - **Только `const`** — никаких `function`. Компоненты, хендлеры, утилиты — всё через `const`:
@@ -53,7 +63,20 @@ shared/    ← константы, утилиты, базовое API
 - **Без тестов** — тестовые файлы не создавать, не упоминать
 - **Без лишних комментариев** — только если WHY неочевиден
 - Один компонент / функция на файл (кроме мелких утилит)
-- Стили — inline objects (без CSS-файлов, без внешних библиотек)
+- **Стили — глобальный SCSS с БЭМ-именованием**, без inline-стилей, без CSS Modules:
+  - Файл рядом с компонентом: `vacancy-card.scss`
+  - Импорт как side-effect: `import './vacancy-card.scss'`
+  - В JSX — строки: `className="vacancy-card__title"`
+  - Несколько классов через хелпер `cx` из `shared/lib/cx`: `cx('vacancy-card__badge', condition && 'vacancy-card__badge--green')`
+  - БЭМ: `.vacancy-card`, `.vacancy-card__title`, `.vacancy-card__title--empty`
+  - **Цвета и шрифты только через переменные/миксины**, раздельные файлы:
+    - `@use '../../../shared/styles/colors';` → `color: colors.$color-primary`
+    - `@use '../../../shared/styles/typography';` → `@include typography.font-title`
+  - Цвета: `$color-*` в `_colors.scss`
+  - Типографика — миксины в `_typography.scss` (включают сразу font-size + font-weight):
+    `font-heading` (20/bold), `font-title` (16/semibold), `font-strong` (15/semibold),
+    `font-body` (15/normal), `font-secondary` (14/normal), `font-caption` (13/normal), `font-badge` (12/medium)
+  - Никаких хардкоженных hex-значений и числовых `font-size`/`font-weight` в компонентных стилях
 
 ## Запуск
 ```powershell

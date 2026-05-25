@@ -1,4 +1,4 @@
-import { VacanciesPage } from '../pages/vacancies-page';
+import { VacanciesPage } from '@pages/vacancies-page';
 
 const App = () => <VacanciesPage />;
 

@@ -1,0 +1,53 @@
+@use '../../../shared/styles/colors';
+@use '../../../shared/styles/typography';
+
+.vacancies-page {
+  min-height: 100vh;
+  background: colors.$color-bg;
+}
+
+.vacancies-page__header {
+  background: colors.$color-surface;
+  border-bottom: 1px solid colors.$color-border-light;
+  padding: 16px 24px;
+}
+
+.vacancies-page__title {
+  @include typography.font-heading;
+  color: colors.$color-text;
+}
+
+.vacancies-page__main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.vacancies-page__search {
+  margin-bottom: 24px;
+}
+
+.vacancies-page__meta {
+  @include typography.font-secondary;
+  color: colors.$color-text-muted;
+  margin-bottom: 16px;
+}
+
+.vacancies-page__list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.vacancies-page__message {
+  @include typography.font-body;
+  color: colors.$color-text-muted;
+  padding: 40px 0;
+  text-align: center;
+}
+
+.vacancies-page__error {
+  @include typography.font-body;
+  color: colors.$color-error;
+  padding: 16px 0;
+}

@@ -6,7 +6,15 @@
     "jsx": "react-jsx",
     "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@app/*":      ["src/app/*"],
+      "@pages/*":    ["src/pages/*"],
+      "@features/*": ["src/features/*"],
+      "@entities/*": ["src/entities/*"],
+      "@shared/*":   ["src/shared/*"]
+    }
   },
   "include": ["src"]
 }

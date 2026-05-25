@@ -1,0 +1,77 @@
+@use '../../../shared/styles/colors';
+@use '../../../shared/styles/typography';
+
+.vacancy-card {
+  background: colors.$color-surface;
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.vacancy-card__title {
+  @include typography.font-title;
+  color: colors.$color-primary;
+  text-decoration: none;
+  line-height: 1.3;
+}
+
+.vacancy-card__employer {
+  @include typography.font-secondary;
+  color: colors.$color-text-secondary;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.vacancy-card__employer-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.vacancy-card__salary {
+  @include typography.font-strong;
+  color: colors.$color-text;
+}
+
+.vacancy-card__salary--empty {
+  @include typography.font-secondary;
+  color: colors.$color-text-empty;
+}
+
+.vacancy-card__footer {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+.vacancy-card__badge {
+  @include typography.font-badge;
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 99px;
+}
+
+.vacancy-card__badge--green {
+  background: colors.$color-success-subtle;
+  color: colors.$color-success;
+}
+
+.vacancy-card__badge--blue {
+  background: colors.$color-primary-subtle;
+  color: colors.$color-primary;
+}
+
+.vacancy-card__badge--orange {
+  background: colors.$color-warning-subtle;
+  color: colors.$color-warning;
+}
+
+.vacancy-card__footer-text {
+  @include typography.font-caption;
+  color: colors.$color-text-muted;
+}

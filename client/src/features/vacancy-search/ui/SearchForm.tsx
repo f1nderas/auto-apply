@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { cx } from '@shared/lib/cx';
+import './search-form.scss';
 
 interface Area {
   id: number;
@@ -15,38 +17,6 @@ const INITIAL_AREAS: Area[] = [
   { id: 2, name: 'Санкт-Петербург' },
   { id: 0, name: 'Все регионы' },
 ];
-
-const s = {
-  form: { display: 'flex', gap: 12, flexWrap: 'wrap' as const },
-  input: {
-    flex: 1,
-    minWidth: 200,
-    padding: '10px 14px',
-    borderRadius: 8,
-    border: '1px solid #d4d4d8',
-    fontSize: 15,
-    outline: 'none',
-  },
-  select: {
-    padding: '10px 14px',
-    borderRadius: 8,
-    border: '1px solid #d4d4d8',
-    fontSize: 15,
-    background: '#fff',
-    cursor: 'pointer',
-  },
-  btn: {
-    padding: '10px 20px',
-    borderRadius: 8,
-    border: 'none',
-    background: '#2563eb',
-    color: '#fff',
-    fontSize: 15,
-    fontWeight: 600,
-    cursor: 'pointer',
-  },
-  btnDisabled: { opacity: 0.6, cursor: 'not-allowed' as const },
-};
 
 const SearchForm = ({ onSearch, loading }: SearchFormProps) => {
   // #region STATE
@@ -67,15 +37,15 @@ const SearchForm = ({ onSearch, loading }: SearchFormProps) => {
   // #endregion
 
   return (
-    <form style={s.form} onSubmit={handleSubmit}>
+    <form className="search-form" onSubmit={handleSubmit}>
       <input
-        style={s.input}
+        className="search-form__input"
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder="Должность, например Frontend разработчик"
       />
       <select
-        style={s.select}
+        className="search-form__select"
         value={area}
         onChange={(e) => setArea(Number(e.target.value))}
       >
@@ -86,7 +56,7 @@ const SearchForm = ({ onSearch, loading }: SearchFormProps) => {
         ))}
       </select>
       <button
-        style={{ ...s.btn, ...(loading ? s.btnDisabled : {}) }}
+        className={cx('search-form__btn', loading && 'search-form__btn--disabled')}
         type="submit"
         disabled={loading}
       >

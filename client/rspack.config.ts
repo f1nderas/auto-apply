@@ -12,6 +12,13 @@ const config: Configuration = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
+    alias: {
+      '@app':      path.resolve(__dirname, 'src/app'),
+      '@pages':    path.resolve(__dirname, 'src/pages'),
+      '@features': path.resolve(__dirname, 'src/features'),
+      '@entities': path.resolve(__dirname, 'src/entities'),
+      '@shared':   path.resolve(__dirname, 'src/shared'),
+    },
   },
   module: {
     rules: [
@@ -28,15 +35,22 @@ const config: Configuration = {
         },
         type: 'javascript/auto',
       },
+      {
+        test: /\.scss$/,
+        use: ['sass-loader'],
+        type: 'css',
+      },
     ],
   },
   plugins: [
     new rspack.HtmlRspackPlugin({ template: './public/index.html' }),
   ],
+  experiments: {
+    css: true,
+  },
   devServer: {
     port: 3000,
     hot: true,
-    open: true,
     historyApiFallback: true,
   },
 };
