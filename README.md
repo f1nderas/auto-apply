@@ -1,14 +1,14 @@
-# auto-apply
+# Auto Apply
 
-Сервис автоматических откликов на вакансии с HH.ru. Монорепо: NestJS бэкенд + React фронтенд.
+Сервис для поиска вакансий на HH.ru с возможностью автоподачи заявок. Монорепо: NestJS бэкенд + React фронтенд.
 
 ## Стек
 
 | | Технология |
 |---|---|
-| **Пакетный менеджер** | Bun (workspaces) |
+| **Пакетный менеджер** | Bun workspaces |
 | **Бэкенд** | NestJS 11, TypeScript, SWC |
-| **Фронтенд** | React 19, TypeScript, Rspack |
+| **Фронтенд** | React 19, TypeScript, RTK Query, Rspack |
 
 ## Структура
 
@@ -16,7 +16,8 @@
 auto-apply/
 ├── server/        ← NestJS бэкенд (порт 4200)
 ├── client/        ← React фронтенд (порт 3000)
-├── .env           ← переменные окружения для всего монорепо
+├── scripts/       ← вспомогательные скрипты
+├── .env           ← переменные окружения (не коммитить)
 └── package.json   ← workspace root
 ```
 
@@ -29,47 +30,36 @@ bun install
 ## Запуск
 
 ```bash
-# Фронт + бэк одновременно
-bun run dev
-
-# По отдельности
-bun run dev:server   # только бэкенд
-bun run dev:client   # только фронтенд
+bun run dev:server   # бэкенд → http://localhost:4200
+bun run dev:client   # фронтенд → http://localhost:3000
 ```
 
 ## Переменные окружения
 
-Создать `.env` в корне проекта:
+Создать `.env` в корне (в `.gitignore`, не коммитить):
 
 ```env
 PORT=4200
-
 HH_XSRF_TOKEN=<токен из DevTools>
 HH_COOKIE=<куки из DevTools>
 ```
 
-Как получить `HH_COOKIE` и `HH_XSRF_TOKEN`:
-1. Открыть [hh.ru](https://hh.ru) в браузере, войти в аккаунт
-2. DevTools → Network → выполнить поиск вакансий
-3. Найти запрос к `hh.ru/search/vacancy` → правая кнопка → Copy as cURL
-4. Скопировать значения заголовков `cookie` и `x-xsrftoken`
+При истечении сессии HH.ru — вставить новый cURL через форму **«Обновить сессию»** прямо в интерфейсе (кнопка в шапке).
 
-> Сессия истекает — при ошибках 406 нужно обновить `.env`.
-
-## API
-
-`GET /vacancies`
-
-| Параметр | Тип | По умолчанию | Описание |
-|---|---|---|---|
-| `text` | string | — | Поисковый запрос (обязательный) |
-| `area` | number | `1` | Регион (1 — Москва, 2 — СПб) |
-| `page` | number | `0` | Страница (с нуля) |
-| `perPage` | number | `20` | Вакансий на странице (макс 100) |
-
-## Сборка
+## Генерация API-клиента
 
 ```bash
-bun run --cwd server build   # собрать бэкенд
-bun run --cwd client build   # собрать фронтенд
+# 1. Запусти бэкенд
+bun run dev:server
+
+# 2. Из корня:
+bun run gen:api
 ```
+
+Генерирует `client/src/shared/api/generatedApi.ts` — TypeScript-типы и RTK Query хуки из OpenAPI спека бэкенда.  
+Swagger UI: http://localhost:4200/api
+
+## Подробнее
+
+- [Frontend →](./client/README.md)
+- [Backend →](./server/README.md)
