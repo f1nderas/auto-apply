@@ -18,7 +18,7 @@ export class SearchVacanciesDto {
   @Type(() => Number)
   @IsInt()
   @Min(0)
-  page?: number = 0;
+  page: number = 0;
 
   @ApiPropertyOptional({ type: Number, default: 20, minimum: 1, maximum: 100 })
   @IsOptional()
@@ -26,5 +26,5 @@ export class SearchVacanciesDto {
   @IsInt()
   @Min(1)
   @Max(100)
-  perPage?: number = 20;
+  perPage: number = 20;
 }

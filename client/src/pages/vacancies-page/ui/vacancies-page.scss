@@ -8,10 +8,92 @@
   margin-bottom: 24px;
 }
 
+.vacancies-page__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
 .vacancies-page__meta {
   @include typography.font-secondary;
   color: colors.$color-text-muted;
-  margin-bottom: 16px;
+}
+
+.vacancies-page__per-page {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.vacancies-page__per-page-label {
+  @include typography.font-secondary;
+  color: colors.$color-text-muted;
+}
+
+.vacancies-page__per-page-btn {
+  @include typography.font-caption;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid colors.$color-border;
+  background: colors.$color-surface;
+  color: colors.$color-text-secondary;
+  cursor: pointer;
+
+  &--active {
+    background: colors.$color-primary;
+    border-color: colors.$color-primary;
+    color: colors.$color-surface;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.vacancies-page__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 16px 0;
+}
+
+.vacancies-page__page-btn {
+  @include typography.font-secondary;
+  min-width: 36px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid colors.$color-border;
+  background: colors.$color-surface;
+  color: colors.$color-text;
+  cursor: pointer;
+
+  &--active {
+    background: colors.$color-primary;
+    border-color: colors.$color-primary;
+    color: colors.$color-surface;
+    font-weight: 600;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled):not(.vacancies-page__page-btn--active) {
+    background: colors.$color-primary-subtle;
+    border-color: colors.$color-primary;
+  }
+}
+
+.vacancies-page__page-ellipsis {
+  @include typography.font-secondary;
+  color: colors.$color-text-muted;
+  padding: 0 4px;
 }
 
 .vacancies-page__list {

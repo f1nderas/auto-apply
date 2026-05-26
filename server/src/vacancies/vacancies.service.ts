@@ -12,8 +12,10 @@ import {
   HhVacancy,
   HhCompensation,
   HhCompany,
+  HhPaging,
 } from './interfaces/hh-api.interface';
 import { SessionStore } from './session-store.service';
+import { HH_BASE_URL } from './constants';
 
 const ESSENTIAL_COOKIES = new Set([
   '_xsrf',
@@ -91,15 +93,15 @@ export class VacanciesService {
         },
       );
 
-      const { vacancies, criteria } = data.vacancySearchResult;
-      const { totalItems, pages } = data.vacancySearchResult;
+      const { vacancies, criteria, totalResults, paging } =
+        data.vacancySearchResult;
 
       return {
         vacancies: vacancies.map((v) => this.mapVacancy(v)),
-        total: totalItems ?? vacancies.length,
+        total: totalResults ?? vacancies.length,
         page,
         perPage: criteria.items_on_page,
-        pages: pages ?? null,
+        pages: this.calcPages(paging, page),
       };
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -110,6 +112,13 @@ export class VacanciesService {
       }
       throw error;
     }
+  }
+
+  // lastPage.page — 0-индексный номер последней страницы.
+  // Если lastPage === null — мы уже на последней, итого page + 1.
+  private calcPages(paging: HhPaging | undefined, page: number): number | null {
+    if (!paging) return null;
+    return (paging.lastPage?.page ?? page) + 1;
   }
 
   private extractCookie(cookieStr: string, name: string): string {
@@ -156,7 +165,7 @@ export class VacanciesService {
     return {
       id: String(company.id),
       name: company.visibleName || company.name,
-      url: `https://hh.ru/employer/${company.id}`,
+      url: `${HH_BASE_URL}/employer/${company.id}`,
       accreditedIt: company.accreditedITEmployer,
     };
   }

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { HH_BASE_URL, HH_STATIC_VERSION } from './constants';
 
 interface Session {
   cookie: string;
@@ -16,8 +17,8 @@ export class SessionStore {
     this.session = {
       cookie: config.get<string>('HH_COOKIE') ?? '',
       xsrfToken: config.get<string>('HH_XSRF_TOKEN') ?? '',
-      staticVersion: '26.22.1.3',
-      baseUrl: 'https://hh.ru',
+      staticVersion: HH_STATIC_VERSION,
+      baseUrl: HH_BASE_URL,
     };
   }
 

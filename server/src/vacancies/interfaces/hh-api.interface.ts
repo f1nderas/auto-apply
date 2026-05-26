@@ -52,19 +52,19 @@ export interface HhVacancy {
 }
 
 export interface HhCriteria {
-  text: string;
-  area: number[];
   page: number;
   items_on_page: number;
-  order_by: string;
+}
+
+export interface HhPaging {
+  lastPage: { page: number } | null;
 }
 
 export interface HhWebSearchResponse {
   vacancySearchResult: {
     vacancies: HhVacancy[];
     criteria: HhCriteria;
-    totalItems?: number;
-    pages?: number;
-    totalUsedFilters: number;
+    totalResults?: number;
+    paging?: HhPaging;
   };
 }

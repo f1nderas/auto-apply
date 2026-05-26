@@ -5,16 +5,19 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
+import { IsString } from 'class-validator';
 import { ApiBody, ApiProperty, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SessionStore } from '../vacancies/session-store.service';
 
 class UpdateSessionDto {
+  @IsString()
   @ApiProperty()
   curl: string;
 }
 
-// Парсит строку cURL (включая Windows cmd формат с ^ экранированием)
+// Парсит строку cURL: Windows cmd (^ + двойные кавычки) и Unix/bash (одинарные кавычки)
 const parseCurl = (input: string) => {
+  // Убираем Windows cmd ^ экранирование
   let s = '';
   let i = 0;
   while (i < input.length) {
@@ -27,17 +30,35 @@ const parseCurl = (input: string) => {
     }
   }
 
-  const cookieMatch = s.match(/(?:-b|--cookie)\s+"([^"]+)"/);
-  const xsrfMatch = s.match(/-H\s+"x-xsrftoken:\s*([^"]+?)"/i);
-  const versionMatch = s.match(/-H\s+"x-static-version:\s*([^"]+?)"/i);
-  const urlMatch = s.match(/curl\s+"(https?:\/\/[^/?#"]+)/i);
+  const q = `(?:'([^']*)'|"([^"]*)")`;
 
-  return {
-    cookie: cookieMatch?.[1] ?? null,
-    xsrfToken: xsrfMatch?.[1]?.trim() ?? null,
-    staticVersion: versionMatch?.[1]?.trim() ?? null,
-    baseUrl: urlMatch ? new URL(urlMatch[1]).origin : null,
-  };
+  const cookieMatch = s.match(new RegExp(`(?:-b|--cookie)\\s+${q}`));
+  const cookie = cookieMatch?.[1] ?? cookieMatch?.[2] ?? null;
+
+  const xsrfMatch = s.match(
+    new RegExp(
+      `-H\\s+(?:'x-xsrftoken:\\s*([^']*)'|"x-xsrftoken:\\s*([^"]*)")`,
+      'i',
+    ),
+  );
+  const xsrfToken = (xsrfMatch?.[1] ?? xsrfMatch?.[2])?.trim() ?? null;
+
+  const versionMatch = s.match(
+    new RegExp(
+      `-H\\s+(?:'x-static-version:\\s*([^']*)'|"x-static-version:\\s*([^"]*)")`,
+      'i',
+    ),
+  );
+  const versionFromHeader =
+    (versionMatch?.[1] ?? versionMatch?.[2])?.trim() ?? null;
+  const versionFromBaggage =
+    s.match(/sentry-release=xhh(?:%40|@)([0-9.]+)/i)?.[1] ?? null;
+  const staticVersion = versionFromHeader ?? versionFromBaggage;
+
+  const urlMatch = s.match(/curl\s+['"]?(https?:\/\/[^/?#'"\s]+)/i);
+  const baseUrl = urlMatch ? new URL(urlMatch[1]).origin : null;
+
+  return { cookie, xsrfToken, staticVersion, baseUrl };
 };
 
 @ApiTags('Admin')
