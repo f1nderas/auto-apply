@@ -1,12 +1,48 @@
+import { useState } from 'react';
 import { cx } from '@shared/lib/cx';
 import { SCHEDULE_LABELS, formatSalary, formatDate } from '../lib/format';
+import { useApplyVacancyMutation } from '../api/vacancyApi';
 import type { VacancyDto } from '@dto';
 import './vacancy-card.scss';
 
 const VacancyCard = ({ vacancy }: { vacancy: VacancyDto }) => {
+  // #region STATE
+  const [letter, setLetter] = useState('');
+  const [applied, setApplied] = useState(false);
+  // #endregion
+
+  // #region HOOK
+  const [apply, { isLoading, isError }] = useApplyVacancyMutation();
+  // #endregion
+
   // #region COMPUTED
   const schedule = SCHEDULE_LABELS[vacancy.schedule] ?? vacancy.schedule;
   const hasSalary = !!vacancy.salary;
+  const needsLetter = vacancy.responseLetterRequired;
+  const canApply = !needsLetter || letter.trim().length > 0;
+  const btnLabel = isLoading
+    ? 'Отправка…'
+    : applied
+      ? 'Отклик отправлен'
+      : isError
+        ? 'Ошибка — повторить'
+        : 'Откликнуться';
+  // #endregion
+
+  // #region HANDLER
+  const handleApply = async () => {
+    try {
+      await apply({
+        applyVacancyDto: {
+          vacancyId: vacancy.id,
+          ...(needsLetter ? { letter: letter.trim() } : {}),
+        },
+      }).unwrap();
+      setApplied(true);
+    } catch {
+      // isError from the mutation hook handles UI state
+    }
+  };
   // #endregion
 
   return (
@@ -44,7 +80,7 @@ const VacancyCard = ({ vacancy }: { vacancy: VacancyDto }) => {
         <span className="vacancy-card__badge vacancy-card__badge--green">
           {schedule}
         </span>
-        {vacancy.responseLetterRequired && (
+        {needsLetter && (
           <span className="vacancy-card__badge vacancy-card__badge--orange">
             Нужно письмо
           </span>
@@ -53,6 +89,29 @@ const VacancyCard = ({ vacancy }: { vacancy: VacancyDto }) => {
           {vacancy.area} · {formatDate(vacancy.publishedAt)}
         </span>
       </div>
+
+      {needsLetter && !applied && (
+        <textarea
+          className="vacancy-card__letter"
+          placeholder="Сопроводительное письмо…"
+          value={letter}
+          onChange={(e) => setLetter(e.target.value)}
+          rows={3}
+          disabled={isLoading}
+        />
+      )}
+
+      <button
+        className={cx(
+          'vacancy-card__apply-btn',
+          applied && 'vacancy-card__apply-btn--success',
+          isError && !applied && 'vacancy-card__apply-btn--error',
+        )}
+        onClick={handleApply}
+        disabled={isLoading || applied || !canApply}
+      >
+        {btnLabel}
+      </button>
     </div>
   );
 };

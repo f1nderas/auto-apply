@@ -21,6 +21,16 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
+    vacanciesControllerApply: build.mutation<
+      VacanciesControllerApplyApiResponse,
+      VacanciesControllerApplyApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/vacancies/apply`,
+        method: 'POST',
+        body: queryArg.applyVacancyDto,
+      }),
+    }),
     adminControllerUpdateSession: build.mutation<
       AdminControllerUpdateSessionApiResponse,
       AdminControllerUpdateSessionApiArg
@@ -44,6 +54,11 @@ export type VacanciesControllerSearchApiArg = {
   area?: number;
   page?: number;
   perPage?: number;
+};
+export type VacanciesControllerApplyApiResponse =
+  /** status 201  */ ApplyResponseDto;
+export type VacanciesControllerApplyApiArg = {
+  applyVacancyDto: ApplyVacancyDto;
 };
 export type AdminControllerUpdateSessionApiResponse = /** status 200  */ {
   ok?: boolean;
@@ -85,6 +100,15 @@ export type VacanciesResponseDto = {
   perPage: number;
   pages?: number | null;
 };
+export type ApplyResponseDto = {
+  ok: boolean;
+  topicId?: string | null;
+  chatId?: string | null;
+};
+export type ApplyVacancyDto = {
+  vacancyId: string;
+  letter?: string;
+};
 export type UpdateSessionDto = {
   curl: string;
 };
@@ -93,5 +117,6 @@ export const {
   useLazyAppControllerGetHelloQuery,
   useVacanciesControllerSearchQuery,
   useLazyVacanciesControllerSearchQuery,
+  useVacanciesControllerApplyMutation,
   useAdminControllerUpdateSessionMutation,
 } = injectedRtkApi;

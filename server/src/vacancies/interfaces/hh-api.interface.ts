@@ -68,3 +68,9 @@ export interface HhWebSearchResponse {
     paging?: HhPaging;
   };
 }
+
+export interface HhApplyResponse {
+  success: string; // "true" | "false"
+  topic_id?: string;
+  chat_id?: string;
+}

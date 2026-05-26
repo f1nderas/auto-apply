@@ -1,0 +1,1063 @@
+{
+  "success": "true",
+  "topic_id": "5321524622",
+  "chat_id": "5362096228",
+  "response_label": "nonreq-letter-no-test-with-letter",
+  "vacancy_id": "133274633",
+  "applicantActivity": {
+    "userActivityScore": 82,
+    "userActivityScoreChange": 8,
+    "showActivity": true
+  },
+  "askJobSearchStatus": false,
+  "responsesStreak": {
+    "vacancyId": "133274633",
+    "responsesCount": 1000,
+    "responsesRequired": 10
+  },
+  "responseStatus": {
+    "test": {
+      "hasTests": false
+    },
+    "negotiations": {
+      "topicList": [
+        {
+          "id": 5321524622,
+          "applicantUserId": 165341442,
+          "employerId": 12459049,
+          "employerManagerId": 16012077,
+          "chatId": 5362096228,
+          "communicationContext": {
+            "chatData": {
+              "id": 5362096228,
+              "type": "NEGOTIATION",
+              "subtype": null
+            }
+          },
+          "initialState": "RESPONSE",
+          "initialEmployerState": null,
+          "lastState": "RESPONSE",
+          "lastEmployerState": null,
+          "lastEmployerStateExtName": null,
+          "lastFunnelStage": null,
+          "archived": false,
+          "creationTime": "2026-05-26T17:51:49.382+03:00",
+          "platform": null,
+          "applicantQuestionState": false,
+          "initialTopicType": "RESPONSE_BY_APPLICANT",
+          "currentTopicType": "RESPONSE_BY_APPLICANT",
+          "initialTopicTypeGroups": ["BY_APPLICANT", "WITH_RESUME_AND_VACANCY"],
+          "currentTopicTypeGroups": ["BY_APPLICANT", "WITH_RESUME_AND_VACANCY"],
+          "hasResponseLetter": true,
+          "lastSubState": "SHOW",
+          "applicantSubState": "SHOW",
+          "employerSubState": "NEW",
+          "hasText": true,
+          "viewedByOpponent": false,
+          "hasNewMessages": false,
+          "lastModified": "2026-05-26T17:51:49.382+03:00",
+          "lastModifiedMillis": 1779807109382,
+          "chatIsArchived": false,
+          "creationTimeMillis": 1779807109382,
+          "employerCreationTime": null,
+          "employerLastChangeTime": null,
+          "lastChangeDateTimeExceptEmployerInbox": "2026-05-26T17:51:49.382+03:00",
+          "conversationMessagesCount": 1,
+          "conversationUnreadByEmployerCount": 1,
+          "inboxAvailabilityState": "AVAILABLE",
+          "responseReminderState": {
+            "allowed": false
+          },
+          "topicSource": "NEGOTIATION",
+          "declineByApplicantAllowed": true,
+          "declinedByApplicant": false,
+          "employerViolatesRules": false,
+          "applicantStateInfo": {
+            "funnelStageKey": null
+          },
+          "vacancyId": 133274633,
+          "resumeId": 270841784,
+          "resources": [
+            {
+              "id": 133274633,
+              "type": "VACANCY"
+            },
+            {
+              "id": 0,
+              "type": "RESPONSE_LETTER"
+            },
+            {
+              "id": 270841784,
+              "type": "RESUME"
+            }
+          ],
+          "availableTransitions": [],
+          "availableStages": [],
+          "responded": true,
+          "invited": false,
+          "discarded": false
+        }
+      ],
+      "total": 1,
+      "readOnlyInterval": 180,
+      "untrustedEmployerRestrictionsApplied": null
+    },
+    "by_country_applicant_visibility": {
+      "responseAllowed": true
+    },
+    "letterMaxLength": 10000,
+    "shortVacancy": {
+      "@workSchedule": "remote",
+      "@showContact": false,
+      "@responseLetterRequired": true,
+      "vacancyId": 133274633,
+      "name": "Универсальный программист уровня senior",
+      "company": {
+        "@showSimilarVacancies": true,
+        "@trusted": true,
+        "@category": "COMPANY",
+        "@countryId": 4,
+        "@state": "APPROVED",
+        "id": 12459049,
+        "name": "Трейдмарк холдер",
+        "visibleName": "Трейдмарк холдер",
+        "employerOrganizationFormId": 0,
+        "showOrganizationForm": true,
+        "companySiteUrl": "",
+        "accreditedITEmployer": false
+      },
+      "compensation": {
+        "noCompensation": {}
+      },
+      "publicationTime": {
+        "@timestamp": 1779216465,
+        "$": "2026-05-19T21:47:45.464+03:00"
+      },
+      "area": {
+        "@id": 1,
+        "name": "Москва",
+        "path": ".113.232.1."
+      },
+      "acceptTemporary": false,
+      "creationSite": "rabota.by",
+      "creationSiteId": 17,
+      "displayHost": "tver.hh.ru",
+      "lastChangeTime": {
+        "@timestamp": 1779763917,
+        "$": "2026-05-26T05:51:57.451+03:00"
+      },
+      "creationTime": "2026-05-19T21:47:45.464+03:00",
+      "canBeShared": true,
+      "employerManager": {
+        "@hhid": 185197659,
+        "@managerId": 16012077,
+        "@userId": 162270381,
+        "@firstName": "Александра",
+        "@lastName": "Сергеева"
+      },
+      "inboxPossibility": true,
+      "chatWritePossibility": "ENABLED_AFTER_INVITATION",
+      "notify": false,
+      "links": {
+        "desktop": "https://tver.hh.ru/vacancy/133274633",
+        "mobile": "https://m.hh.ru/vacancy/133274633"
+      },
+      "acceptIncompleteResumes": false,
+      "driverLicenseTypes": [{}],
+      "languages": [{}],
+      "workingDays": [{}],
+      "workingTimeIntervals": [{}],
+      "workingTimeModes": [{}],
+      "vacancyProperties": {
+        "properties": [
+          {
+            "property": [
+              {
+                "id": 633520469,
+                "propertyType": "HH_STANDARD",
+                "defining": true,
+                "classifying": true,
+                "bundle": "HH",
+                "propertyWeight": 400,
+                "parameters": [
+                  {
+                    "parameter": [
+                      {
+                        "key": "packageName",
+                        "value": "VP"
+                      },
+                      {
+                        "key": "serviceId",
+                        "value": "66813741"
+                      }
+                    ]
+                  }
+                ],
+                "startTimeIso": "2026-05-19T21:47:45.464+03:00",
+                "endTimeIso": "2026-06-18T21:47:45.464+03:00"
+              },
+              {
+                "id": 633520468,
+                "propertyType": "HH_SEARCH_RESULTS_NORMAL_POSITION",
+                "bundle": "HH",
+                "propertyWeight": 400,
+                "parameters": [
+                  {
+                    "parameter": [
+                      {
+                        "key": "packageName",
+                        "value": "VP"
+                      },
+                      {
+                        "key": "serviceId",
+                        "value": "66813741"
+                      }
+                    ]
+                  }
+                ],
+                "startTimeIso": "2026-05-19T21:47:45.464+03:00",
+                "endTimeIso": "2026-06-18T21:47:45.464+03:00"
+              }
+            ]
+          }
+        ],
+        "calculatedStates": {
+          "HH": {
+            "advertising": false,
+            "anonymous": false,
+            "filteredPropertyNames": [
+              "HH_STANDARD",
+              "HH_SEARCH_RESULTS_NORMAL_POSITION"
+            ],
+            "free": false,
+            "optimum": false,
+            "optionPremium": false,
+            "payForPerformance": false,
+            "premium": false,
+            "standard": true,
+            "standardPlus": false,
+            "translationKeys": [
+              "employer.VacancyCreate.PublicationType.STANDARD"
+            ]
+          }
+        }
+      },
+      "vacancyPlatforms": ["HH"],
+      "professionalRoleIds": [
+        {
+          "professionalRoleId": [40]
+        }
+      ],
+      "workExperience": "between3And6",
+      "employment": {
+        "@type": "FULL"
+      },
+      "closedForApplicants": false,
+      "userTestPresent": false,
+      "employmentForm": "FULL",
+      "flyInFlyOutDurations": [{}],
+      "internship": false,
+      "nightShifts": false,
+      "workFormats": [
+        {
+          "workFormatsElement": ["REMOTE"]
+        }
+      ],
+      "workScheduleByDays": [
+        {
+          "workScheduleByDaysElement": ["FIVE_ON_TWO_OFF"]
+        }
+      ],
+      "workingHours": [
+        {
+          "workingHoursElement": ["HOURS_8"]
+        }
+      ],
+      "experimentalModes": [
+        {
+          "experimentalMode": [
+            "newEmploymentTerms",
+            "ageRestrictions",
+            "newContractFields",
+            "usingNewInclusivenessFields",
+            "newCompensationModes"
+          ]
+        }
+      ],
+      "acceptLaborContract": false,
+      "civilLawContracts": [{}],
+      "autoResponse": {
+        "acceptAutoResponse": false
+      },
+      "inclusivenessTypes": [{}]
+    },
+    "usedResumeIds": ["270841784"],
+    "unusedResumeIds": [],
+    "unfinishedResumeIds": [],
+    "hiddenResumeIds": [],
+    "resumes": {
+      "270841784": {
+        "forbidden": null,
+        "_attributes": {
+          "canPublishOrUpdate": false,
+          "canTouch": false,
+          "created": 1771834905687,
+          "hasConditions": true,
+          "hasErrors": false,
+          "hasPublicVisibility": false,
+          "hash": "08a5aea1ff1024b7b80039ed1f69426f49744f",
+          "hhid": "188300720",
+          "id": "270841784",
+          "isSearchable": true,
+          "lang": "RU",
+          "lastEditTime": 1774092022839,
+          "markServiceExpireTime": "2061-03-07T10:03:19+0300",
+          "marked": true,
+          "moderated": "2026-02-23T11:27:36+03:00",
+          "nextPublishAt": null,
+          "nextTouchAt": null,
+          "parentResumeId": null,
+          "percent": 100,
+          "permission": "edit",
+          "publishState": null,
+          "renewal": true,
+          "renewalServiceExpireTime": "2061-03-07T10:03:19+0300",
+          "siteId": 6,
+          "sitePlatform": "HEADHUNTER",
+          "source": "flexible_resume_builder",
+          "status": "auto_approved",
+          "tags": ["RESUME_MARK", "RESUME_RENEWAL"],
+          "update_timeout": 14400000,
+          "updated": 1779803065604,
+          "user": "165341442",
+          "vacancySearchLastUsageDate": 1779716802,
+          "validation_schema": ""
+        },
+        "_conditions": {
+          "accessType": {
+            "status": "ok",
+            "weight": 0,
+            "mincount": 1,
+            "maxcount": 1,
+            "parts": [
+              {
+                "string": {
+                  "required": true,
+                  "type": "string",
+                  "enum": [
+                    "clients",
+                    "whitelist",
+                    "blacklist",
+                    "direct",
+                    "no_one"
+                  ]
+                }
+              }
+            ]
+          },
+          "educationLevel": {
+            "status": "ok",
+            "weight": 0,
+            "mincount": 1,
+            "maxcount": 1,
+            "parts": [
+              {
+                "string": {
+                  "required": true,
+                  "type": "string",
+                  "enum": [
+                    "secondary",
+                    "doctor",
+                    "candidate",
+                    "unfinished_higher",
+                    "bachelor",
+                    "special_secondary",
+                    "higher",
+                    "master"
+                  ]
+                }
+              }
+            ]
+          },
+          "primaryEducation": {
+            "status": "ok",
+            "weight": 4,
+            "mincount": 0,
+            "maxcount": 64,
+            "parts": [
+              {
+                "id": {
+                  "required": false,
+                  "type": "integer",
+                  "minlength": 1,
+                  "maxlength": 16
+                }
+              },
+              {
+                "name": {
+                  "required": true,
+                  "type": "string",
+                  "minlength": 1,
+                  "maxlength": 512
+                }
+              },
+              {
+                "organization": {
+                  "required": false,
+                  "type": "string",
+                  "minlength": 1,
+                  "maxlength": 128
+                }
+              },
+              {
+                "result": {
+                  "required": false,
+                  "type": "string",
+                  "minlength": 1,
+                  "maxlength": 128
+                }
+              },
+              {
+                "year": {
+                  "required": true,
+                  "type": "integer",
+                  "maxvalue": 2036,
+                  "minvalue": 1950
+                }
+              },
+              {
+                "educationLevel": {
+                  "required": true,
+                  "type": "string",
+                  "enum": [
+                    "special_secondary",
+                    "unfinished_higher",
+                    "higher",
+                    "bachelor",
+                    "master",
+                    "candidate",
+                    "doctor"
+                  ]
+                }
+              }
+            ]
+          },
+          "shortExperience": {
+            "status": "ok",
+            "weight": 5,
+            "mincount": 1,
+            "maxcount": 256,
+            "parts": [
+              {
+                "id": {
+                  "required": false,
+                  "type": "long"
+                }
+              },
+              {
+                "startDate": {
+                  "required": true,
+                  "type": "date",
+                  "maxvalue": "2026-05-26",
+                  "minvalue": "1900-01-01"
+                }
+              },
+              {
+                "endDate": {
+                  "required": false,
+                  "type": "date",
+                  "maxvalue": "2026-05-26",
+                  "minvalue": "1900-01-01"
+                }
+              },
+              {
+                "companyName": {
+                  "required": true,
+                  "type": "string",
+                  "minlength": 1,
+                  "maxlength": 512
+                }
+              },
+              {
+                "companyIndustryId": {
+                  "required": false,
+                  "type": "integer",
+                  "minlength": 1,
+                  "maxlength": 5
+                }
+              },
+              {
+                "companyIndustries": {
+                  "required": false,
+                  "type": "list",
+                  "subtype": "integer",
+                  "minsize": 0,
+                  "maxsize": 5
+                }
+              },
+              {
+                "companyAreaId": {
+                  "required": false,
+                  "type": "integer",
+                  "minlength": 1,
+                  "maxlength": 5
+                }
+              },
+              {
+                "companyUrl": {
+                  "required": false,
+                  "type": "string",
+                  "minlength": 1,
+                  "maxlength": 255
+                }
+              },
+              {
+                "companyId": {
+                  "required": false,
+                  "type": "integer",
+                  "minlength": 1,
+                  "maxlength": 16
+                }
+              },
+              {
+                "position": {
+                  "required": true,
+                  "type": "string",
+                  "minlength": 1,
+                  "maxlength": 512
+                }
+              }
+            ]
+          },
+          "specialization": {
+            "status": "ok",
+            "weight": 2,
+            "mincount": 1,
+            "maxcount": 3,
+            "parts": [
+              {
+                "string": {
+                  "required": true,
+                  "type": "integer"
+                }
+              }
+            ]
+          },
+          "title": {
+            "status": "ok",
+            "weight": 2,
+            "mincount": 1,
+            "maxcount": 1,
+            "parts": [
+              {
+                "string": {
+                  "required": true,
+                  "type": "string",
+                  "minlength": 2,
+                  "maxlength": 100,
+                  "not_in": []
+                }
+              }
+            ]
+          }
+        },
+        "_defaults": {},
+        "accessType": [
+          {
+            "string": "clients"
+          }
+        ],
+        "educationLevel": [
+          {
+            "string": "higher"
+          }
+        ],
+        "fieldsViewStatus": [
+          {
+            "contactViewStatus": null,
+            "vacancyPermissions": [],
+            "rolePermissions": []
+          }
+        ],
+        "primaryEducation": [
+          {
+            "id": 101372356,
+            "name": "Московский государственный технологический университет «СТАНКИН», Москва",
+            "organization": "Информационные технологии",
+            "result": "Информационные системы и технологии",
+            "year": 2025,
+            "universityId": 39290,
+            "universityAcronym": "МГТУ «СТАНКИН»",
+            "specialtyId": 610,
+            "facultyId": null,
+            "educationLevel": "higher"
+          }
+        ],
+        "shortExperience": [
+          {
+            "id": 2045809658,
+            "startDate": "2024-02-01",
+            "endDate": null,
+            "companyName": "Градум",
+            "companyIndustryId": null,
+            "companyIndustries": [539],
+            "companyAreaId": 1,
+            "industries": [
+              {
+                "id": 7,
+                "name": "industry.7",
+                "parentId": null,
+                "children": [
+                  {
+                    "id": 539,
+                    "name": "industry.sec.539",
+                    "parentId": 7,
+                    "children": [],
+                    "translit": "sistemnaya_integraciya__avtomatizacii_tekhnologicheskikh_i_biznes_processov_predpriyatiya_it_konsalting"
+                  }
+                ],
+                "translit": "informacionnye_tekhnologii_sistemnaya_integraciya_internet"
+              }
+            ],
+            "companyUrl": "https://gradum.ru/",
+            "companyId": null,
+            "position": "Frontend-разработчик",
+            "description": null,
+            "employerId": null,
+            "companyState": null,
+            "companyLogos": null,
+            "professionId": 40,
+            "professionName": "Frontend-разработчик"
+          },
+          {
+            "id": 2045808338,
+            "startDate": "2021-11-01",
+            "endDate": "2024-01-01",
+            "companyName": "ПРАЙМ ГРУП",
+            "companyIndustryId": 7,
+            "companyIndustries": [539],
+            "companyAreaId": 1,
+            "industries": [
+              {
+                "id": 7,
+                "name": "industry.7",
+                "parentId": null,
+                "children": [
+                  {
+                    "id": 539,
+                    "name": "industry.sec.539",
+                    "parentId": 7,
+                    "children": [],
+                    "translit": "sistemnaya_integraciya__avtomatizacii_tekhnologicheskikh_i_biznes_processov_predpriyatiya_it_konsalting"
+                  }
+                ],
+                "translit": "informacionnye_tekhnologii_sistemnaya_integraciya_internet"
+              }
+            ],
+            "companyUrl": "http://www.primegroup.ru",
+            "companyId": null,
+            "position": "Frontend-разработчик",
+            "description": null,
+            "employerId": null,
+            "companyState": null,
+            "companyLogos": null,
+            "professionId": 40,
+            "professionName": "Frontend-разработчик"
+          }
+        ],
+        "specialization": [
+          {
+            "string": 221
+          }
+        ],
+        "title": [
+          {
+            "string": "Frontend-разработчик"
+          }
+        ],
+        "hash": "08a5aea1ff1024b7b80039ed1f69426f49744f",
+        "id": "270841784",
+        "isIncomplete": false
+      }
+    },
+    "responseImpossible": true,
+    "alreadyApplied": true
+  },
+  "respondedWithResume": {
+    "forbidden": null,
+    "_attributes": {
+      "canPublishOrUpdate": false,
+      "canTouch": false,
+      "created": 1771834905687,
+      "hasConditions": true,
+      "hasErrors": false,
+      "hasPublicVisibility": false,
+      "hash": "08a5aea1ff1024b7b80039ed1f69426f49744f",
+      "hhid": "188300720",
+      "id": "270841784",
+      "isSearchable": true,
+      "lang": "RU",
+      "lastEditTime": 1774092022839,
+      "markServiceExpireTime": "2061-03-07T10:03:19+0300",
+      "marked": true,
+      "moderated": "2026-02-23T11:27:36+03:00",
+      "nextPublishAt": null,
+      "nextTouchAt": null,
+      "parentResumeId": null,
+      "percent": 100,
+      "permission": "edit",
+      "publishState": null,
+      "renewal": true,
+      "renewalServiceExpireTime": "2061-03-07T10:03:19+0300",
+      "siteId": 6,
+      "sitePlatform": "HEADHUNTER",
+      "source": "flexible_resume_builder",
+      "status": "auto_approved",
+      "tags": ["RESUME_MARK", "RESUME_RENEWAL"],
+      "update_timeout": 14400000,
+      "updated": 1779803065604,
+      "user": "165341442",
+      "vacancySearchLastUsageDate": 1779716802,
+      "validation_schema": ""
+    },
+    "_conditions": {
+      "accessType": {
+        "status": "ok",
+        "weight": 0,
+        "mincount": 1,
+        "maxcount": 1,
+        "parts": [
+          {
+            "string": {
+              "required": true,
+              "type": "string",
+              "enum": ["clients", "whitelist", "blacklist", "direct", "no_one"]
+            }
+          }
+        ]
+      },
+      "educationLevel": {
+        "status": "ok",
+        "weight": 0,
+        "mincount": 1,
+        "maxcount": 1,
+        "parts": [
+          {
+            "string": {
+              "required": true,
+              "type": "string",
+              "enum": [
+                "secondary",
+                "doctor",
+                "candidate",
+                "unfinished_higher",
+                "bachelor",
+                "special_secondary",
+                "higher",
+                "master"
+              ]
+            }
+          }
+        ]
+      },
+      "primaryEducation": {
+        "status": "ok",
+        "weight": 4,
+        "mincount": 0,
+        "maxcount": 64,
+        "parts": [
+          {
+            "id": {
+              "required": false,
+              "type": "integer",
+              "minlength": 1,
+              "maxlength": 16
+            }
+          },
+          {
+            "name": {
+              "required": true,
+              "type": "string",
+              "minlength": 1,
+              "maxlength": 512
+            }
+          },
+          {
+            "organization": {
+              "required": false,
+              "type": "string",
+              "minlength": 1,
+              "maxlength": 128
+            }
+          },
+          {
+            "result": {
+              "required": false,
+              "type": "string",
+              "minlength": 1,
+              "maxlength": 128
+            }
+          },
+          {
+            "year": {
+              "required": true,
+              "type": "integer",
+              "maxvalue": 2036,
+              "minvalue": 1950
+            }
+          },
+          {
+            "educationLevel": {
+              "required": true,
+              "type": "string",
+              "enum": [
+                "special_secondary",
+                "unfinished_higher",
+                "higher",
+                "bachelor",
+                "master",
+                "candidate",
+                "doctor"
+              ]
+            }
+          }
+        ]
+      },
+      "shortExperience": {
+        "status": "ok",
+        "weight": 5,
+        "mincount": 1,
+        "maxcount": 256,
+        "parts": [
+          {
+            "id": {
+              "required": false,
+              "type": "long"
+            }
+          },
+          {
+            "startDate": {
+              "required": true,
+              "type": "date",
+              "maxvalue": "2026-05-26",
+              "minvalue": "1900-01-01"
+            }
+          },
+          {
+            "endDate": {
+              "required": false,
+              "type": "date",
+              "maxvalue": "2026-05-26",
+              "minvalue": "1900-01-01"
+            }
+          },
+          {
+            "companyName": {
+              "required": true,
+              "type": "string",
+              "minlength": 1,
+              "maxlength": 512
+            }
+          },
+          {
+            "companyIndustryId": {
+              "required": false,
+              "type": "integer",
+              "minlength": 1,
+              "maxlength": 5
+            }
+          },
+          {
+            "companyIndustries": {
+              "required": false,
+              "type": "list",
+              "subtype": "integer",
+              "minsize": 0,
+              "maxsize": 5
+            }
+          },
+          {
+            "companyAreaId": {
+              "required": false,
+              "type": "integer",
+              "minlength": 1,
+              "maxlength": 5
+            }
+          },
+          {
+            "companyUrl": {
+              "required": false,
+              "type": "string",
+              "minlength": 1,
+              "maxlength": 255
+            }
+          },
+          {
+            "companyId": {
+              "required": false,
+              "type": "integer",
+              "minlength": 1,
+              "maxlength": 16
+            }
+          },
+          {
+            "position": {
+              "required": true,
+              "type": "string",
+              "minlength": 1,
+              "maxlength": 512
+            }
+          }
+        ]
+      },
+      "specialization": {
+        "status": "ok",
+        "weight": 2,
+        "mincount": 1,
+        "maxcount": 3,
+        "parts": [
+          {
+            "string": {
+              "required": true,
+              "type": "integer"
+            }
+          }
+        ]
+      },
+      "title": {
+        "status": "ok",
+        "weight": 2,
+        "mincount": 1,
+        "maxcount": 1,
+        "parts": [
+          {
+            "string": {
+              "required": true,
+              "type": "string",
+              "minlength": 2,
+              "maxlength": 100,
+              "not_in": []
+            }
+          }
+        ]
+      }
+    },
+    "_defaults": {},
+    "accessType": [
+      {
+        "string": "clients"
+      }
+    ],
+    "educationLevel": [
+      {
+        "string": "higher"
+      }
+    ],
+    "fieldsViewStatus": [
+      {
+        "contactViewStatus": null,
+        "vacancyPermissions": [],
+        "rolePermissions": []
+      }
+    ],
+    "primaryEducation": [
+      {
+        "id": 101372356,
+        "name": "Московский государственный технологический университет «СТАНКИН», Москва",
+        "organization": "Информационные технологии",
+        "result": "Информационные системы и технологии",
+        "year": 2025,
+        "universityId": 39290,
+        "universityAcronym": "МГТУ «СТАНКИН»",
+        "specialtyId": 610,
+        "facultyId": null,
+        "educationLevel": "higher"
+      }
+    ],
+    "shortExperience": [
+      {
+        "id": 2045809658,
+        "startDate": "2024-02-01",
+        "endDate": null,
+        "companyName": "Градум",
+        "companyIndustryId": null,
+        "companyIndustries": [539],
+        "companyAreaId": 1,
+        "industries": [
+          {
+            "id": 7,
+            "name": "industry.7",
+            "parentId": null,
+            "children": [
+              {
+                "id": 539,
+                "name": "industry.sec.539",
+                "parentId": 7,
+                "children": [],
+                "translit": "sistemnaya_integraciya__avtomatizacii_tekhnologicheskikh_i_biznes_processov_predpriyatiya_it_konsalting"
+              }
+            ],
+            "translit": "informacionnye_tekhnologii_sistemnaya_integraciya_internet"
+          }
+        ],
+        "companyUrl": "https://gradum.ru/",
+        "companyId": null,
+        "position": "Frontend-разработчик",
+        "description": null,
+        "employerId": null,
+        "companyState": null,
+        "companyLogos": null,
+        "professionId": 40,
+        "professionName": "Frontend-разработчик"
+      },
+      {
+        "id": 2045808338,
+        "startDate": "2021-11-01",
+        "endDate": "2024-01-01",
+        "companyName": "ПРАЙМ ГРУП",
+        "companyIndustryId": 7,
+        "companyIndustries": [539],
+        "companyAreaId": 1,
+        "industries": [
+          {
+            "id": 7,
+            "name": "industry.7",
+            "parentId": null,
+            "children": [
+              {
+                "id": 539,
+                "name": "industry.sec.539",
+                "parentId": 7,
+                "children": [],
+                "translit": "sistemnaya_integraciya__avtomatizacii_tekhnologicheskikh_i_biznes_processov_predpriyatiya_it_konsalting"
+              }
+            ],
+            "translit": "informacionnye_tekhnologii_sistemnaya_integraciya_internet"
+          }
+        ],
+        "companyUrl": "http://www.primegroup.ru",
+        "companyId": null,
+        "position": "Frontend-разработчик",
+        "description": null,
+        "employerId": null,
+        "companyState": null,
+        "companyLogos": null,
+        "professionId": 40,
+        "professionName": "Frontend-разработчик"
+      }
+    ],
+    "specialization": [
+      {
+        "string": 221
+      }
+    ],
+    "title": [
+      {
+        "string": "Frontend-разработчик"
+      }
+    ],
+    "hash": "08a5aea1ff1024b7b80039ed1f69426f49744f",
+    "id": "270841784",
+    "isIncomplete": false
+  }
+}

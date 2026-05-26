@@ -75,3 +75,61 @@
   @include typography.font-caption;
   color: colors.$color-text-muted;
 }
+
+.vacancy-card__letter {
+  @include typography.font-body;
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid colors.$color-border;
+  background: colors.$color-bg;
+  color: colors.$color-text;
+  resize: vertical;
+  box-sizing: border-box;
+
+  &::placeholder {
+    color: colors.$color-text-empty;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: colors.$color-primary;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.vacancy-card__apply-btn {
+  @include typography.font-secondary;
+  align-self: flex-start;
+  margin-top: 4px;
+  padding: 7px 18px;
+  border-radius: 8px;
+  border: 1px solid colors.$color-primary;
+  background: colors.$color-primary;
+  color: colors.$color-surface;
+  cursor: pointer;
+  transition: opacity 0.15s;
+
+  &:hover:not(:disabled) {
+    opacity: 0.85;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  &--success {
+    background: colors.$color-success;
+    border-color: colors.$color-success;
+  }
+
+  &--error {
+    background: colors.$color-error;
+    border-color: colors.$color-error;
+  }
+}

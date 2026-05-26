@@ -62,7 +62,6 @@ const VacanciesPage = () => {
     search({ ...lastQuery, page: 0, perPage: newPerPage });
   };
   // #endregion
-  console.log('pageRange', pageRange);
 
   return (
     <div className="vacancies-page">

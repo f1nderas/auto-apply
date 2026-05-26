@@ -7,6 +7,7 @@ interface Session {
   xsrfToken: string;
   staticVersion: string;
   baseUrl: string;
+  resumeHash: string;
 }
 
 @Injectable()
@@ -19,6 +20,7 @@ export class SessionStore {
       xsrfToken: config.get<string>('HH_XSRF_TOKEN') ?? '',
       staticVersion: HH_STATIC_VERSION,
       baseUrl: HH_BASE_URL,
+      resumeHash: config.get<string>('HH_RESUME_HASH') ?? '',
     };
   }
 

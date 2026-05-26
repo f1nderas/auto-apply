@@ -13,9 +13,11 @@ import {
   HhCompensation,
   HhCompany,
   HhPaging,
+  HhApplyResponse,
 } from './interfaces/hh-api.interface';
 import { SessionStore } from './session-store.service';
 import { HH_BASE_URL } from './constants';
+import { ApplyVacancyDto, ApplyResponseDto } from './dto/apply-vacancy.dto';
 
 const ESSENTIAL_COOKIES = new Set([
   '_xsrf',
@@ -105,8 +107,141 @@ export class VacanciesService {
       };
     } catch (error) {
       if (axios.isAxiosError(error)) {
+        console.error(
+          '[search] HH error',
+          error.response?.status,
+          JSON.stringify(error.response?.data),
+        );
         throw new HttpException(
           error.response?.data ?? 'Ошибка запроса к HH.ru',
+          error.response?.status ?? HttpStatus.BAD_GATEWAY,
+        );
+      }
+      throw error;
+    }
+  }
+
+  async apply(dto: ApplyVacancyDto): Promise<ApplyResponseDto> {
+    const { vacancyId, letter } = dto;
+    const {
+      cookie: rawCookie,
+      xsrfToken,
+      baseUrl,
+      resumeHash,
+    } = this.sessionStore.get();
+    const cookie = this.filterCookies(rawCookie);
+    const fgsscgib = this.extractCookie(rawCookie, 'fgsscgib-w-hh');
+    const gsscgib = this.extractCookie(rawCookie, 'gsscgib-w-hh');
+
+    const baseHeaders = {
+      accept: 'application/json',
+      'accept-language': 'ru-RU,ru;q=0.9',
+      'cache-control': 'no-cache',
+      pragma: 'no-cache',
+      'sec-ch-ua':
+        '"Chromium";v="148", "Google Chrome";v="148", "Not/A)Brand";v="99"',
+      'sec-ch-ua-mobile': '?0',
+      'sec-ch-ua-platform': '"Windows"',
+      'sec-fetch-dest': 'empty',
+      'sec-fetch-mode': 'cors',
+      'sec-fetch-site': 'same-origin',
+      'user-agent':
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36',
+      'x-gib-fgsscgib-w-hh': fgsscgib,
+      'x-gib-gsscgib-w-hh': gsscgib,
+      'x-requested-with': 'XMLHttpRequest',
+      cookie,
+      'x-xsrftoken': xsrfToken,
+    };
+
+    const referer = `${baseUrl}/vacancy/${vacancyId}`;
+
+    try {
+      // Step 1: register interaction (fire-and-forget, errors are ignored)
+      await axios
+        .post(
+          `${baseUrl}/shards/vacancy/register_interaction`,
+          { vacancyId: Number(vacancyId) },
+          {
+            headers: {
+              ...baseHeaders,
+              'content-type': 'application/json',
+              'x-hhtmsource': 'vacancy',
+              referer,
+            },
+          },
+        )
+        .catch(() => undefined);
+
+      let applyData: HhApplyResponse;
+
+      if (letter) {
+        // Vacancy requires a cover letter — POST multipart
+        const form = new FormData();
+        form.append('_xsrf', xsrfToken);
+        form.append('vacancy_id', vacancyId);
+        form.append('resume_hash', resumeHash);
+        form.append('ignore_postponed', 'true');
+        form.append('incomplete', 'false');
+        form.append('mark_applicant_visible_in_vacancy_country', 'false');
+        form.append('country_ids', '[]');
+        form.append('letter', letter);
+        form.append('lux', 'true');
+        form.append('withoutTest', 'no');
+        form.append('hhtmFromLabel', '');
+        form.append('hhtmSourceLabel', '');
+
+        const { data } = await axios.post<HhApplyResponse>(
+          `${baseUrl}/applicant/vacancy_response/popup`,
+          form,
+          {
+            headers: {
+              ...baseHeaders,
+              'x-hhtmsource': 'vacancy',
+              'x-hhtmfrom': '',
+              origin: baseUrl,
+              referer,
+            },
+          },
+        );
+        applyData = data;
+      } else {
+        // No cover letter — GET with query params (lux / quick-apply)
+        const { data } = await axios.get<HhApplyResponse>(
+          `${baseUrl}/applicant/vacancy_response/popup`,
+          {
+            params: {
+              vacancyId,
+              isTest: 'no',
+              withoutTest: 'no',
+              lux: 'true',
+              alreadyApplied: 'false',
+            },
+            headers: {
+              ...baseHeaders,
+              'x-hhtmsource': 'main',
+              'x-hhtmfrom': '',
+              referer,
+            },
+          },
+        );
+        applyData = data;
+      }
+
+      return {
+        ok: applyData.success === 'true',
+        topicId: applyData.topic_id ?? null,
+        chatId: applyData.chat_id ?? null,
+      };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error(
+          '[apply] HH error',
+          error.response?.status,
+          JSON.stringify(error.response?.data),
+        );
+        throw new HttpException(
+          error.response?.data ?? 'Ошибка отклика на вакансию',
           error.response?.status ?? HttpStatus.BAD_GATEWAY,
         );
       }
