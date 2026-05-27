@@ -1,0 +1,24 @@
+@use '../../styles/colors';
+@use '../../styles/typography';
+
+.badge {
+  @include typography.font-badge;
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 99px;
+
+  &--green {
+    background: colors.$color-success-subtle;
+    color: colors.$color-success;
+  }
+
+  &--blue {
+    background: colors.$color-primary-subtle;
+    color: colors.$color-primary;
+  }
+
+  &--orange {
+    background: colors.$color-warning-subtle;
+    color: colors.$color-warning;
+  }
+}

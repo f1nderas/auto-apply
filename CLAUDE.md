@@ -27,3 +27,15 @@ bun run gen:api
 - **Без тестов** — не создавать, не упоминать
 - **Без лишних комментариев** — только если WHY неочевиден
 - **`.env` не коммитить** — содержит `HH_COOKIE`, `HH_XSRF_TOKEN`
+
+## Именование файлов
+
+Все файлы — **kebab-case**: `vacancy-card.tsx`, `vacancies.service.ts`, `search-form.tsx`.
+
+При переименовании файлов использовать `git mv`. На Windows NTFS для смены регистра —
+обязательный промежуточный шаг (иначе git не видит изменение):
+
+```powershell
+git mv src/app/App.tsx src/app/_app.tsx
+git mv src/app/_app.tsx src/app/app.tsx
+```

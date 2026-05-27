@@ -1,1 +1,1 @@
-export { SessionUpdateForm } from './ui/SessionUpdateForm';
+export { SessionUpdateForm } from './ui/session-update-form';

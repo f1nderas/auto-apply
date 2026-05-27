@@ -49,27 +49,6 @@
   flex-wrap: wrap;
 }
 
-.vacancy-card__badge {
-  @include typography.font-badge;
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: 99px;
-}
-
-.vacancy-card__badge--green {
-  background: colors.$color-success-subtle;
-  color: colors.$color-success;
-}
-
-.vacancy-card__badge--blue {
-  background: colors.$color-primary-subtle;
-  color: colors.$color-primary;
-}
-
-.vacancy-card__badge--orange {
-  background: colors.$color-warning-subtle;
-  color: colors.$color-warning;
-}
 
 .vacancy-card__footer-text {
   @include typography.font-caption;

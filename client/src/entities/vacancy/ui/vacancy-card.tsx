@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { cx } from '@shared/lib/cx';
+import { Badge } from '@shared/ui/badge';
 import { Button } from '@shared/ui/button';
 import { Textarea } from '@shared/ui/textarea';
 import { SCHEDULE_LABELS, formatSalary, formatDate } from '../lib/format';
@@ -48,7 +49,10 @@ const VacancyCard = ({ vacancy }: { vacancy: VacancyDto }) => {
   // #endregion
 
   // #region STYLES
-  const salaryClass = cx('vacancy-card__salary', !hasSalary && 'vacancy-card__salary--empty');
+  const salaryClass = cx(
+    'vacancy-card__salary',
+    !hasSalary && 'vacancy-card__salary--empty',
+  );
   const applyBtnClass = cx(
     'vacancy-card__apply-btn',
     applied && 'vacancy-card__apply-btn--success',
@@ -77,25 +81,15 @@ const VacancyCard = ({ vacancy }: { vacancy: VacancyDto }) => {
           {vacancy.employer.name}
         </a>
         {vacancy.employer.accreditedIt && (
-          <span className="vacancy-card__badge vacancy-card__badge--blue">
-            IT-аккредитация
-          </span>
+          <Badge variant="blue">IT-аккредитация</Badge>
         )}
       </div>
 
-      <div className={salaryClass}>
-        {formatSalary(vacancy.salary ?? null)}
-      </div>
+      <div className={salaryClass}>{formatSalary(vacancy.salary ?? null)}</div>
 
       <div className="vacancy-card__footer">
-        <span className="vacancy-card__badge vacancy-card__badge--green">
-          {schedule}
-        </span>
-        {needsLetter && (
-          <span className="vacancy-card__badge vacancy-card__badge--orange">
-            Нужно письмо
-          </span>
-        )}
+        <Badge variant="green">{schedule}</Badge>
+        {needsLetter && <Badge variant="orange">Нужно письмо</Badge>}
         <span className="vacancy-card__footer-text">
           {vacancy.area} · {formatDate(vacancy.publishedAt)}
         </span>

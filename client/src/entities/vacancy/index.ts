@@ -1,2 +1,2 @@
 export { useLazySearchVacanciesQuery, useApplyVacancyMutation } from './api/vacancyApi';
-export { VacancyCard } from './ui/VacancyCard';
+export { VacancyCard } from './ui/vacancy-card';
