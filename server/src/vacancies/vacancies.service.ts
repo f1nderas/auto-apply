@@ -32,10 +32,13 @@ const ESSENTIAL_COOKIES = new Set([
   'redirect_host',
   'GMT',
   'TZ',
+  // GIB (Group-IB) антибот — ротируются каждые несколько часов
   'fgsscgib-w-hh',
   'gsscgib-w-hh',
   'cfidsgib-w-hh',
   '__zzatgib-w-hh',
+  // DataDome антибот — стабильный fingerprint браузера
+  '__ddg1_',
 ]);
 
 @Injectable()
@@ -70,17 +73,7 @@ export class VacanciesService {
           },
           headers: {
             accept: 'application/json',
-            'accept-language': 'ru-RU,ru;q=0.9',
-            'cache-control': 'no-cache',
-            pragma: 'no-cache',
             referer: `${baseUrl}/search/vacancy`,
-            'sec-ch-ua':
-              '"Chromium";v="148", "Google Chrome";v="148", "Not/A)Brand";v="99"',
-            'sec-ch-ua-mobile': '?0',
-            'sec-ch-ua-platform': '"Windows"',
-            'sec-fetch-dest': 'empty',
-            'sec-fetch-mode': 'cors',
-            'sec-fetch-site': 'same-origin',
             'user-agent':
               'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36',
             'x-gib-fgsscgib-w-hh': fgsscgib,
@@ -135,16 +128,6 @@ export class VacanciesService {
 
     const baseHeaders = {
       accept: 'application/json',
-      'accept-language': 'ru-RU,ru;q=0.9',
-      'cache-control': 'no-cache',
-      pragma: 'no-cache',
-      'sec-ch-ua':
-        '"Chromium";v="148", "Google Chrome";v="148", "Not/A)Brand";v="99"',
-      'sec-ch-ua-mobile': '?0',
-      'sec-ch-ua-platform': '"Windows"',
-      'sec-fetch-dest': 'empty',
-      'sec-fetch-mode': 'cors',
-      'sec-fetch-site': 'same-origin',
       'user-agent':
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36',
       'x-gib-fgsscgib-w-hh': fgsscgib,

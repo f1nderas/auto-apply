@@ -1,0 +1,30 @@
+@use '../../../shared/styles/colors';
+@use '../../../shared/styles/typography';
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 16px 12px;
+}
+
+.nav__link {
+  @include typography.font-body;
+  display: block;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: colors.$color-text-secondary;
+  text-decoration: none;
+  transition: background 0.12s, color 0.12s;
+
+  &:hover:not(&--active) {
+    background: colors.$color-border-light;
+    color: colors.$color-text;
+  }
+
+  &--active {
+    background: colors.$color-primary-subtle;
+    color: colors.$color-primary;
+    font-weight: 600;
+  }
+}

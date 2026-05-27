@@ -25,6 +25,14 @@ import { formatDate } from '../lib/format';      // внутри слайса
 Все файлы — **kebab-case**: `vacancy-card.tsx`, `vacancy-card.scss`, `search-form.tsx`.  
 Имя компонента внутри файла — PascalCase, но сам файл — строчными буквами.
 
+Файлы и компоненты внутри слоя **не дублируют название слоя** в своём имени.  
+Страницы лежат в `pages/` — слово `page` в имени излишне:
+
+```
+pages/vacancies/ui/vacancies.tsx   → компонент Vacancies    ✓
+pages/vacancies/ui/vacancies-page.tsx → VacanciesPage       ✗
+```
+
 ```
 button/
   button.tsx    ✓

@@ -1,0 +1,44 @@
+@use '../../styles/colors';
+@use '../../styles/typography';
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 16px 0;
+}
+
+.pagination__btn {
+  @include typography.font-secondary;
+  min-width: 36px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid colors.$color-border;
+  background: colors.$color-surface;
+  color: colors.$color-text;
+  cursor: pointer;
+
+  &--active {
+    background: colors.$color-primary;
+    border-color: colors.$color-primary;
+    color: colors.$color-surface;
+    font-weight: 600;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled):not(.pagination__btn--active) {
+    background: colors.$color-primary-subtle;
+    border-color: colors.$color-primary;
+  }
+}
+
+.pagination__ellipsis {
+  @include typography.font-secondary;
+  color: colors.$color-text-muted;
+  padding: 0 4px;
+}

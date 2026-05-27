@@ -34,9 +34,9 @@ const SessionUpdateForm = () => {
 
   // #region COMPUTED
   const errorMsg = isError
-    ? (error && 'data' in error
-        ? String((error.data as { message?: string })?.message ?? error.status)
-        : 'Неизвестная ошибка')
+    ? error && 'data' in error
+      ? String((error.data as { message?: string })?.message ?? error.status)
+      : 'Неизвестная ошибка'
     : null;
   // #endregion
 
@@ -58,7 +58,11 @@ const SessionUpdateForm = () => {
 
   return (
     <>
-      <Button variant="plain" className="session-update__trigger" onClick={handleOpen}>
+      <Button
+        variant="plain"
+        className="session-update__trigger"
+        onClick={handleOpen}
+      >
         Обновить сессию
       </Button>
 
@@ -69,8 +73,14 @@ const SessionUpdateForm = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="session-update-modal__header">
-              <span className="session-update-modal__title">Обновить сессию</span>
-              <Button variant="plain" className="session-update-modal__close" onClick={handleClose}>
+              <span className="session-update-modal__title">
+                Обновить сессию
+              </span>
+              <Button
+                variant="plain"
+                className="session-update-modal__close"
+                onClick={handleClose}
+              >
                 ✕
               </Button>
             </div>

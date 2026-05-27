@@ -1,0 +1,74 @@
+@use '../../../shared/styles/colors';
+@use '../../../shared/styles/typography';
+
+.vacancies {
+}
+
+.vacancies__search {
+  margin-bottom: 24px;
+}
+
+.vacancies__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.vacancies__meta {
+  @include typography.font-secondary;
+  color: colors.$color-text-muted;
+}
+
+.vacancies__per-page {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.vacancies__per-page-label {
+  @include typography.font-secondary;
+  color: colors.$color-text-muted;
+}
+
+.vacancies__per-page-btn {
+  @include typography.font-caption;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid colors.$color-border;
+  background: colors.$color-surface;
+  color: colors.$color-text-secondary;
+  cursor: pointer;
+
+  &--active {
+    background: colors.$color-primary;
+    border-color: colors.$color-primary;
+    color: colors.$color-surface;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.vacancies__list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.vacancies__message {
+  @include typography.font-body;
+  color: colors.$color-text-muted;
+  padding: 40px 0;
+  text-align: center;
+}
+
+.vacancies__error {
+  @include typography.font-body;
+  color: colors.$color-error;
+  padding: 16px 0;
+}

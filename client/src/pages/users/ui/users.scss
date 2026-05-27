@@ -1,0 +1,17 @@
+@use '../../../shared/styles/colors';
+@use '../../../shared/styles/typography';
+
+.users {
+  padding: 40px 0;
+}
+
+.users__title {
+  @include typography.font-heading;
+  color: colors.$color-text;
+  margin-bottom: 16px;
+}
+
+.users__empty {
+  @include typography.font-body;
+  color: colors.$color-text-muted;
+}

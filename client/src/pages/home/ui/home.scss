@@ -1,0 +1,17 @@
+@use '../../../shared/styles/colors';
+@use '../../../shared/styles/typography';
+
+.home {
+  padding: 40px 0;
+}
+
+.home__title {
+  @include typography.font-heading;
+  color: colors.$color-text;
+  margin-bottom: 8px;
+}
+
+.home__subtitle {
+  @include typography.font-body;
+  color: colors.$color-text-muted;
+}

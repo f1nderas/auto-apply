@@ -3,6 +3,8 @@
 
 .layout {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   background: colors.$color-bg;
 }
 
@@ -13,6 +15,9 @@
   background: colors.$color-surface;
   border-bottom: 1px solid colors.$color-border-light;
   padding: 16px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .layout__title {
@@ -20,8 +25,20 @@
   color: colors.$color-text;
 }
 
+.layout__body {
+  display: flex;
+  flex: 1;
+}
+
+.layout__sidebar {
+  width: 200px;
+  flex-shrink: 0;
+  background: colors.$color-surface;
+  border-right: 1px solid colors.$color-border-light;
+}
+
 .layout__main {
-  max-width: 860px;
-  margin: 0 auto;
-  padding: 24px 16px;
+  flex: 1;
+  min-width: 0;
+  padding: 24px 32px;
 }
