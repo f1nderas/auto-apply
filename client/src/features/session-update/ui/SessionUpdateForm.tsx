@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { Button } from '@shared/ui/button';
+import { Textarea } from '@shared/ui/textarea';
 import { useUpdateSessionMutation } from '../api/sessionApi';
 import './session-update-form.scss';
 
@@ -30,6 +32,14 @@ const SessionUpdateForm = () => {
   }, [isSuccess]);
   // #endregion
 
+  // #region COMPUTED
+  const errorMsg = isError
+    ? (error && 'data' in error
+        ? String((error.data as { message?: string })?.message ?? error.status)
+        : 'Неизвестная ошибка')
+    : null;
+  // #endregion
+
   // #region HANDLER
   const handleOpen = () => {
     reset();
@@ -46,19 +56,11 @@ const SessionUpdateForm = () => {
   };
   // #endregion
 
-  // #region COMPUTED
-  const errorMsg = isError
-    ? (error && 'data' in error
-        ? String((error.data as { message?: string })?.message ?? error.status)
-        : 'Неизвестная ошибка')
-    : null;
-  // #endregion
-
   return (
     <>
-      <button className="session-update__trigger" onClick={handleOpen}>
+      <Button variant="plain" className="session-update__trigger" onClick={handleOpen}>
         Обновить сессию
-      </button>
+      </Button>
 
       {open && (
         <div className="session-update-modal__overlay" onClick={handleClose}>
@@ -68,12 +70,12 @@ const SessionUpdateForm = () => {
           >
             <div className="session-update-modal__header">
               <span className="session-update-modal__title">Обновить сессию</span>
-              <button className="session-update-modal__close" onClick={handleClose}>
+              <Button variant="plain" className="session-update-modal__close" onClick={handleClose}>
                 ✕
-              </button>
+              </Button>
             </div>
 
-            <textarea
+            <Textarea
               className="session-update-modal__textarea"
               placeholder="Вставьте cURL из DevTools → Network → Copy as cURL"
               value={curl}
@@ -84,13 +86,14 @@ const SessionUpdateForm = () => {
             />
 
             <div className="session-update-modal__footer">
-              <button
+              <Button
+                variant="plain"
                 className="session-update-modal__submit"
                 onClick={handleSubmit}
                 disabled={isLoading || !curl.trim()}
               >
                 {isLoading ? 'Сохранение...' : 'Сохранить'}
-              </button>
+              </Button>
               {isSuccess && (
                 <span className="session-update-modal__status session-update-modal__status--ok">
                   Сессия обновлена

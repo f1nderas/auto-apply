@@ -63,24 +63,9 @@
 
 .session-update-modal__textarea {
   @include typography.font-caption;
-  width: 100%;
   padding: 10px 12px;
-  border: 1px solid colors.$color-border;
   border-radius: 6px;
-  background: colors.$color-bg;
-  color: colors.$color-text;
-  resize: vertical;
   font-family: monospace;
-  box-sizing: border-box;
-
-  &::placeholder {
-    color: colors.$color-text-empty;
-  }
-
-  &:focus {
-    outline: none;
-    border-color: colors.$color-primary;
-  }
 }
 
 .session-update-modal__footer {

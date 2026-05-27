@@ -1,0 +1,21 @@
+@use '../../styles/colors';
+@use '../../styles/typography';
+
+.input {
+  @include typography.font-body;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid colors.$color-border;
+  background: colors.$color-surface;
+  color: colors.$color-text;
+  outline: none;
+  transition: border-color 0.15s;
+
+  &::placeholder {
+    color: colors.$color-text-empty;
+  }
+
+  &:focus {
+    border-color: colors.$color-primary;
+  }
+}

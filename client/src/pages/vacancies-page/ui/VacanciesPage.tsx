@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { SearchForm } from '@features/vacancy-search';
 import { VacancyCard, useLazySearchVacanciesQuery } from '@entities/vacancy';
+import { Button } from '@shared/ui/button';
 import { cx } from '@shared/lib/cx';
 import './vacancies-page.scss';
 
@@ -77,8 +78,9 @@ const VacanciesPage = () => {
           <div className="vacancies-page__per-page">
             <span className="vacancies-page__per-page-label">Показывать:</span>
             {[10, 20, 50].map((n) => (
-              <button
+              <Button
                 key={n}
+                variant="plain"
                 className={cx(
                   'vacancies-page__per-page-btn',
                   perPage === n && 'vacancies-page__per-page-btn--active',
@@ -87,7 +89,7 @@ const VacanciesPage = () => {
                 disabled={isFetching}
               >
                 {n}
-              </button>
+              </Button>
             ))}
           </div>
         </div>
@@ -111,13 +113,14 @@ const VacanciesPage = () => {
 
       {pageRange.length > 0 && (
         <div className="vacancies-page__pagination">
-          <button
+          <Button
+            variant="plain"
             className="vacancies-page__page-btn"
             onClick={() => handlePageChange(page - 1)}
             disabled={page === 0 || isFetching}
           >
             ← Назад
-          </button>
+          </Button>
           {pageRange.map((p, i) =>
             p === '...' ? (
               <span
@@ -127,8 +130,9 @@ const VacanciesPage = () => {
                 …
               </span>
             ) : (
-              <button
+              <Button
                 key={p}
+                variant="plain"
                 className={cx(
                   'vacancies-page__page-btn',
                   p === page && 'vacancies-page__page-btn--active',
@@ -137,16 +141,17 @@ const VacanciesPage = () => {
                 disabled={isFetching}
               >
                 {p + 1}
-              </button>
+              </Button>
             ),
           )}
-          <button
+          <Button
+            variant="plain"
             className="vacancies-page__page-btn"
             onClick={() => handlePageChange(page + 1)}
             disabled={page >= (data?.pages ?? 1) - 1 || isFetching}
           >
             Вперёд →
-          </button>
+          </Button>
         </div>
       )}
     </div>

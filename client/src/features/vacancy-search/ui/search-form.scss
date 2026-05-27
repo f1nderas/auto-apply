@@ -1,6 +1,3 @@
-@use '../../../shared/styles/colors';
-@use '../../../shared/styles/typography';
-
 .search-form {
   display: flex;
   gap: 12px;
@@ -8,35 +5,6 @@
 }
 
 .search-form__input {
-  @include typography.font-body;
   flex: 1;
   min-width: 200px;
-  padding: 10px 14px;
-  border-radius: 8px;
-  border: 1px solid colors.$color-border;
-  outline: none;
-}
-
-.search-form__select {
-  @include typography.font-body;
-  padding: 10px 14px;
-  border-radius: 8px;
-  border: 1px solid colors.$color-border;
-  background: colors.$color-surface;
-  cursor: pointer;
-}
-
-.search-form__btn {
-  @include typography.font-strong;
-  padding: 10px 20px;
-  border-radius: 8px;
-  border: none;
-  background: colors.$color-primary;
-  color: colors.$color-surface;
-  cursor: pointer;
-}
-
-.search-form__btn--disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
 }

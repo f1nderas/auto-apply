@@ -1,0 +1,26 @@
+@use '../../styles/colors';
+@use '../../styles/typography';
+
+.button {
+  font: inherit;
+  cursor: pointer;
+}
+
+.button--primary {
+  @include typography.font-strong;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  background: colors.$color-primary;
+  color: colors.$color-surface;
+  transition: opacity 0.15s;
+
+  &:hover:not(:disabled) {
+    opacity: 0.88;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}

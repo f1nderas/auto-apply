@@ -76,31 +76,6 @@
   color: colors.$color-text-muted;
 }
 
-.vacancy-card__letter {
-  @include typography.font-body;
-  width: 100%;
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: 1px solid colors.$color-border;
-  background: colors.$color-bg;
-  color: colors.$color-text;
-  resize: vertical;
-  box-sizing: border-box;
-
-  &::placeholder {
-    color: colors.$color-text-empty;
-  }
-
-  &:focus {
-    outline: none;
-    border-color: colors.$color-primary;
-  }
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-}
 
 .vacancy-card__apply-btn {
   @include typography.font-secondary;

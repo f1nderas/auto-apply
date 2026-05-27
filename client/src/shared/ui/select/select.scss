@@ -1,0 +1,61 @@
+@use '../../styles/colors';
+@use '../../styles/typography';
+
+.select__control {
+  @include typography.font-body;
+  display: flex;
+  align-items: center;
+  border: 1px solid colors.$color-border;
+  border-radius: 8px;
+  background: colors.$color-surface;
+  cursor: pointer;
+  transition: border-color 0.15s;
+
+  &:hover,
+  &--is-focused {
+    border-color: colors.$color-primary;
+    outline: none;
+  }
+}
+
+.select__single-value {
+  color: colors.$color-text;
+}
+
+.select__placeholder {
+  color: colors.$color-text-empty;
+}
+
+.select__indicators {
+  padding-right: 8px;
+}
+
+.select__dropdown-indicator {
+  color: colors.$color-text-muted;
+}
+
+.select__menu {
+  background: colors.$color-surface;
+  border: 1px solid colors.$color-border;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 8%);
+  overflow: hidden;
+  margin-top: 4px;
+  z-index: 10;
+}
+
+.select__option {
+  @include typography.font-body;
+  padding: 10px 14px;
+  cursor: pointer;
+  color: colors.$color-text;
+
+  &--is-focused {
+    background: colors.$color-primary-subtle;
+  }
+
+  &--is-selected {
+    background: colors.$color-primary;
+    color: colors.$color-surface;
+  }
+}

@@ -1,0 +1,28 @@
+@use '../../styles/colors';
+@use '../../styles/typography';
+
+.textarea {
+  @include typography.font-body;
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid colors.$color-border;
+  background: colors.$color-bg;
+  color: colors.$color-text;
+  resize: vertical;
+  box-sizing: border-box;
+  outline: none;
+
+  &::placeholder {
+    color: colors.$color-text-empty;
+  }
+
+  &:focus {
+    border-color: colors.$color-primary;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}

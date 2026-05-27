@@ -20,6 +20,18 @@ import { formatDate } from '../lib/format';      // внутри слайса
 @dto  // → shared/api/generatedApi.ts (типы + RTK хуки)
 ```
 
+## Именование файлов
+
+Все файлы — **kebab-case**: `vacancy-card.tsx`, `vacancy-card.scss`, `search-form.tsx`.  
+Имя компонента внутри файла — PascalCase, но сам файл — строчными буквами.
+
+```
+button/
+  button.tsx    ✓
+  button.scss   ✓
+  index.ts
+```
+
 ## Компоненты
 
 Только `const`, никаких `function`. Именованный экспорт в конце файла:
@@ -60,9 +72,24 @@ const label = value ? value.trim() : 'default';
 // #region HANDLER
 const handleSubmit = () => { ... };
 // #endregion
+
+// #region STYLES
+const btnClass = cx('btn', active && 'btn--active');
+// #endregion
 ```
 
 Пустые регионы не писать.
+
+`cx` **никогда не использовать инлайново** в JSX — всегда выносить в переменную в `#region STYLES`:
+
+```tsx
+// ❌
+<div className={cx('btn', active && 'btn--active')} />
+
+// ✓
+const btnClass = cx('btn', active && 'btn--active');
+<div className={btnClass} />
+```
 
 ## Стили — SCSS + БЭМ
 

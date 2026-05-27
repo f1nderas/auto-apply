@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { cx } from '@shared/lib/cx';
+import { Button } from '@shared/ui/button';
+import { Textarea } from '@shared/ui/textarea';
 import { SCHEDULE_LABELS, formatSalary, formatDate } from '../lib/format';
 import { useApplyVacancyMutation } from '../api/vacancyApi';
 import type { VacancyDto } from '@dto';
@@ -45,6 +47,15 @@ const VacancyCard = ({ vacancy }: { vacancy: VacancyDto }) => {
   };
   // #endregion
 
+  // #region STYLES
+  const salaryClass = cx('vacancy-card__salary', !hasSalary && 'vacancy-card__salary--empty');
+  const applyBtnClass = cx(
+    'vacancy-card__apply-btn',
+    applied && 'vacancy-card__apply-btn--success',
+    isError && !applied && 'vacancy-card__apply-btn--error',
+  );
+  // #endregion
+
   return (
     <div className="vacancy-card">
       <a
@@ -72,7 +83,7 @@ const VacancyCard = ({ vacancy }: { vacancy: VacancyDto }) => {
         )}
       </div>
 
-      <div className={cx('vacancy-card__salary', !hasSalary && 'vacancy-card__salary--empty')}>
+      <div className={salaryClass}>
         {formatSalary(vacancy.salary ?? null)}
       </div>
 
@@ -91,7 +102,7 @@ const VacancyCard = ({ vacancy }: { vacancy: VacancyDto }) => {
       </div>
 
       {needsLetter && !applied && (
-        <textarea
+        <Textarea
           className="vacancy-card__letter"
           placeholder="Сопроводительное письмо…"
           value={letter}
@@ -101,17 +112,14 @@ const VacancyCard = ({ vacancy }: { vacancy: VacancyDto }) => {
         />
       )}
 
-      <button
-        className={cx(
-          'vacancy-card__apply-btn',
-          applied && 'vacancy-card__apply-btn--success',
-          isError && !applied && 'vacancy-card__apply-btn--error',
-        )}
+      <Button
+        variant="plain"
+        className={applyBtnClass}
         onClick={handleApply}
         disabled={isLoading || applied || !canApply}
       >
         {btnLabel}
-      </button>
+      </Button>
     </div>
   );
 };
