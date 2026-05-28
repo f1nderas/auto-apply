@@ -41,6 +41,22 @@ const injectedRtkApi = api.injectEndpoints({
         body: queryArg.updateSessionDto,
       }),
     }),
+    resumeControllerGetResume: build.query<
+      ResumeControllerGetResumeApiResponse,
+      ResumeControllerGetResumeApiArg
+    >({
+      query: () => ({ url: `/resume` }),
+    }),
+    resumeControllerUpdateAbout: build.mutation<
+      ResumeControllerUpdateAboutApiResponse,
+      ResumeControllerUpdateAboutApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/resume/about`,
+        method: 'PATCH',
+        body: queryArg.updateAboutDto,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -65,6 +81,12 @@ export type AdminControllerUpdateSessionApiResponse = /** status 200  */ {
 };
 export type AdminControllerUpdateSessionApiArg = {
   updateSessionDto: UpdateSessionDto;
+};
+export type ResumeControllerGetResumeApiResponse = /** status 200  */ ResumeDto;
+export type ResumeControllerGetResumeApiArg = void;
+export type ResumeControllerUpdateAboutApiResponse = unknown;
+export type ResumeControllerUpdateAboutApiArg = {
+  updateAboutDto: UpdateAboutDto;
 };
 export type SalaryDto = {
   from?: number | null;
@@ -112,6 +134,15 @@ export type ApplyVacancyDto = {
 export type UpdateSessionDto = {
   curl: string;
 };
+export type ResumeDto = {
+  name: string;
+  title: string;
+  keySkills: string[];
+  about: string;
+};
+export type UpdateAboutDto = {
+  text: string;
+};
 export const {
   useAppControllerGetHelloQuery,
   useLazyAppControllerGetHelloQuery,
@@ -119,4 +150,7 @@ export const {
   useLazyVacanciesControllerSearchQuery,
   useVacanciesControllerApplyMutation,
   useAdminControllerUpdateSessionMutation,
+  useResumeControllerGetResumeQuery,
+  useLazyResumeControllerGetResumeQuery,
+  useResumeControllerUpdateAboutMutation,
 } = injectedRtkApi;

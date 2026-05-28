@@ -16,30 +16,8 @@ import {
   HhApplyResponse,
 } from './interfaces/hh-api.interface';
 import { SessionStore } from './session-store.service';
-import { HH_BASE_URL } from './constants';
+import { HH_BASE_URL, ESSENTIAL_COOKIES } from './constants';
 import { ApplyVacancyDto, ApplyResponseDto } from './dto/apply-vacancy.dto';
-
-const ESSENTIAL_COOKIES = new Set([
-  '_xsrf',
-  'hhtoken',
-  'hhuid',
-  'crypted_id',
-  'crypted_hhuid',
-  'hhul',
-  'hhrole',
-  'display',
-  'regions',
-  'redirect_host',
-  'GMT',
-  'TZ',
-  // GIB (Group-IB) антибот — ротируются каждые несколько часов
-  'fgsscgib-w-hh',
-  'gsscgib-w-hh',
-  'cfidsgib-w-hh',
-  '__zzatgib-w-hh',
-  // DataDome антибот — стабильный fingerprint браузера
-  '__ddg1_',
-]);
 
 @Injectable()
 export class VacanciesService {

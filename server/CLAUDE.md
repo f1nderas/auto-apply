@@ -44,6 +44,8 @@ export class VacancyDto {
 Входные DTO — в `dto/`, с валидацией через `class-validator` если нужно.  
 Выходные DTO — с `@ApiProperty()` на каждом поле (иначе кодоген не подхватит тип).
 
+**Важно:** `ValidationPipe` включён с `whitelist: true` — все поля входных DTO **обязаны** иметь декоратор из `class-validator` (`@IsString()`, `@IsNumber()` и т.д.), иначе они будут вырезаны из запроса. `@ApiProperty()` не считается.
+
 ## SessionStore
 
 `SessionStore` — singleton-сервис в `VacanciesModule`, экспортируется для `AdminModule`.  

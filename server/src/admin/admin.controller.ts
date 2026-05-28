@@ -32,7 +32,7 @@ const parseCurl = (input: string) => {
 
   const q = `(?:'([^']*)'|"([^"]*)")`;
 
-  const cookieMatch = s.match(new RegExp(`(?:-b|--cookie)\\s+${q}`));
+  const cookieMatch = s.match(new RegExp(`(?:-b|--cookie)\\s+\\$?${q}`));
   const cookie = cookieMatch?.[1] ?? cookieMatch?.[2] ?? null;
 
   const xsrfMatch = s.match(
@@ -41,7 +41,12 @@ const parseCurl = (input: string) => {
       'i',
     ),
   );
-  const xsrfToken = (xsrfMatch?.[1] ?? xsrfMatch?.[2])?.trim() ?? null;
+  const xsrfFromHeader = (xsrfMatch?.[1] ?? xsrfMatch?.[2])?.trim() ?? null;
+  const xsrfFromCookie =
+    cookieMatch?.[1]?.match(/_xsrf=([^;]+)/)?.[1] ??
+    cookieMatch?.[2]?.match(/_xsrf=([^;]+)/)?.[1] ??
+    null;
+  const xsrfToken = xsrfFromHeader ?? xsrfFromCookie;
 
   const versionMatch = s.match(
     new RegExp(
@@ -74,6 +79,12 @@ export class AdminController {
   })
   updateSession(@Body() body: UpdateSessionDto) {
     const parsed = parseCurl(body.curl ?? '');
+    if (!parsed.baseUrl?.includes('hh.ru')) {
+      throw new HttpException(
+        'Нужен cURL с hh.ru, а не со стороннего сайта',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     if (!parsed.cookie || !parsed.xsrfToken) {
       throw new HttpException(
         'Не удалось распарсить cURL: не найдены cookie или x-xsrftoken',
