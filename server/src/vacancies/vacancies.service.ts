@@ -101,12 +101,8 @@ export class VacanciesService {
 
   async apply(dto: ApplyVacancyDto): Promise<ApplyResponseDto> {
     const { vacancyId, letter } = dto;
-    const {
-      cookie: rawCookie,
-      xsrfToken,
-      baseUrl,
-      resumeHash,
-    } = this.sessionStore.get();
+    const { cookie: rawCookie, xsrfToken, baseUrl } = this.sessionStore.get();
+    const resumeHash = this.sessionStore.getActiveHash() ?? '';
     const cookie = this.filterCookies(rawCookie);
     const fgsscgib = this.extractCookie(rawCookie, 'fgsscgib-w-hh');
     const gsscgib = this.extractCookie(rawCookie, 'gsscgib-w-hh');

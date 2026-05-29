@@ -28,7 +28,6 @@ export class ResumeService {
   async getResume(hash: string): Promise<ResumeDto> {
     const session = this.sessionStore.get();
     const { cookie: rawCookie, xsrfToken, baseUrl, staticVersion } = session;
-    const resumeHash = hash;
     const cookie = this.filterCookies(rawCookie);
     const fgsscgib = this.extractCookie(rawCookie, 'fgsscgib-w-hh');
     const gsscgib = this.extractCookie(rawCookie, 'gsscgib-w-hh');
@@ -52,7 +51,7 @@ export class ResumeService {
 
     try {
       const { data } = await axios.get<HhResumeResponse>(
-        `${baseUrl}/resume/${resumeHash}`,
+        `${baseUrl}/resume/${hash}`,
         {
           headers: {
             ...BROWSER_HEADERS,
@@ -87,7 +86,7 @@ export class ResumeService {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error('[getResume] HH status =', error.response?.status);
-        const body = error.response?.data;
+        const body: unknown = error.response?.data;
         const preview =
           typeof body === 'string'
             ? body.slice(0, 200)
@@ -104,7 +103,6 @@ export class ResumeService {
 
   async updateAbout(hash: string, text: string): Promise<void> {
     const { cookie: rawCookie, xsrfToken, baseUrl } = this.sessionStore.get();
-    const resumeHash = hash;
     const cookie = this.filterCookies(rawCookie);
     const fgsscgib = this.extractCookie(rawCookie, 'fgsscgib-w-hh');
     const gsscgib = this.extractCookie(rawCookie, 'gsscgib-w-hh');
@@ -114,12 +112,12 @@ export class ResumeService {
         `${baseUrl}/applicant/resume/edit`,
         { skills: [{ string: text }] },
         {
-          params: { resume: resumeHash, hhtmSource: 'resume_partial_edit' },
+          params: { resume: hash, hhtmSource: 'resume_partial_edit' },
           headers: {
             ...BROWSER_HEADERS,
             accept: 'application/json',
             'content-type': 'application/json',
-            referer: `${baseUrl}/resume/edit/${resumeHash}/about`,
+            referer: `${baseUrl}/resume/edit/${hash}/about`,
             'user-agent': UA,
             'x-gib-fgsscgib-w-hh': fgsscgib,
             'x-gib-gsscgib-w-hh': gsscgib,
