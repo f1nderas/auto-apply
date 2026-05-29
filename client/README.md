@@ -15,14 +15,24 @@ bun run dev:client
 `src/` разбит на слои. Импорты строго вниз по слоям:
 
 ```
-app/       ← инициализация, провайдеры, Layout
+app/       ← инициализация, провайдеры, Layout, роутер
 pages/     ← страницы (собирают фичи/entities)
 features/  ← пользовательские сценарии
-entities/  ← бизнес-сущности (vacancy и др.)
-shared/    ← утилиты, конфиг, базовое API, стили
+entities/  ← бизнес-сущности
+shared/    ← утилиты, конфиг, базовое API, UI-компоненты, стили
 ```
 
 Каждый слой экспортирует через `index.ts` — импортировать только из него.
+
+## Страницы
+
+| Путь | Компонент | Описание |
+|---|---|---|
+| `/` | Home | Главная |
+| `/vacancies` | Vacancies | Поиск и отклики на вакансии |
+| `/resume/:hash` | Resume | Просмотр и редактирование резюме |
+| `/history` | History | История откликов с фильтрацией |
+| `/users` | Users | Управление пользователями |
 
 ## Алиасы
 
@@ -30,7 +40,6 @@ shared/    ← утилиты, конфиг, базовое API, стили
 import { cx } from '@shared/lib/cx';
 import { VacancyCard } from '@entities/vacancy';
 import { SearchForm } from '@features/vacancy-search';
-import { VacanciesPage } from '@pages/vacancies-page';
 import type { VacancyDto } from '@dto';   // → shared/api/generatedApi.ts
 ```
 
@@ -38,16 +47,36 @@ import type { VacancyDto } from '@dto';   // → shared/api/generatedApi.ts
 
 ## RTK Query
 
-API-клиент генерируется автоматически (см. корневой README).  
-Базовый инстанс: `shared/api/baseApi.ts`.  
-Сгенерированный файл: `shared/api/generatedApi.ts`.  
-Entity/feature слои ре-экспортируют нужные хуки с читаемыми именами:
+Базовый инстанс: `shared/api/baseApi.ts` (теги: `ActiveSession`, `History`).  
+Сгенерированный файл: `shared/api/generatedApi.ts` — не редактировать вручную.
+
+Хуки ре-экспортируются из слоёв с читаемыми именами:
 
 ```ts
-// entities/vacancy/api/vacancyApi.ts
-export { useLazyVacanciesControllerSearchQuery as useLazySearchVacanciesQuery } from '@shared/api/generatedApi';
+export { useLazyVacanciesControllerSearchQuery as useLazySearchVacanciesQuery }
+  from '@shared/api/generatedApi';
 ```
+
+Эндпоинты, не покрытые кодогеном (History), определяются через `injectEndpoints` в feature-слое.
+
+## Shared UI
+
+| Компонент | Варианты |
+|---|---|
+| `Button` | `primary`, `plain` |
+| `Input` | — |
+| `Textarea` | — |
+| `Select` | — |
+| `Badge` | `green`, `red`, `gray` |
+| `Pagination` | — |
+
+## Уведомления
+
+`react-hot-toast` с позицией `top-center`. Использовать `toast.success` / `toast.error`.
 
 ## Стили
 
-Глобальный SCSS + БЭМ. Подробнее — в [CLAUDE.md](./CLAUDE.md).
+Глобальный SCSS + БЭМ, без CSS Modules.  
+Цвета: `@use '.../shared/styles/colors'` → `colors.$color-*`.  
+Типографика: `@use '.../shared/styles/typography'` → `@include typography.font-*`.  
+Правила кода — в [CLAUDE.md](./CLAUDE.md).

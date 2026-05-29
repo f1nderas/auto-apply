@@ -10,30 +10,34 @@ bun run dev     # из папки server/
 bun run dev:server
 ```
 
+Swagger UI: http://localhost:4200/api  
+OpenAPI JSON: http://localhost:4200/api-json
+
 ## Структура
 
 ```
 src/
-├── vacancies/
-│   ├── dto/                  ← входные/выходные DTO (с @ApiProperty)
-│   ├── interfaces/           ← типы внутреннего API HH.ru
-│   ├── session-store.service.ts  ← хранит сессию в памяти
-│   ├── vacancies.controller.ts
-│   └── vacancies.service.ts  ← маппинг HH → наши DTO
-└── admin/
-    ├── admin.controller.ts   ← POST /admin/session (обновление сессии)
-    └── admin.module.ts
+├── admin/          ← управление сессиями (парсинг cURL, переключение)
+├── vacancies/      ← поиск вакансий и подача откликов
+│   └── session-store.service.ts  ← singleton, хранит сессии в памяти
+├── resume/         ← получение и редактирование резюме
+├── history/        ← история откликов (persist в apply-history.json)
+└── cover-letter/   ← шаблон сопроводительного письма
 ```
 
 ## Эндпоинты
 
 | Метод | Путь | Описание |
 |---|---|---|
-| `GET` | `/vacancies` | Поиск вакансий на HH.ru |
-| `POST` | `/admin/session` | Обновление сессии (cURL) |
-
-Swagger UI: http://localhost:4200/api  
-OpenAPI JSON: http://localhost:4200/api-json
+| `GET` | `/vacancies` | Поиск вакансий (text, area, page, perPage) |
+| `POST` | `/vacancies/apply` | Подать отклик (vacancyId, letter?) |
+| `GET` | `/resume/:hash` | Получить данные резюме |
+| `PATCH` | `/resume/:hash/about` | Обновить раздел «О себе» |
+| `GET` | `/admin/session/active` | Активная сессия и список хешей |
+| `POST` | `/admin/session` | Добавить сессию из cURL |
+| `POST` | `/admin/session/switch` | Переключить активную сессию |
+| `POST` | `/history` | Записать отклик в историю |
+| `GET` | `/history` | Получить всю историю откликов |
 
 ## Переменные окружения
 
@@ -41,38 +45,47 @@ OpenAPI JSON: http://localhost:4200/api-json
 
 ```env
 PORT=4200
-HH_XSRF_TOKEN=<токен из DevTools>
-HH_COOKIE=<строка кук из DevTools>
 ```
+
+Сессия HH.ru (куки, xsrf-токен) хранится в `sessions.json` и управляется через форму **«Обновить сессию»** в интерфейсе — в `.env` не кладётся.
+
+## Что не коммитить
+
+| Файл | Причина |
+|---|---|
+| `sessions.json` | куки и токены HH.ru |
+| `apply-history.json` | история откликов |
+
+## SessionStore
+
+`SessionStore` — singleton-сервис. Хранит `Map<hash, Session>` + активный хеш, персистит в `sessions.json`.
+
+Сессия содержит:
+- `cookies` — строка куки для запросов к HH.ru
+- `xsrfToken` — токен для POST-запросов
+- `staticVersion` — версия статики (нужна для некоторых эндпоинтов)
+- `baseUrl` — базовый URL (hh.ru / headhunter.ru)
 
 ## HH.ru — сессия
 
 Используется внутренний Web API `https://hh.ru/search/vacancy` (не `api.hh.ru`).
 
-- **GIB-антибот**: заголовки `x-gib-fgsscgib-w-hh` и `x-gib-gsscgib-w-hh` парсятся автоматически из `HH_COOKIE`
-- **Фильтрация кук**: в запрос уходит только необходимое подмножество (аутентификация + GIB), аналитика отбрасывается
-- **Обновление сессии**: через форму в UI (Copy as cURL → вставить) или напрямую через `POST /admin/session`
-- Сессия хранится в памяти (`SessionStore`) — при рестарте сервера подтягивается из `.env`
+- Отклик отправляется через `POST /applicant/vacancy_response` с FormData
+- Запросы идут с заголовками браузерного fingerprint (sec-ch-ua, sec-fetch-*)
+- GIB-куки ротируются антиботом — при сбоях нужно обновить сессию через UI
 
-## Куки hh.ru — что и когда меняется
-
-Запросы перестают работать, когда протухают GIB-куки. Ориентир по частоте обновления:
-
-| Cookie / заголовок | Как часто меняется | Почему |
-|---|---|---|
-| `fgsscgib-w-hh` | **каждые несколько часов** | Group-IB fingerprint — ротируется антиботом |
-| `gsscgib-w-hh` | **каждые несколько часов** | Group-IB session token |
-| `cfidsgib-w-hh` | **каждые несколько часов** | Group-IB challenge ID |
-| `__zzatgib-w-hh` | **каждые несколько часов** | Group-IB challenge response |
-| `x-static-version` | при деплоях hh.ru (дни/недели) | версия фронтенда hh.ru |
-| `_xsrf` + `x-xsrftoken` | при сбросе браузерной сессии | CSRF-токен, оба должны совпадать |
-| `hhtoken` | редко (недели/месяцы) | токен аутентификации |
-| `__ddg1_` | стабильный | DataDome fingerprint браузера |
-
-**GIB (Group-IB)** — встроенная в hh.ru антибот-система. Значения `x-gib-*` заголовков всегда должны совпадать с соответствующими куками — сервер парсит их автоматически.
-
-**Алгоритм обновления** когда запросы снова сломались:
+**Алгоритм обновления сессии** когда запросы сломались:
 
 1. Открыть DevTools → Network на любой странице hh.ru
-2. Найти запрос к `/search/vacancy`, нажать Copy as cURL
-3. Вставить в форму обновления сессии в UI (или в `POST /admin/session`)
+2. Найти любой запрос, нажать Copy as cURL
+3. Вставить в форму «Обновить сессию» в UI
+
+## Куки hh.ru — частота ротации
+
+| Cookie | Как часто меняется | Причина |
+|---|---|---|
+| `fgsscgib-w-hh` | каждые несколько часов | Group-IB fingerprint |
+| `gsscgib-w-hh` | каждые несколько часов | Group-IB session token |
+| `__zzatgib-w-hh` | каждые несколько часов | Group-IB challenge response |
+| `_xsrf` | при сбросе браузерной сессии | CSRF-токен |
+| `hhtoken` | редко (недели/месяцы) | токен аутентификации |
