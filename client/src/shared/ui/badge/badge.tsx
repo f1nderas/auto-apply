@@ -2,7 +2,7 @@ import { cx } from '../../lib/cx';
 import './badge.scss';
 
 interface BadgeProps {
-  variant: 'green' | 'blue' | 'orange';
+  variant: 'green' | 'blue' | 'orange' | 'red';
   children: React.ReactNode;
 }
 

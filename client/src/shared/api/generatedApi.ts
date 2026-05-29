@@ -114,6 +114,8 @@ export type VacancyDto = {
   requirement?: string | null;
   responsibility?: string | null;
   publishedAt: string;
+  /** Статус отклика: RESPONSE — откликнулись, INVITE — приглашение, DISCARD — отказ */
+  applicationStatus?: ('RESPONSE' | 'INVITE' | 'DISCARD') | null;
 };
 export type VacanciesResponseDto = {
   vacancies: VacancyDto[];

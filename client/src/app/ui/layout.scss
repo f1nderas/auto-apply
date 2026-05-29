@@ -25,6 +25,13 @@
   color: colors.$color-text;
 }
 
+.layout__header-actions {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+
 .layout__body {
   display: flex;
   flex: 1;

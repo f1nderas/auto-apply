@@ -8,6 +8,12 @@ import { useApplyVacancyMutation } from '../api/vacancyApi';
 import type { VacancyDto } from '@dto';
 import './vacancy-card.scss';
 
+const APPLICATION_STATUS_MAP: Record<string, { label: string; variant: 'green' | 'blue' | 'red' }> = {
+  RESPONSE: { label: 'Вы откликнулись', variant: 'blue' },
+  INVITE:   { label: 'Вас пригласили',  variant: 'green' },
+  DISCARD:  { label: 'Вам отказали',    variant: 'red' },
+};
+
 const VacancyCard = ({ vacancy }: { vacancy: VacancyDto }) => {
   // #region STATE
   const [letter, setLetter] = useState('');
@@ -22,6 +28,10 @@ const VacancyCard = ({ vacancy }: { vacancy: VacancyDto }) => {
   const schedule = SCHEDULE_LABELS[vacancy.schedule] ?? vacancy.schedule;
   const hasSalary = !!vacancy.salary;
   const needsLetter = vacancy.responseLetterRequired;
+  const statusBadge = vacancy.applicationStatus
+    ? APPLICATION_STATUS_MAP[vacancy.applicationStatus] ?? null
+    : null;
+  const isAlreadyApplied = !!vacancy.applicationStatus || applied;
   const canApply = !needsLetter || letter.trim().length > 0;
   const btnLabel = isLoading
     ? 'Отправка…'
@@ -90,12 +100,13 @@ const VacancyCard = ({ vacancy }: { vacancy: VacancyDto }) => {
       <div className="vacancy-card__footer">
         <Badge variant="green">{schedule}</Badge>
         {needsLetter && <Badge variant="orange">Нужно письмо</Badge>}
+        {statusBadge && <Badge variant={statusBadge.variant}>{statusBadge.label}</Badge>}
         <span className="vacancy-card__footer-text">
           {vacancy.area} · {formatDate(vacancy.publishedAt)}
         </span>
       </div>
 
-      {needsLetter && !applied && (
+      {needsLetter && !isAlreadyApplied && (
         <Textarea
           className="vacancy-card__letter"
           placeholder="Сопроводительное письмо…"
@@ -106,14 +117,16 @@ const VacancyCard = ({ vacancy }: { vacancy: VacancyDto }) => {
         />
       )}
 
-      <Button
-        variant="plain"
-        className={applyBtnClass}
-        onClick={handleApply}
-        disabled={isLoading || applied || !canApply}
-      >
-        {btnLabel}
-      </Button>
+      {!isAlreadyApplied && (
+        <Button
+          variant="plain"
+          className={applyBtnClass}
+          onClick={handleApply}
+          disabled={isLoading || !canApply}
+        >
+          {btnLabel}
+        </Button>
+      )}
     </div>
   );
 };

@@ -66,6 +66,7 @@ export interface HhWebSearchResponse {
     criteria: HhCriteria;
     totalResults?: number;
     paging?: HhPaging;
+    userLabelsForVacancies?: Record<string, string[]>;
   };
 }
 

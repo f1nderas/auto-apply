@@ -1,18 +1,32 @@
 import {
   Controller,
+  Get,
   Post,
   Body,
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import { IsString } from 'class-validator';
-import { ApiBody, ApiProperty, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { IsOptional, IsString } from 'class-validator';
+import { ApiBody, ApiProperty, ApiPropertyOptional, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SessionStore } from '../vacancies/session-store.service';
 
 class UpdateSessionDto {
   @IsString()
   @ApiProperty()
   curl: string;
+
+  @IsOptional()
+  @IsString()
+  @ApiPropertyOptional({
+    description: 'Хэш резюме — привязывает сессию к конкретному аккаунту и переключается на него',
+  })
+  resumeHash?: string;
+}
+
+class SwitchSessionDto {
+  @IsString()
+  @ApiProperty()
+  hash: string;
 }
 
 // Парсит строку cURL: Windows cmd (^ + двойные кавычки) и Unix/bash (одинарные кавычки)
@@ -33,7 +47,13 @@ const parseCurl = (input: string) => {
   const q = `(?:'([^']*)'|"([^"]*)")`;
 
   const cookieMatch = s.match(new RegExp(`(?:-b|--cookie)\\s+\\$?${q}`));
-  const cookie = cookieMatch?.[1] ?? cookieMatch?.[2] ?? null;
+  const rawCookieStr = cookieMatch?.[1] ?? cookieMatch?.[2] ?? null;
+  // Нормализуем markdown-порчу имён кук: \_name → _name, **name → __name
+  const cookie = rawCookieStr
+    ? rawCookieStr
+        .replace(/\\_/g, '_')
+        .replace(/(^|;\s*)\*\*([a-zA-Z])/g, '$1__$2')
+    : null;
 
   const xsrfMatch = s.match(
     new RegExp(
@@ -71,6 +91,34 @@ const parseCurl = (input: string) => {
 export class AdminController {
   constructor(private readonly sessionStore: SessionStore) {}
 
+  @Get('session/active')
+  @ApiResponse({
+    status: 200,
+    schema: {
+      properties: {
+        hash: { type: 'string', nullable: true },
+        registeredHashes: { type: 'array', items: { type: 'string' } },
+      },
+    },
+  })
+  getActiveSession() {
+    return {
+      hash: this.sessionStore.getActiveHash(),
+      registeredHashes: this.sessionStore.listRegisteredHashes(),
+    };
+  }
+
+  @Post('session/switch')
+  @ApiBody({ type: SwitchSessionDto })
+  @ApiResponse({
+    status: 200,
+    schema: { properties: { ok: { type: 'boolean' } } },
+  })
+  switchSession(@Body() body: SwitchSessionDto) {
+    this.sessionStore.setActive(body.hash);
+    return { ok: true };
+  }
+
   @Post('session')
   @ApiBody({ type: UpdateSessionDto })
   @ApiResponse({
@@ -91,12 +139,15 @@ export class AdminController {
         HttpStatus.BAD_REQUEST,
       );
     }
-    this.sessionStore.update({
+
+    const sessionPatch = {
       cookie: parsed.cookie,
       xsrfToken: parsed.xsrfToken,
       ...(parsed.staticVersion && { staticVersion: parsed.staticVersion }),
       ...(parsed.baseUrl && { baseUrl: parsed.baseUrl }),
-    });
+    };
+
+    this.sessionStore.upsert(body.resumeHash ?? '_default', sessionPatch);
     return { ok: true };
   }
 }

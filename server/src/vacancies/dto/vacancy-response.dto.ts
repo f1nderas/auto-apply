@@ -67,6 +67,14 @@ export class VacancyDto {
 
   @ApiProperty()
   publishedAt: string;
+
+  @ApiPropertyOptional({
+    type: String,
+    nullable: true,
+    enum: ['RESPONSE', 'INVITE', 'DISCARD'],
+    description: 'Статус отклика: RESPONSE — откликнулись, INVITE — приглашение, DISCARD — отказ',
+  })
+  applicationStatus: string | null;
 }
 
 export class VacanciesResponseDto {

@@ -1,0 +1,129 @@
+@use '../../../shared/styles/colors';
+@use '../../../shared/styles/typography';
+
+.resume {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.resume__back {
+  @include typography.font-secondary;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: colors.$color-text-secondary;
+  text-decoration: none;
+  width: fit-content;
+
+  &:hover {
+    color: colors.$color-text;
+  }
+}
+
+.resume__card {
+  background: colors.$color-surface;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.resume__name {
+  @include typography.font-heading;
+  color: colors.$color-text;
+  margin-bottom: 4px;
+}
+
+.resume__title {
+  @include typography.font-body;
+  color: colors.$color-text-secondary;
+  margin-bottom: 16px;
+}
+
+.resume__skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.resume__about-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.resume__section-title {
+  @include typography.font-title;
+  color: colors.$color-text;
+}
+
+.resume__edit-btn {
+  @include typography.font-caption;
+  color: colors.$color-primary;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+
+  &:hover {
+    background: colors.$color-primary-subtle;
+  }
+}
+
+.resume__about-text {
+  @include typography.font-body;
+  color: colors.$color-text;
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+
+.resume__about-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.resume__about-textarea {
+  width: 100%;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.resume__about-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.resume__cancel-btn {
+  @include typography.font-secondary;
+  background: none;
+  border: 1px solid colors.$color-border;
+  border-radius: 8px;
+  padding: 10px 20px;
+  color: colors.$color-text-secondary;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background: colors.$color-border-light;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.resume__message {
+  @include typography.font-body;
+  color: colors.$color-text-muted;
+  padding: 40px 0;
+  text-align: center;
+}
+
+.resume__error {
+  @include typography.font-body;
+  color: colors.$color-error;
+  padding: 16px 0;
+}

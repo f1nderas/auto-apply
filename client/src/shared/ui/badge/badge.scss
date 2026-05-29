@@ -21,4 +21,9 @@
     background: colors.$color-warning-subtle;
     color: colors.$color-warning;
   }
+
+  &--red {
+    background: colors.$color-error-subtle;
+    color: colors.$color-error;
+  }
 }

@@ -61,6 +61,45 @@
   }
 }
 
+.session-update-modal__accounts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.session-update-modal__accounts-label {
+  @include typography.font-caption;
+  color: colors.$color-text-secondary;
+}
+
+.session-update-modal__accounts-btns {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.session-update-modal__account-btn {
+  @include typography.font-secondary;
+  padding: 5px 14px;
+  border-radius: 99px;
+  border: 1px solid colors.$color-border;
+  background: none;
+  color: colors.$color-text-secondary;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+
+  &:hover:not(.session-update-modal__account-btn--active) {
+    background: colors.$color-border-light;
+  }
+
+  &--active {
+    background: colors.$color-primary-subtle;
+    color: colors.$color-primary;
+    border-color: colors.$color-primary;
+    font-weight: 600;
+  }
+}
+
 .session-update-modal__textarea {
   @include typography.font-caption;
   padding: 10px 12px;

@@ -66,11 +66,18 @@ export class VacanciesService {
         },
       );
 
-      const { vacancies, criteria, totalResults, paging } =
-        data.vacancySearchResult;
+      const {
+        vacancies,
+        criteria,
+        totalResults,
+        paging,
+        userLabelsForVacancies,
+      } = data.vacancySearchResult;
 
       return {
-        vacancies: vacancies.map((v) => this.mapVacancy(v)),
+        vacancies: vacancies.map((v) =>
+          this.mapVacancy(v, userLabelsForVacancies),
+        ),
         total: totalResults ?? vacancies.length,
         page,
         perPage: criteria.items_on_page,
@@ -229,7 +236,14 @@ export class VacanciesService {
       .join('; ');
   }
 
-  private mapVacancy(v: HhVacancy): VacancyDto {
+  private mapVacancy(
+    v: HhVacancy,
+    labels?: Record<string, string[]>,
+  ): VacancyDto {
+    const labelArr = labels?.[String(v.vacancyId)];
+    const applicationStatus =
+      labelArr && labelArr.length > 0 ? labelArr[0] : null;
+
     return {
       id: String(v.vacancyId),
       name: v.name,
@@ -244,6 +258,7 @@ export class VacanciesService {
       employment: '—',
       requirement: null,
       responsibility: null,
+      applicationStatus,
     };
   }
 
