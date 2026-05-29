@@ -4,13 +4,23 @@
 .button {
   font: inherit;
   cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
 }
 
 .button--primary {
   @include typography.font-strong;
   padding: 10px 20px;
   border-radius: 8px;
-  border: none;
   background: colors.$color-primary;
   color: colors.$color-surface;
   transition: opacity 0.15s;
@@ -18,9 +28,19 @@
   &:hover:not(:disabled) {
     opacity: 0.88;
   }
+}
 
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
+.button--plain {
+  @include typography.font-secondary;
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid colors.$color-border;
+  background: none;
+  color: colors.$color-text-secondary;
+  transition: background 0.15s, color 0.15s;
+
+  &:hover:not(:disabled) {
+    background: colors.$color-bg;
+    color: colors.$color-text;
   }
 }

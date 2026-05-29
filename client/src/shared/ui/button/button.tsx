@@ -15,7 +15,7 @@ const Button = ({
   ...props
 }: ButtonProps) => (
   <button
-    className={cx('button', variant === 'primary' && 'button--primary', className)}
+    className={cx('button', `button--${variant}`, className)}
     disabled={loading || disabled}
     {...props}
   >

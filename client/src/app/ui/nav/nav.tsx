@@ -5,6 +5,7 @@ import './nav.scss';
 const NAV_ITEMS = [
   { to: '/', label: 'Главная' },
   { to: '/vacancies', label: 'Вакансии' },
+  { to: '/history', label: 'История' },
   { to: '/users', label: 'Пользователи' },
 ] as const;
 

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { toast } from 'react-hot-toast';
 import { cx } from '@shared/lib/cx';
 import { Badge } from '@shared/ui/badge';
 import { Button } from '@shared/ui/button';
@@ -45,13 +46,18 @@ const VacancyCard = ({ vacancy }: { vacancy: VacancyDto }) => {
   // #region HANDLER
   const handleApply = async () => {
     try {
-      await apply({
+      const result = await apply({
         applyVacancyDto: {
           vacancyId: vacancy.id,
           ...(needsLetter ? { letter: letter.trim() } : {}),
         },
       }).unwrap();
-      setApplied(true);
+      if (result.ok) {
+        setApplied(true);
+        toast.success('Отклик отправлен!');
+      } else {
+        toast.error('Не удалось откликнуться');
+      }
     } catch {
       // isError from the mutation hook handles UI state
     }
@@ -101,6 +107,7 @@ const VacancyCard = ({ vacancy }: { vacancy: VacancyDto }) => {
         <Badge variant="green">{schedule}</Badge>
         {needsLetter && <Badge variant="orange">Нужно письмо</Badge>}
         {statusBadge && <Badge variant={statusBadge.variant}>{statusBadge.label}</Badge>}
+        {applied && !statusBadge && <Badge variant="blue">Вы откликнулись</Badge>}
         <span className="vacancy-card__footer-text">
           {vacancy.area} · {formatDate(vacancy.publishedAt)}
         </span>

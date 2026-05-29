@@ -4,7 +4,7 @@ import { API_BASE } from '@shared/config/api';
 const baseApi = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: API_BASE }),
-  tagTypes: ['ActiveSession'],
+  tagTypes: ['ActiveSession', 'History'],
   endpoints: () => ({}),
 });
 

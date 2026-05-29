@@ -120,6 +120,15 @@ export class VacanciesService {
 
     const referer = `${baseUrl}/vacancy/${vacancyId}`;
 
+    console.log('[apply] vacancyId    =', vacancyId);
+    console.log('[apply] resumeHash   =', resumeHash || '(empty)');
+    console.log(
+      '[apply] letter       =',
+      letter ? `"${letter.slice(0, 40)}…"` : '(none)',
+    );
+    console.log('[apply] xsrfToken    =', xsrfToken || '(empty)');
+    console.log('[apply] fgsscgib     =', fgsscgib || '(empty)');
+
     try {
       // Step 1: register interaction (fire-and-forget, errors are ignored)
       await axios
@@ -137,61 +146,44 @@ export class VacanciesService {
         )
         .catch(() => undefined);
 
-      let applyData: HhApplyResponse;
+      const form = new FormData();
+      form.append('_xsrf', xsrfToken);
+      form.append('vacancy_id', vacancyId);
+      form.append('resume_hash', resumeHash);
+      form.append('ignore_postponed', 'true');
+      form.append('incomplete', 'false');
+      form.append('mark_applicant_visible_in_vacancy_country', 'false');
+      form.append('country_ids', '[]');
+      form.append('lux', 'true');
+      form.append('withoutTest', 'no');
+      form.append('hhtmFromLabel', '');
+      form.append('hhtmSourceLabel', '');
+      if (letter) form.append('letter', letter);
 
-      if (letter) {
-        // Vacancy requires a cover letter — POST multipart
-        const form = new FormData();
-        form.append('_xsrf', xsrfToken);
-        form.append('vacancy_id', vacancyId);
-        form.append('resume_hash', resumeHash);
-        form.append('ignore_postponed', 'true');
-        form.append('incomplete', 'false');
-        form.append('mark_applicant_visible_in_vacancy_country', 'false');
-        form.append('country_ids', '[]');
-        form.append('letter', letter);
-        form.append('lux', 'true');
-        form.append('withoutTest', 'no');
-        form.append('hhtmFromLabel', '');
-        form.append('hhtmSourceLabel', '');
-
-        const { data } = await axios.post<HhApplyResponse>(
-          `${baseUrl}/applicant/vacancy_response/popup`,
-          form,
-          {
-            headers: {
-              ...baseHeaders,
-              'x-hhtmsource': 'vacancy',
-              'x-hhtmfrom': '',
-              origin: baseUrl,
-              referer,
-            },
+      const { data: applyData } = await axios.post<HhApplyResponse>(
+        `${baseUrl}/applicant/vacancy_response/popup`,
+        form,
+        {
+          headers: {
+            ...baseHeaders,
+            'x-hhtmsource': 'vacancy',
+            'x-hhtmfrom': '',
+            origin: baseUrl,
+            referer,
           },
-        );
-        applyData = data;
-      } else {
-        // No cover letter — GET with query params (lux / quick-apply)
-        const { data } = await axios.get<HhApplyResponse>(
-          `${baseUrl}/applicant/vacancy_response/popup`,
-          {
-            params: {
-              vacancyId,
-              isTest: 'no',
-              withoutTest: 'no',
-              lux: 'true',
-              alreadyApplied: 'false',
-            },
-            headers: {
-              ...baseHeaders,
-              'x-hhtmsource': 'main',
-              'x-hhtmfrom': '',
-              referer,
-            },
-          },
-        );
-        applyData = data;
-      }
+        },
+      );
+      console.log(
+        '[apply] POST response =',
+        JSON.stringify(applyData).slice(0, 300),
+      );
 
+      console.log(
+        '[apply] success      =',
+        applyData.success,
+        '→ ok =',
+        applyData.success === 'true',
+      );
       return {
         ok: applyData.success === 'true',
         topicId: applyData.topic_id ?? null,

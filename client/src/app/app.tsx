@@ -6,6 +6,7 @@ import { Home } from '@pages/home';
 import { Resume } from '@pages/resume';
 import { Vacancies } from '@pages/vacancies';
 import { Users } from '@pages/users';
+import { History } from '@pages/history';
 import { Layout } from './ui/layout';
 
 const App = () => (
@@ -18,6 +19,7 @@ const App = () => (
           <Route path="/resume/:hash" element={<Resume />} />
           <Route path="/vacancies" element={<Vacancies />} />
           <Route path="/users" element={<Users />} />
+          <Route path="/history" element={<History />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Layout>

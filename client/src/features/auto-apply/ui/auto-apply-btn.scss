@@ -1,0 +1,38 @@
+@use '../../../shared/styles/colors';
+@use '../../../shared/styles/typography';
+
+.auto-apply-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.auto-apply-btn__input {
+  @include typography.font-secondary;
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 8px;
+  border: 1px solid colors.$color-border;
+  background: colors.$color-surface;
+  color: colors.$color-text;
+  width: 200px;
+  outline: none;
+
+  &::placeholder {
+    color: colors.$color-text-muted;
+  }
+
+  &:focus {
+    border-color: colors.$color-primary;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.auto-apply-btn__run--done {
+  color: colors.$color-success !important;
+  border-color: colors.$color-success !important;
+}

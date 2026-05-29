@@ -13,6 +13,9 @@ client/dist/
 
 # Сессии HH.ru — персистятся в памяти сервера, содержат куки
 server/sessions.json
+
+# История откликов
+server/apply-history.json
 .env.local
 .env.*.local
 

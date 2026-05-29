@@ -1,0 +1,100 @@
+@use '../../../shared/styles/colors';
+@use '../../../shared/styles/typography';
+
+.history {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.history__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.history__title {
+  @include typography.font-heading;
+  color: colors.$color-text;
+}
+
+.history__filters {
+  display: flex;
+  gap: 4px;
+}
+
+.history__filter--active {
+  background: colors.$color-primary;
+  border-color: colors.$color-primary;
+  color: colors.$color-surface;
+
+  &:hover {
+    background: colors.$color-primary;
+    color: colors.$color-surface;
+  }
+}
+
+.history__link {
+  color: colors.$color-primary;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.history__state {
+  @include typography.font-body;
+  color: colors.$color-text-muted;
+
+  &--error {
+    color: colors.$color-error;
+  }
+}
+
+.history__table {
+  width: 100%;
+  border-collapse: collapse;
+  background: colors.$color-surface;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.history__th {
+  @include typography.font-caption;
+  color: colors.$color-text-muted;
+  text-align: left;
+  padding: 12px 16px;
+  border-bottom: 1px solid colors.$color-border-light;
+  white-space: nowrap;
+}
+
+.history__row {
+  &:not(:last-child) {
+    border-bottom: 1px solid colors.$color-border-light;
+  }
+
+  &:hover {
+    background: colors.$color-bg;
+  }
+}
+
+.history__td {
+  @include typography.font-body;
+  color: colors.$color-text;
+  padding: 12px 16px;
+  vertical-align: middle;
+}
+
+.history__td--name {
+  max-width: 320px;
+}
+
+.history__td--date {
+  @include typography.font-caption;
+  color: colors.$color-text-muted;
+  white-space: nowrap;
+}

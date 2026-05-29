@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { toast } from 'react-hot-toast';
 import { Button } from '@shared/ui/button';
+import { AutoApplyBtn } from '@features/auto-apply';
 import { SessionUpdateForm } from '@features/session-update';
 import { SessionSwitcher } from './session-switcher/session-switcher';
 import { Nav } from './nav/nav';
@@ -22,6 +23,7 @@ const Layout = ({ children }: { children: ReactNode }) => (
     <header className="layout__header">
       <span className="layout__title">Auto Apply</span>
       <SessionSwitcher />
+      <AutoApplyBtn />
       <div className="layout__header-actions">
         <Button variant="plain" onClick={handleClearCookies}>
           Очистить куки
