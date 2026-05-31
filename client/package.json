@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "predev": "kill-port 3000 || true",
-    "dev": "rspack serve",
+    "dev": "kill-port 3000 --silence || true && rspack serve",
     "build": "rspack build"
   },
   "dependencies": {
