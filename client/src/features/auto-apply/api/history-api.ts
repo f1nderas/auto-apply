@@ -21,10 +21,14 @@ const historyApi = baseApi.injectEndpoints({
       query: () => '/history',
       providesTags: ['History'],
     }),
+    clearHistory: build.mutation<void, void>({
+      query: () => ({ url: '/history', method: 'DELETE' }),
+      invalidatesTags: ['History'],
+    }),
   }),
 });
 
-const { useAddHistoryMutation, useGetHistoryQuery } = historyApi;
+const { useAddHistoryMutation, useGetHistoryQuery, useClearHistoryMutation } = historyApi;
 
 export type { HistoryRecord };
-export { useAddHistoryMutation, useGetHistoryQuery };
+export { useAddHistoryMutation, useGetHistoryQuery, useClearHistoryMutation };

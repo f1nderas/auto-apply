@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { PROFILES } from '@entities/resume';
+import { AutoApplyBtn } from '@features/auto-apply';
 import './home.scss';
 
 // #region CONSTANT
@@ -11,6 +12,7 @@ const EXPERIENCE: Record<string, string> = {
 
 const Home = () => (
   <div className="home">
+    <AutoApplyBtn />
     {PROFILES.map((r) => (
       <Link key={r.hash} to={`/resume/${r.hash}`} className="home__card">
         <span className="home__card-name">{r.name}</span>

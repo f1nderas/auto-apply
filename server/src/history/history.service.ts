@@ -21,6 +21,10 @@ export class HistoryService {
     return this.load();
   }
 
+  clear(): void {
+    writeFileSync(HISTORY_FILE, JSON.stringify([], null, 2));
+  }
+
   private load(): HistoryRecord[] {
     if (!existsSync(HISTORY_FILE)) return [];
     try {

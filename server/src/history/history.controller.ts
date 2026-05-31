@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Delete, Get, Post, Body } from '@nestjs/common';
 import { ApiTags, ApiBody, ApiResponse } from '@nestjs/swagger';
 import { HistoryService } from './history.service';
 import { AddHistoryItemDto } from './dto/add-history-item.dto';
@@ -19,5 +19,11 @@ export class HistoryController {
   @ApiResponse({ status: 200 })
   getAll() {
     return this.historyService.getAll();
+  }
+
+  @Delete()
+  @ApiResponse({ status: 200 })
+  clear(): void {
+    this.historyService.clear();
   }
 }

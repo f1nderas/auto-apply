@@ -1,8 +1,9 @@
 import { useState } from 'react';
+import { toast } from 'react-hot-toast';
 import { cx } from '@shared/lib/cx';
 import { Badge } from '@shared/ui/badge';
 import { Button } from '@shared/ui/button';
-import { useGetHistoryQuery } from '@features/auto-apply';
+import { useGetHistoryQuery, useClearHistoryMutation } from '@features/auto-apply';
 import type { HistoryRecord } from '@features/auto-apply';
 import './history.scss';
 
@@ -30,6 +31,14 @@ const History = () => {
 
   // #region HOOK
   const { data, isLoading, isError } = useGetHistoryQuery();
+  const [clearHistory] = useClearHistoryMutation();
+  // #endregion
+
+  // #region HANDLER
+  const handleClear = async () => {
+    await clearHistory();
+    toast.success('История очищена');
+  };
   // #endregion
 
   // #region COMPUTED
@@ -74,6 +83,11 @@ const History = () => {
             </Button>
           ))}
         </div>
+        {records.length > 0 && (
+          <Button variant="plain" className="history__clear" onClick={handleClear}>
+            Очистить
+          </Button>
+        )}
       </div>
 
       {filtered.length === 0 ? (

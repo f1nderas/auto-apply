@@ -1,0 +1,39 @@
+@use '../../styles/colors';
+@use '../../styles/typography';
+
+.combobox {
+  position: relative;
+}
+
+.combobox__input {
+  width: 100%;
+}
+
+.combobox__dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 10;
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+  background: colors.$color-surface;
+  border: 1px solid colors.$color-border;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.combobox__option {
+  @include typography.font-secondary;
+  padding: 8px 12px;
+  color: colors.$color-text;
+  cursor: pointer;
+  transition: background 0.1s;
+
+  &:hover {
+    background: colors.$color-bg;
+  }
+}

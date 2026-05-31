@@ -6,6 +6,7 @@ import { VacanciesModule } from './vacancies/vacancies.module';
 import { AdminModule } from './admin/admin.module';
 import { ResumeModule } from './resume/resume.module';
 import { HistoryModule } from './history/history.module';
+import { SuggestionsModule } from './suggestions/suggestions.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { HistoryModule } from './history/history.module';
     AdminModule,
     ResumeModule,
     HistoryModule,
+    SuggestionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

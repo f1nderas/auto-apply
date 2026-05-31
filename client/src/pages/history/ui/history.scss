@@ -25,6 +25,16 @@
   gap: 4px;
 }
 
+.history__clear {
+  margin-left: auto;
+  color: colors.$color-error !important;
+  border-color: colors.$color-error !important;
+
+  &:hover:not(:disabled) {
+    background: colors.$color-error-subtle !important;
+  }
+}
+
 .history__filter--active {
   background: colors.$color-primary;
   border-color: colors.$color-primary;
