@@ -11,7 +11,7 @@ interface ResumeEditModalProps {
   hash: string;
   initialName: string;
   initialExperience: number;
-  open: boolean;
+  isOpen: boolean;
   onClose: () => void;
 }
 
@@ -19,7 +19,7 @@ const ResumeEditModal = ({
   hash,
   initialName,
   initialExperience,
-  open,
+  isOpen,
   onClose,
 }: ResumeEditModalProps) => {
   // #region STATE
@@ -61,12 +61,12 @@ const ResumeEditModal = ({
   // #endregion
 
   return (
-    <Modal open={open} onClose={handleClose} title="Редактировать резюме">
+    <Modal isOpen={isOpen} onClose={handleClose} title="Редактировать резюме">
       <Input
         placeholder="Имя"
         value={name}
         onChange={(e) => setName(e.target.value)}
-        disabled={isLoading}
+        isDisabled={isLoading}
       />
       <Input
         type="number"
@@ -75,7 +75,7 @@ const ResumeEditModal = ({
         min={0}
         step={0.5}
         onChange={(e) => setExperience(e.target.value)}
-        disabled={isLoading}
+        isDisabled={isLoading}
       />
 
       <div className="resume-edit-modal__session">
@@ -83,7 +83,7 @@ const ResumeEditModal = ({
           variant="plain"
           className="resume-edit-modal__session-toggle"
           onClick={() => setShowCurl((v) => !v)}
-          disabled={isLoading}
+          isDisabled={isLoading}
         >
           {showCurl ? 'Скрыть обновление сессии' : 'Обновить сессию (cURL)'}
         </Button>
@@ -94,7 +94,7 @@ const ResumeEditModal = ({
             onChange={(e) => setCurl(e.target.value)}
             rows={5}
             spellCheck={false}
-            disabled={isLoading}
+            isDisabled={isLoading}
           />
         )}
       </div>
@@ -102,12 +102,12 @@ const ResumeEditModal = ({
       <div className="resume-edit-modal__actions">
         <Button
           onClick={handleSave}
-          disabled={isLoading || !name.trim() || isNaN(parseFloat(experience)) || parseFloat(experience) <= 0}
+          isDisabled={isLoading || !name.trim() || isNaN(parseFloat(experience)) || parseFloat(experience) <= 0}
           loading={isLoading}
         >
           Сохранить
         </Button>
-        <Button variant="plain" onClick={handleClose} disabled={isLoading}>
+        <Button variant="plain" onClick={handleClose} isDisabled={isLoading}>
           Отмена
         </Button>
       </div>

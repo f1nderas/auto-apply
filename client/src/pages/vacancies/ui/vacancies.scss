@@ -4,30 +4,6 @@
 .vacancies {
 }
 
-.vacancies__search {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 24px;
-}
-
-.vacancies__resume-select {
-  @include typography.font-secondary;
-  height: 34px;
-  padding: 0 10px;
-  border-radius: 8px;
-  border: 1px solid colors.$color-border;
-  background: colors.$color-surface;
-  color: colors.$color-text;
-  outline: none;
-  cursor: pointer;
-  align-self: flex-start;
-
-  &:focus {
-    border-color: colors.$color-primary;
-  }
-}
-
 .vacancies__controls {
   display: flex;
   align-items: center;

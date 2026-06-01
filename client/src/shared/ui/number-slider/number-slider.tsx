@@ -6,10 +6,10 @@ interface NumberSliderProps {
   min: number;
   max: number;
   onChange: (value: number) => void;
-  disabled?: boolean;
+  isDisabled?: boolean;
 }
 
-const NumberSlider = ({ value, min, max, onChange, disabled }: NumberSliderProps) => {
+const NumberSlider = ({ value, min, max, onChange, isDisabled }: NumberSliderProps) => {
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = parseInt(e.target.value, 10);
     if (!isNaN(val)) onChange(Math.min(max, Math.max(min, val)));
@@ -28,7 +28,7 @@ const NumberSlider = ({ value, min, max, onChange, disabled }: NumberSliderProps
         min={min}
         max={max}
         onChange={handleInput}
-        disabled={disabled}
+        isDisabled={isDisabled}
       />
       <input
         type="range"
@@ -37,7 +37,7 @@ const NumberSlider = ({ value, min, max, onChange, disabled }: NumberSliderProps
         min={min}
         max={max}
         onChange={handleRange}
-        disabled={disabled}
+        isDisabled={isDisabled}
       />
     </div>
   );

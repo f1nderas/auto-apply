@@ -93,7 +93,7 @@ const SessionUpdateForm = ({ resumeHash }: SessionUpdateFormProps) => {
                 variant="plain"
                 className="session-update-modal__submit"
                 onClick={handleSubmit}
-                disabled={isLoading || !curl.trim()}
+                isDisabled={isLoading || !curl.trim()}
               >
                 {isLoading ? 'Сохранение...' : 'Сохранить'}
               </Button>

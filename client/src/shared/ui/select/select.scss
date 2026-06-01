@@ -1,6 +1,17 @@
 @use '../../styles/colors';
 @use '../../styles/typography';
 
+.select-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.select-field__label {
+  @include typography.font-caption;
+  color: colors.$color-text-muted;
+}
+
 .select__control {
   @include typography.font-body;
   display: flex;
@@ -16,6 +27,10 @@
     border-color: colors.$color-primary;
     outline: none;
   }
+}
+
+.select__value-container {
+  padding: 10px 14px;
 }
 
 .select__single-value {

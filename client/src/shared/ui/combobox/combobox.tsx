@@ -8,11 +8,12 @@ interface ComboboxProps {
   onChange: (value: string) => void;
   options: string[];
   placeholder?: string;
-  disabled?: boolean;
+  isDisabled?: boolean;
   className?: string;
+  label?: string;
 }
 
-const Combobox = ({ value, onChange, options, placeholder, disabled, className }: ComboboxProps) => {
+const Combobox = ({ value, onChange, options, placeholder, isDisabled, className, label }: ComboboxProps) => {
   // #region STATE
   const [open, setOpen] = useState(false);
   // #endregion
@@ -25,17 +26,16 @@ const Combobox = ({ value, onChange, options, placeholder, disabled, className }
   // #endregion
 
   // #region STYLES
-  const rootClass = cx('combobox', className);
   const showDropdown = open && options.length > 0;
   // #endregion
 
-  return (
-    <div className={rootClass}>
+  const control = (
+    <div className={cx('combobox', label ? undefined : className)}>
       <Input
         className="combobox__input"
         value={value}
         placeholder={placeholder}
-        disabled={disabled}
+        isDisabled={isDisabled}
         autoComplete="off"
         onChange={(e) => onChange(e.target.value)}
         onFocus={() => setOpen(true)}
@@ -54,6 +54,15 @@ const Combobox = ({ value, onChange, options, placeholder, disabled, className }
           ))}
         </ul>
       )}
+    </div>
+  );
+
+  if (!label) return control;
+
+  return (
+    <div className={cx('combobox-field', className)}>
+      <span className="combobox-field__label">{label}</span>
+      {control}
     </div>
   );
 };

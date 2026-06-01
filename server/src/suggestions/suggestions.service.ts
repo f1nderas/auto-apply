@@ -1,4 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import { AreaDto } from './dto/area.dto';
+
+const AREAS: AreaDto[] = [
+  { value: 1, label: 'Москва' },
+  { value: 2, label: 'Санкт-Петербург' },
+  { value: 0, label: 'Все регионы' },
+];
 
 const GRADES = ['Junior', 'Middle', 'Senior'] as const;
 
@@ -92,6 +99,10 @@ class SuggestionsService {
     if (!query) return VACANCY_NAMES.slice(0, 10);
     const lower = query.toLowerCase();
     return VACANCY_NAMES.filter((name) => name.toLowerCase().includes(lower));
+  }
+
+  getAreas(): AreaDto[] {
+    return AREAS;
   }
 }
 

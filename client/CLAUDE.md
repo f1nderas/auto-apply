@@ -42,6 +42,22 @@ button/
 
 При переименовании использовать `git mv` — см. правило в корневом [CLAUDE.md](../CLAUDE.md).
 
+## Пропсы компонентов
+
+Булевые пропсы в кастомных интерфейсах **всегда начинаются с `is`**:
+
+```ts
+isLoading?: boolean;   // ✓
+isDisabled?: boolean;  // ✓
+isOpen?: boolean;      // ✓
+
+loading?: boolean;     // ✗
+disabled?: boolean;    // ✗
+open?: boolean;        // ✗
+```
+
+Исключение — нативные HTML-атрибуты (`disabled`, `checked`, `readonly`), унаследованные через `extends React.ButtonHTMLAttributes` и т.п. Их переименовывать не нужно, они пробрасываются напрямую в DOM.
+
 ## Компоненты
 
 Только `const`, никаких `function`. Именованный экспорт в конце файла:

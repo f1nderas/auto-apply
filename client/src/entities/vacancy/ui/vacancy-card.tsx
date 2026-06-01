@@ -129,7 +129,7 @@ const VacancyCard = ({ vacancy }: { vacancy: VacancyDto }) => {
           variant="plain"
           className={applyBtnClass}
           onClick={handleApply}
-          disabled={isLoading || !canApply}
+          isDisabled={isLoading || !canApply}
         >
           {btnLabel}
         </Button>

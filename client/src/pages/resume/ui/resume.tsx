@@ -81,14 +81,14 @@ const Resume = () => {
                   autoFocus
                 />
                 <div className="resume__about-actions">
-                  <Button onClick={handleSave} disabled={isSaving}>
+                  <Button onClick={handleSave} isDisabled={isSaving}>
                     Сохранить
                   </Button>
                   <Button
                     variant="plain"
                     className="resume__cancel-btn"
                     onClick={handleCancel}
-                    disabled={isSaving}
+                    isDisabled={isSaving}
                   >
                     Отмена
                   </Button>

@@ -1,6 +1,17 @@
 @use '../../styles/colors';
 @use '../../styles/typography';
 
+.combobox-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.combobox-field__label {
+  @include typography.font-caption;
+  color: colors.$color-text-muted;
+}
+
 .combobox {
   position: relative;
 }

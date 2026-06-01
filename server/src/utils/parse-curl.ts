@@ -17,6 +17,7 @@ const parseCurl = (input: string) => {
   const rawCookieStr = cookieMatch?.[1] ?? cookieMatch?.[2] ?? null;
   const cookie = rawCookieStr
     ? rawCookieStr
+        .replace(/\\u([0-9a-fA-F]{4})/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)))
         .replace(/\\_/g, '_')
         .replace(/(^|;\s*)\*\*([a-zA-Z])/g, '$1__$2')
     : null;

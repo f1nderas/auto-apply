@@ -4,26 +4,26 @@ import { cx } from '../../lib/cx';
 import './modal.scss';
 
 interface ModalProps {
-  open: boolean;
+  isOpen: boolean;
   onClose: () => void;
   title?: string;
   children: ReactNode;
   className?: string;
 }
 
-const Modal = ({ open, onClose, title, children, className }: ModalProps) => {
+const Modal = ({ isOpen, onClose, title, children, className }: ModalProps) => {
   // #region EFFECT
   useEffect(() => {
-    if (!open) return;
+    if (!isOpen) return;
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
     document.addEventListener('keydown', handleKey);
     return () => document.removeEventListener('keydown', handleKey);
-  }, [open, onClose]);
+  }, [isOpen, onClose]);
   // #endregion
 
-  if (!open) return null;
+  if (!isOpen) return null;
 
   // #region STYLES
   const contentClass = cx('modal__content', className);

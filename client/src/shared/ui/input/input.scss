@@ -1,6 +1,17 @@
 @use '../../styles/colors';
 @use '../../styles/typography';
 
+.input-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.input-field__label {
+  @include typography.font-caption;
+  color: colors.$color-text-muted;
+}
+
 .input {
   @include typography.font-body;
   padding: 10px 14px;

@@ -60,7 +60,7 @@ const ResumeCard = ({ hash, name, experience }: ResumeCardProps) => {
         hash={hash}
         initialName={name}
         initialExperience={experience}
-        open={editOpen}
+        isOpen={editOpen}
         onClose={() => setEditOpen(false)}
       />
     </>

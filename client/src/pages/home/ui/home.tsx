@@ -92,8 +92,8 @@ const Home = () => {
           <div className="home__add-form-actions">
             <Button
               onClick={handleAdd}
-              disabled={isAdding || !hash.trim() || !name.trim() || isNaN(parseFloat(experience)) || parseFloat(experience) <= 0 || !curl.trim()}
-              loading={isAdding}
+              isDisabled={isAdding || !hash.trim() || !name.trim() || isNaN(parseFloat(experience)) || parseFloat(experience) <= 0 || !curl.trim()}
+              isLoading={isAdding}
             >
               Добавить
             </Button>

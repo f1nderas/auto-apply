@@ -1,10 +1,148 @@
+@use '../../../shared/styles/colors';
+@use '../../../shared/styles/typography';
+
 .search-form {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
+  background: colors.$color-primary;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 24px;
 }
 
-.search-form__input {
+.search-form__main {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+  margin-bottom: 8px;
+}
+
+.search-form__card {
   flex: 1;
-  min-width: 200px;
+  background: colors.$color-surface;
+  border-radius: 10px;
+  display: flex;
+
+  .input {
+    border: none;
+    background: transparent;
+    border-radius: 0;
+    padding: 0;
+    width: 100%;
+
+    &:focus {
+      border-color: transparent;
+    }
+  }
+
+  .select__control {
+    border: none;
+    background: transparent;
+    border-radius: 0;
+
+    &:hover {
+      border-color: transparent;
+    }
+
+    &--is-focused {
+      border-color: transparent;
+      box-shadow: none;
+    }
+  }
+
+  .select__value-container {
+    padding: 0;
+  }
+
+  .input-field,
+  .select-field,
+  .combobox-field {
+    gap: 2px;
+  }
+
+  .input-field__label,
+  .select-field__label,
+  .combobox-field__label {
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+}
+
+.search-form__field {
+  flex: 1;
+  padding: 8px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  & + & {
+    border-left: 1px solid colors.$color-border-light;
+  }
+}
+
+.search-form__field--area {
+  flex: 0 0 200px;
+}
+
+.search-form .search-form__btn {
+  background: colors.$color-surface;
+  color: colors.$color-text;
+  border: none;
+  border-radius: 10px;
+  padding: 0 36px;
+  @include typography.font-strong;
+  white-space: nowrap;
+
+  &:not(:disabled):hover {
+    background: colors.$color-bg;
+  }
+
+  &:disabled {
+    background: rgb(255 255 255 / 50%);
+    color: rgb(0 0 0 / 40%);
+    cursor: not-allowed;
+  }
+}
+
+.search-form__footer {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.search-form__resume-prefix {
+  @include typography.font-secondary;
+  color: rgb(255 255 255 / 80%);
+  white-space: nowrap;
+}
+
+.search-form__resume {
+  .select__control {
+    border: none;
+    background: transparent;
+
+    &:hover {
+      border-color: transparent;
+    }
+
+    &--is-focused {
+      border-color: transparent;
+    }
+  }
+
+  .select__value-container {
+    padding: 0;
+  }
+
+  .select__single-value {
+    color: colors.$color-surface;
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  .select__placeholder {
+    color: rgb(255 255 255 / 60%);
+  }
+
+  .select__dropdown-indicator {
+    color: colors.$color-surface;
+  }
 }

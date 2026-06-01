@@ -39,7 +39,7 @@ const Pagination = ({ page, totalPages, isFetching = false, onPageChange }: Pagi
         variant="plain"
         className="pagination__btn"
         onClick={() => onPageChange(page - 1)}
-        disabled={page === 0 || isFetching}
+        isDisabled={page === 0 || isFetching}
       >
         ← Назад
       </Button>
@@ -55,7 +55,7 @@ const Pagination = ({ page, totalPages, isFetching = false, onPageChange }: Pagi
             variant="plain"
             className={pageBtnClass(p)}
             onClick={() => onPageChange(p)}
-            disabled={isFetching}
+            isDisabled={isFetching}
           >
             {p + 1}
           </Button>
@@ -66,7 +66,7 @@ const Pagination = ({ page, totalPages, isFetching = false, onPageChange }: Pagi
         variant="plain"
         className="pagination__btn"
         onClick={() => onPageChange(page + 1)}
-        disabled={page >= totalPages - 1 || isFetching}
+        isDisabled={page >= totalPages - 1 || isFetching}
       >
         Вперёд →
       </Button>

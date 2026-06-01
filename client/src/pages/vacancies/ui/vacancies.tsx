@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { SearchForm } from '@features/vacancy-search';
 import { VacancyCard, useLazySearchVacanciesQuery } from '@entities/vacancy';
-import { useGetProfilesQuery } from '@entities/resume';
 import { Button } from '@shared/ui/button';
 import { Pagination } from '@shared/ui/pagination';
 import { cx } from '@shared/lib/cx';
@@ -11,17 +10,16 @@ const Vacancies = () => {
   // #region STATE
   const [page, setPage] = useState(0);
   const [perPage, setPerPage] = useState(20);
-  const [selectedHash, setSelectedHash] = useState<string>('');
   const [lastQuery, setLastQuery] = useState<{
     text: string;
     area: number;
+    resumeHash: string;
   } | null>(null);
   // #endregion
 
   // #region HOOK
   const [search, { data, isFetching, isError, error, isUninitialized }] =
     useLazySearchVacanciesQuery();
-  const { data: profiles } = useGetProfilesQuery();
   // #endregion
 
   // #region COMPUTED
@@ -33,23 +31,23 @@ const Vacancies = () => {
   // #endregion
 
   // #region HANDLER
-  const handleSearch = (text: string, area: number) => {
-    setLastQuery({ text, area });
+  const handleSearch = (text: string, area: number, resumeHash: string) => {
+    setLastQuery({ text, area, resumeHash });
     setPage(0);
-    search({ text, area, page: 0, perPage, ...(selectedHash ? { resumeHash: selectedHash } : {}) });
+    search({ text, area, page: 0, perPage, ...(resumeHash ? { resumeHash } : {}) });
   };
 
   const handlePageChange = (newPage: number) => {
     if (!lastQuery) return;
     setPage(newPage);
-    search({ ...lastQuery, page: newPage, perPage, ...(selectedHash ? { resumeHash: selectedHash } : {}) });
+    search({ ...lastQuery, page: newPage, perPage });
   };
 
   const handlePerPageChange = (newPerPage: number) => {
     if (!lastQuery) return;
     setPerPage(newPerPage);
     setPage(0);
-    search({ ...lastQuery, page: 0, perPage: newPerPage, ...(selectedHash ? { resumeHash: selectedHash } : {}) });
+    search({ ...lastQuery, page: 0, perPage: newPerPage });
   };
   // #endregion
 
@@ -60,19 +58,7 @@ const Vacancies = () => {
 
   return (
     <div className="vacancies">
-      <div className="vacancies__search">
-        <select
-          className="vacancies__resume-select"
-          value={selectedHash}
-          onChange={(e) => setSelectedHash(e.target.value)}
-        >
-          <option value="">Активная сессия</option>
-          {profiles?.map((p) => (
-            <option key={p.hash} value={p.hash}>{p.name}</option>
-          ))}
-        </select>
-        <SearchForm onSearch={handleSearch} loading={isFetching} />
-      </div>
+      <SearchForm onSearch={handleSearch} isLoading={isFetching} />
 
       {!isFetching && !isError && (data?.vacancies.length ?? 0) > 0 && (
         <div className="vacancies__controls">
@@ -87,7 +73,7 @@ const Vacancies = () => {
                 variant="plain"
                 className={perPageBtnClass(n)}
                 onClick={() => handlePerPageChange(n)}
-                disabled={isFetching}
+                isDisabled={isFetching}
               >
                 {n}
               </Button>
