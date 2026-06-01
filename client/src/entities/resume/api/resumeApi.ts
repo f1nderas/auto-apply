@@ -1,8 +1,39 @@
 import { baseApi } from '@shared/api/baseApi';
 import type { ResumeDto } from '@dto';
 
+interface ResumeProfile {
+  hash: string;
+  name: string;
+  experience: number;
+}
+
+interface AddProfileDto {
+  hash: string;
+  name: string;
+  experience: number;
+  curl: string;
+}
+
+interface UpdateProfileDto {
+  name: string;
+  experience: number;
+  curl?: string;
+}
+
 const resumeApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
+    getProfiles: build.query<ResumeProfile[], void>({
+      query: () => '/resume',
+      providesTags: ['Profiles'],
+    }),
+    addProfile: build.mutation<void, AddProfileDto>({
+      query: (body) => ({ url: '/resume', method: 'POST', body }),
+      invalidatesTags: ['Profiles'],
+    }),
+    updateProfile: build.mutation<void, { hash: string } & UpdateProfileDto>({
+      query: ({ hash, ...body }) => ({ url: `/resume/${hash}/profile`, method: 'PATCH', body }),
+      invalidatesTags: ['Profiles'],
+    }),
     getResume: build.query<ResumeDto, string>({
       query: (hash) => `/resume/${hash}`,
     }),
@@ -16,6 +47,19 @@ const resumeApi = baseApi.injectEndpoints({
   }),
 });
 
-const { useGetResumeQuery, useUpdateAboutMutation } = resumeApi;
+const {
+  useGetProfilesQuery,
+  useAddProfileMutation,
+  useUpdateProfileMutation,
+  useGetResumeQuery,
+  useUpdateAboutMutation,
+} = resumeApi;
 
-export { useGetResumeQuery, useUpdateAboutMutation };
+export type { ResumeProfile, UpdateProfileDto };
+export {
+  useGetProfilesQuery,
+  useAddProfileMutation,
+  useUpdateProfileMutation,
+  useGetResumeQuery,
+  useUpdateAboutMutation,
+};

@@ -10,6 +10,11 @@ export class ApplyVacancyDto {
   @IsOptional()
   @IsString()
   letter?: string;
+
+  @ApiPropertyOptional({ type: String })
+  @IsOptional()
+  @IsString()
+  resumeHash?: string;
 }
 
 export class ApplyResponseDto {

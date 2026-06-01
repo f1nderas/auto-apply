@@ -5,10 +5,17 @@ interface AddHistoryItemDto {
   vacancyName: string;
   employer: string;
   status: 'success' | 'failed';
+  resumeHash?: string;
 }
 
 interface HistoryRecord extends AddHistoryItemDto {
   appliedAt: string;
+}
+
+interface HistoryStats {
+  total: number;
+  success: number;
+  failed: number;
 }
 
 const historyApi = baseApi.injectEndpoints({
@@ -21,6 +28,10 @@ const historyApi = baseApi.injectEndpoints({
       query: () => '/history',
       providesTags: ['History'],
     }),
+    getHistoryStats: build.query<HistoryStats, void>({
+      query: () => '/history/stats',
+      providesTags: ['History'],
+    }),
     clearHistory: build.mutation<void, void>({
       query: () => ({ url: '/history', method: 'DELETE' }),
       invalidatesTags: ['History'],
@@ -28,7 +39,12 @@ const historyApi = baseApi.injectEndpoints({
   }),
 });
 
-const { useAddHistoryMutation, useGetHistoryQuery, useClearHistoryMutation } = historyApi;
+const {
+  useAddHistoryMutation,
+  useGetHistoryQuery,
+  useGetHistoryStatsQuery,
+  useClearHistoryMutation,
+} = historyApi;
 
-export type { HistoryRecord };
-export { useAddHistoryMutation, useGetHistoryQuery, useClearHistoryMutation };
+export type { HistoryRecord, HistoryStats };
+export { useAddHistoryMutation, useGetHistoryQuery, useGetHistoryStatsQuery, useClearHistoryMutation };

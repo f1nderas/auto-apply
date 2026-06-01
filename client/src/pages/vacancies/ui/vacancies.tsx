@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { SearchForm } from '@features/vacancy-search';
 import { VacancyCard, useLazySearchVacanciesQuery } from '@entities/vacancy';
+import { useGetProfilesQuery } from '@entities/resume';
 import { Button } from '@shared/ui/button';
 import { Pagination } from '@shared/ui/pagination';
 import { cx } from '@shared/lib/cx';
@@ -10,6 +11,7 @@ const Vacancies = () => {
   // #region STATE
   const [page, setPage] = useState(0);
   const [perPage, setPerPage] = useState(20);
+  const [selectedHash, setSelectedHash] = useState<string>('');
   const [lastQuery, setLastQuery] = useState<{
     text: string;
     area: number;
@@ -19,6 +21,7 @@ const Vacancies = () => {
   // #region HOOK
   const [search, { data, isFetching, isError, error, isUninitialized }] =
     useLazySearchVacanciesQuery();
+  const { data: profiles } = useGetProfilesQuery();
   // #endregion
 
   // #region COMPUTED
@@ -33,20 +36,20 @@ const Vacancies = () => {
   const handleSearch = (text: string, area: number) => {
     setLastQuery({ text, area });
     setPage(0);
-    search({ text, area, page: 0, perPage });
+    search({ text, area, page: 0, perPage, ...(selectedHash ? { resumeHash: selectedHash } : {}) });
   };
 
   const handlePageChange = (newPage: number) => {
     if (!lastQuery) return;
     setPage(newPage);
-    search({ ...lastQuery, page: newPage, perPage });
+    search({ ...lastQuery, page: newPage, perPage, ...(selectedHash ? { resumeHash: selectedHash } : {}) });
   };
 
   const handlePerPageChange = (newPerPage: number) => {
     if (!lastQuery) return;
     setPerPage(newPerPage);
     setPage(0);
-    search({ ...lastQuery, page: 0, perPage: newPerPage });
+    search({ ...lastQuery, page: 0, perPage: newPerPage, ...(selectedHash ? { resumeHash: selectedHash } : {}) });
   };
   // #endregion
 
@@ -58,6 +61,16 @@ const Vacancies = () => {
   return (
     <div className="vacancies">
       <div className="vacancies__search">
+        <select
+          className="vacancies__resume-select"
+          value={selectedHash}
+          onChange={(e) => setSelectedHash(e.target.value)}
+        >
+          <option value="">Активная сессия</option>
+          {profiles?.map((p) => (
+            <option key={p.hash} value={p.hash}>{p.name}</option>
+          ))}
+        </select>
         <SearchForm onSearch={handleSearch} loading={isFetching} />
       </div>
 

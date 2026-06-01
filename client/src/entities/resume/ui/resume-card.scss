@@ -1,0 +1,69 @@
+@use '../../../shared/styles/colors';
+@use '../../../shared/styles/typography';
+
+.resume-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: colors.$color-surface;
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.resume-card__checkbox-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.resume-card__checkbox {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  accent-color: colors.$color-primary;
+}
+
+.resume-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.resume-card__name {
+  @include typography.font-title;
+  color: colors.$color-text;
+}
+
+.resume-card__exp {
+  @include typography.font-secondary;
+  color: colors.$color-text-muted;
+}
+
+.resume-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.resume-card__btn {
+  @include typography.font-secondary;
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid colors.$color-border;
+  color: colors.$color-text-secondary;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+
+  &:hover {
+    background: colors.$color-bg;
+    color: colors.$color-text;
+  }
+}

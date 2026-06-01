@@ -2,6 +2,7 @@ import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { Injectable } from '@nestjs/common';
 import { AddHistoryItemDto } from './dto/add-history-item.dto';
+import { HistoryStatsDto } from './dto/history-stats.dto';
 
 export interface HistoryRecord extends AddHistoryItemDto {
   appliedAt: string;
@@ -19,6 +20,15 @@ export class HistoryService {
 
   getAll(): HistoryRecord[] {
     return this.load();
+  }
+
+  getStats(): HistoryStatsDto {
+    const records = this.load();
+    return {
+      total: records.length,
+      success: records.filter((r) => r.status === 'success').length,
+      failed: records.filter((r) => r.status === 'failed').length,
+    };
   }
 
   clear(): void {

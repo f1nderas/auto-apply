@@ -11,11 +11,14 @@ client/dist/
 # Environment variables — один файл в корне для всего монорепо
 .env
 
-# Сессии HH.ru — персистятся в памяти сервера, содержат куки
+# Сессии HH.ru (устарело — данные перенесены в resumes.json)
 server/sessions.json
 
 # История откликов
 server/apply-history.json
+
+# Список резюме
+server/resumes.json
 .env.local
 .env.*.local
 

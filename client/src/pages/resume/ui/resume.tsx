@@ -4,6 +4,7 @@ import { useGetResumeQuery, useUpdateAboutMutation } from '@entities/resume';
 import { Badge } from '@shared/ui/badge';
 import { Button } from '@shared/ui/button';
 import { Textarea } from '@shared/ui/textarea';
+import { Title } from '@shared/ui/title';
 import './resume.scss';
 
 const Resume = () => {
@@ -48,7 +49,7 @@ const Resume = () => {
       {data && (
         <>
           <div className="resume__card">
-            <h1 className="resume__name">{data.name}</h1>
+            <Title className="resume__name">{data.name}</Title>
             <p className="resume__title">{data.title}</p>
 
             {data.keySkills.length > 0 && (
@@ -62,7 +63,7 @@ const Resume = () => {
 
           <div className="resume__card">
             <div className="resume__about-header">
-              <h2 className="resume__section-title">О себе</h2>
+              <Title as="h2">О себе</Title>
               {!isEditing && (
                 <Button variant="plain" className="resume__edit-btn" onClick={handleEditStart}>
                   Редактировать

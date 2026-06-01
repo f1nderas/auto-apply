@@ -1,0 +1,16 @@
+@use '../../../shared/styles/colors';
+
+.resume-edit-modal__session {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.resume-edit-modal__session-toggle {
+  align-self: flex-start;
+}
+
+.resume-edit-modal__actions {
+  display: flex;
+  gap: 8px;
+}

@@ -15,22 +15,22 @@ import {
   HhPaging,
   HhApplyResponse,
 } from './interfaces/hh-api.interface';
-import { SessionStore } from './session-store.service';
+import { ResumeStore } from './resume-store.service';
 import { HH_BASE_URL, ESSENTIAL_COOKIES } from './constants';
 import { ApplyVacancyDto, ApplyResponseDto } from './dto/apply-vacancy.dto';
 
 @Injectable()
 export class VacanciesService {
-  constructor(private readonly sessionStore: SessionStore) {}
+  constructor(private readonly resumeStore: ResumeStore) {}
 
   async search(params: SearchVacanciesDto): Promise<VacanciesResponseDto> {
-    const { text, area, page, perPage } = params;
+    const { text, area, page, perPage, resumeHash } = params;
     const {
       cookie: rawCookie,
       xsrfToken,
       staticVersion,
       baseUrl,
-    } = this.sessionStore.get();
+    } = this.resumeStore.getSession(resumeHash);
     const cookie = this.filterCookies(rawCookie);
 
     // GIB (Group-IB) антибот: значения берутся из соответствующих кук
@@ -100,9 +100,9 @@ export class VacanciesService {
   }
 
   async apply(dto: ApplyVacancyDto): Promise<ApplyResponseDto> {
-    const { vacancyId, letter } = dto;
-    const { cookie: rawCookie, xsrfToken, baseUrl } = this.sessionStore.get();
-    const resumeHash = this.sessionStore.getActiveHash() ?? '';
+    const { vacancyId, letter, resumeHash: dtoResumeHash } = dto;
+    const { cookie: rawCookie, xsrfToken, baseUrl } = this.resumeStore.getSession(dtoResumeHash);
+    const resumeHash = dtoResumeHash ?? '';
     const cookie = this.filterCookies(rawCookie);
     const fgsscgib = this.extractCookie(rawCookie, 'fgsscgib-w-hh');
     const gsscgib = this.extractCookie(rawCookie, 'gsscgib-w-hh');

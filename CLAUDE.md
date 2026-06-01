@@ -33,8 +33,22 @@ bun run gen:api
 
 Все файлы — **kebab-case**: `vacancy-card.tsx`, `vacancies.service.ts`, `search-form.tsx`.
 
-При переименовании файлов использовать `git mv`. На Windows NTFS для смены регистра —
-обязательный промежуточный шаг (иначе git не видит изменение):
+## Перемещение и переименование файлов
+
+**Всегда использовать `git mv`** — иначе git видит это как удаление + создание и теряет историю изменений файла.
+
+```powershell
+# Переименование
+git mv src/features/foo/old-name.tsx src/features/foo/new-name.tsx
+
+# Перемещение
+git mv src/features/foo/bar.tsx src/widgets/foo/bar.tsx
+
+# Перемещение папки целиком
+git mv src/features/foo/ui src/widgets/foo/ui
+```
+
+На Windows NTFS смена только регистра требует промежуточного шага (иначе git не видит изменение):
 
 ```powershell
 git mv src/app/App.tsx src/app/_app.tsx

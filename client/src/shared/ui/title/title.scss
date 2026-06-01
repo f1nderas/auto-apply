@@ -1,0 +1,17 @@
+@use '../../styles/colors';
+@use '../../styles/typography';
+
+h1.title {
+  @include typography.font-heading;
+  color: colors.$color-text;
+}
+
+h2.title {
+  @include typography.font-title;
+  color: colors.$color-text;
+}
+
+h3.title {
+  @include typography.font-strong;
+  color: colors.$color-text;
+}

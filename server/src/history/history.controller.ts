@@ -2,6 +2,7 @@ import { Controller, Delete, Get, Post, Body } from '@nestjs/common';
 import { ApiTags, ApiBody, ApiResponse } from '@nestjs/swagger';
 import { HistoryService } from './history.service';
 import { AddHistoryItemDto } from './dto/add-history-item.dto';
+import { HistoryStatsDto } from './dto/history-stats.dto';
 
 @ApiTags('History')
 @Controller('history')
@@ -13,6 +14,12 @@ export class HistoryController {
   @ApiResponse({ status: 201 })
   add(@Body() dto: AddHistoryItemDto): void {
     this.historyService.add(dto);
+  }
+
+  @Get('stats')
+  @ApiResponse({ status: 200, type: HistoryStatsDto })
+  getStats(): HistoryStatsDto {
+    return this.historyService.getStats();
   }
 
   @Get()

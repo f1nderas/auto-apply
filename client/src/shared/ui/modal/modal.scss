@@ -1,0 +1,54 @@
+@use '../../styles/colors';
+@use '../../styles/typography';
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.modal__content {
+  background: colors.$color-surface;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.16);
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal__title {
+  @include typography.font-title;
+  color: colors.$color-text;
+}
+
+.modal__close {
+  @include typography.font-body;
+  background: none;
+  border: none;
+  color: colors.$color-text-muted;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  border-radius: 4px;
+
+  &:hover {
+    color: colors.$color-text;
+    background: colors.$color-bg;
+  }
+}

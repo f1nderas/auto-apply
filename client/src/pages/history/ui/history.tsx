@@ -3,7 +3,9 @@ import { toast } from 'react-hot-toast';
 import { cx } from '@shared/lib/cx';
 import { Badge } from '@shared/ui/badge';
 import { Button } from '@shared/ui/button';
-import { useGetHistoryQuery, useClearHistoryMutation } from '@features/auto-apply';
+import { Title } from '@shared/ui/title';
+import { useGetProfilesQuery } from '@entities/resume';
+import { useGetHistoryQuery, useGetHistoryStatsQuery, useClearHistoryMutation } from '@features/auto-apply';
 import type { HistoryRecord } from '@features/auto-apply';
 import './history.scss';
 
@@ -27,10 +29,13 @@ const formatDate = (iso: string) =>
 const History = () => {
   // #region STATE
   const [filter, setFilter] = useState<StatusFilter>('all');
+  const [resumeFilter, setResumeFilter] = useState<string>('all');
   // #endregion
 
   // #region HOOK
   const { data, isLoading, isError } = useGetHistoryQuery();
+  const { data: stats } = useGetHistoryStatsQuery();
+  const { data: profiles } = useGetProfilesQuery();
   const [clearHistory] = useClearHistoryMutation();
   // #endregion
 
@@ -43,8 +48,18 @@ const History = () => {
 
   // #region COMPUTED
   const records: HistoryRecord[] = [...(data ?? [])].reverse();
-  const filtered =
-    filter === 'all' ? records : records.filter((r) => r.status === filter);
+  const filtered = records
+    .filter((r) => filter === 'all' || r.status === filter)
+    .filter((r) => {
+      if (resumeFilter === 'all') return true;
+      if (resumeFilter === 'unknown') return !r.resumeHash;
+      return r.resumeHash === resumeFilter;
+    });
+
+  const resumeName = (hash: string | undefined) => {
+    if (!hash) return 'Неизвестно';
+    return profiles?.find((p) => p.hash === hash)?.name ?? 'Неизвестно';
+  };
   // #endregion
 
   // #region STYLES
@@ -61,16 +76,14 @@ const History = () => {
   if (isError)
     return (
       <div className="history">
-        <p className="history__state history__state--error">
-          Ошибка загрузки истории
-        </p>
+        <p className="history__state history__state--error">Ошибка загрузки истории</p>
       </div>
     );
 
   return (
     <div className="history">
       <div className="history__header">
-        <h1 className="history__title">История откликов</h1>
+        <Title>История откликов</Title>
         <div className="history__filters">
           {FILTERS.map(({ value, label }) => (
             <Button
@@ -83,6 +96,17 @@ const History = () => {
             </Button>
           ))}
         </div>
+        <select
+          className="history__resume-select"
+          value={resumeFilter}
+          onChange={(e) => setResumeFilter(e.target.value)}
+        >
+          <option value="all">Все резюме</option>
+          {profiles?.map((p) => (
+            <option key={p.hash} value={p.hash}>{p.name}</option>
+          ))}
+          <option value="unknown">Неизвестно</option>
+        </select>
         {records.length > 0 && (
           <Button variant="plain" className="history__clear" onClick={handleClear}>
             Очистить
@@ -90,11 +114,26 @@ const History = () => {
         )}
       </div>
 
+      {stats && (
+        <div className="history__stats">
+          <div className="history__stat">
+            <span className="history__stat-value">{stats.total}</span>
+            <span className="history__stat-label">Всего</span>
+          </div>
+          <div className="history__stat">
+            <span className="history__stat-value history__stat-value--success">{stats.success}</span>
+            <span className="history__stat-label">Прошли</span>
+          </div>
+          <div className="history__stat">
+            <span className="history__stat-value history__stat-value--failed">{stats.failed}</span>
+            <span className="history__stat-label">Не прошли</span>
+          </div>
+        </div>
+      )}
+
       {filtered.length === 0 ? (
         <p className="history__state">
-          {records.length === 0
-            ? 'Откликов пока нет'
-            : 'Нет записей с таким статусом'}
+          {records.length === 0 ? 'Откликов пока нет' : 'Нет записей с таким фильтром'}
         </p>
       ) : (
         <table className="history__table">
@@ -102,6 +141,7 @@ const History = () => {
             <tr>
               <th className="history__th">Вакансия</th>
               <th className="history__th">Работодатель</th>
+              <th className="history__th">Резюме</th>
               <th className="history__th">Статус</th>
               <th className="history__th">Дата</th>
             </tr>
@@ -120,6 +160,9 @@ const History = () => {
                   </a>
                 </td>
                 <td className="history__td">{r.employer}</td>
+                <td className="history__td history__td--resume">
+                  {resumeName(r.resumeHash)}
+                </td>
                 <td className="history__td">
                   <Badge variant={r.status === 'success' ? 'green' : 'red'}>
                     {r.status === 'success' ? 'Отклик прошёл' : 'Не прошёл'}

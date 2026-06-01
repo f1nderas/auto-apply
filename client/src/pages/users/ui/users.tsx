@@ -1,8 +1,9 @@
+import { Title } from '@shared/ui/title';
 import './users.scss';
 
 const Users = () => (
   <div className="users">
-    <h1 className="users__title">Пользователи</h1>
+    <Title className="users__title">Пользователи</Title>
     <p className="users__empty">Список пользователей пока пуст</p>
   </div>
 );

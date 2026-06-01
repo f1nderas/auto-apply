@@ -1,9 +1,13 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import axios from 'axios';
-import { SessionStore } from '../vacancies/session-store.service';
+import { ResumeStore } from '../vacancies/resume-store.service';
 import { ESSENTIAL_COOKIES } from '../vacancies/constants';
 import { HhResumeResponse } from './interfaces/hh-resume.interface';
 import { ResumeDto } from './dto/resume.dto';
+import { ResumeProfileDto } from './dto/resume-profile.dto';
+import { AddResumeProfileDto } from './dto/add-resume-profile.dto';
+import { UpdateResumeProfileDto } from './dto/update-resume-profile.dto';
+import { parseCurl } from '../utils/parse-curl';
 
 const UA =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36';
@@ -23,31 +27,72 @@ const BROWSER_HEADERS = {
 
 @Injectable()
 export class ResumeService {
-  constructor(private readonly sessionStore: SessionStore) {}
+  constructor(private readonly resumeStore: ResumeStore) {}
+
+  getProfiles(): ResumeProfileDto[] {
+    return this.resumeStore.getAll();
+  }
+
+  addProfile(dto: AddResumeProfileDto): void {
+    const parsed = parseCurl(dto.curl);
+    if (!parsed.baseUrl?.includes('hh.ru')) {
+      throw new HttpException(
+        'Нужен cURL с hh.ru, а не со стороннего сайта',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    if (!parsed.cookie || !parsed.xsrfToken) {
+      throw new HttpException(
+        'Не удалось распарсить cURL: не найдены cookie или x-xsrftoken',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    this.resumeStore.upsert(dto.hash, {
+      name: dto.name,
+      experience: dto.experience,
+      cookie: parsed.cookie,
+      xsrfToken: parsed.xsrfToken,
+      ...(parsed.staticVersion && { staticVersion: parsed.staticVersion }),
+      ...(parsed.baseUrl && { baseUrl: parsed.baseUrl }),
+    });
+  }
+
+  updateProfile(hash: string, dto: UpdateResumeProfileDto): void {
+    const patch: Parameters<typeof this.resumeStore.upsert>[1] = {
+      name: dto.name,
+      experience: dto.experience,
+    };
+
+    if (dto.curl) {
+      const parsed = parseCurl(dto.curl);
+      if (!parsed.baseUrl?.includes('hh.ru')) {
+        throw new HttpException(
+          'Нужен cURL с hh.ru, а не со стороннего сайта',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      if (!parsed.cookie || !parsed.xsrfToken) {
+        throw new HttpException(
+          'Не удалось распарсить cURL: не найдены cookie или x-xsrftoken',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      patch.cookie = parsed.cookie;
+      patch.xsrfToken = parsed.xsrfToken;
+      if (parsed.staticVersion) patch.staticVersion = parsed.staticVersion;
+      if (parsed.baseUrl) patch.baseUrl = parsed.baseUrl;
+    }
+
+    this.resumeStore.upsert(hash, patch);
+  }
 
   async getResume(hash: string): Promise<ResumeDto> {
-    const session = this.sessionStore.get();
-    const { cookie: rawCookie, xsrfToken, baseUrl, staticVersion } = session;
+    const { cookie: rawCookie, xsrfToken, baseUrl, staticVersion } =
+      this.resumeStore.getSession(hash);
     const cookie = this.filterCookies(rawCookie);
     const fgsscgib = this.extractCookie(rawCookie, 'fgsscgib-w-hh');
     const gsscgib = this.extractCookie(rawCookie, 'gsscgib-w-hh');
-
-    const hhtoken = this.extractCookie(rawCookie, 'hhtoken');
-    const hi = this.extractCookie(rawCookie, '_hi');
-
-    console.log(
-      '[getResume] activeHash      =',
-      this.sessionStore.getActiveHash(),
-    );
-    console.log(
-      '[getResume] registeredHashes=',
-      this.sessionStore.listRegisteredHashes(),
-    );
-    console.log('[getResume] _hi (user id)   =', hi || '(empty)');
-    console.log('[getResume] hhtoken         =', hhtoken || '(empty)');
-    console.log('[getResume] xsrfToken       =', xsrfToken || '(empty)');
-    console.log('[getResume] fgsscgib-w-hh   =', fgsscgib || '(empty)');
-    console.log('[getResume] gsscgib-w-hh    =', gsscgib || '(empty)');
 
     try {
       const { data } = await axios.get<HhResumeResponse>(
@@ -102,7 +147,8 @@ export class ResumeService {
   }
 
   async updateAbout(hash: string, text: string): Promise<void> {
-    const { cookie: rawCookie, xsrfToken, baseUrl } = this.sessionStore.get();
+    const { cookie: rawCookie, xsrfToken, baseUrl } =
+      this.resumeStore.getSession(hash);
     const cookie = this.filterCookies(rawCookie);
     const fgsscgib = this.extractCookie(rawCookie, 'fgsscgib-w-hh');
     const gsscgib = this.extractCookie(rawCookie, 'gsscgib-w-hh');

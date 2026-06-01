@@ -5,12 +5,10 @@ import { useDebounce } from '@shared/lib/use-debounce';
 import { Button } from '@shared/ui/button';
 import { Combobox } from '@shared/ui/combobox';
 import { NumberSlider } from '@shared/ui/number-slider';
-import {
-  useLazySearchVacanciesQuery,
-  useApplyVacancyMutation,
-} from '@entities/vacancy';
-import { useAddHistoryMutation } from '../api/history-api';
-import { useLazyGetSuggestionsQuery } from '../api/suggestions-api';
+import { useAppSelector } from '@shared/store/hooks';
+import { useLazySearchVacanciesQuery, useApplyVacancyMutation } from '@entities/vacancy';
+import { selectSelectedHashes } from '@entities/resume';
+import { useAddHistoryMutation, useLazyGetSuggestionsQuery } from '@features/auto-apply';
 import './auto-apply-btn.scss';
 
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
@@ -30,24 +28,20 @@ const AutoApplyBtn = () => {
   const [fetchVacancies] = useLazySearchVacanciesQuery();
   const [applyVacancy] = useApplyVacancyMutation();
   const [addHistory] = useAddHistoryMutation();
+  const selectedHashes = useAppSelector(selectSelectedHashes);
   const debouncedText = useDebounce(text, 400);
   // #endregion
 
   // #region EFFECT
   useEffect(() => {
-    const params = debouncedText.trim()
-      ? { query: debouncedText.trim() }
-      : undefined;
-    void fetchSuggestions(params)
-      .unwrap()
-      .then(setSuggestions)
-      .catch(() => {});
+    const params = debouncedText.trim() ? { query: debouncedText.trim() } : undefined;
+    void fetchSuggestions(params).unwrap().then(setSuggestions).catch(() => {});
   }, [debouncedText, fetchSuggestions]);
   // #endregion
 
   // #region HANDLER
   const handleRun = async () => {
-    if (!text.trim() || phase === 'running') return;
+    if (!text.trim() || phase === 'running' || selectedHashes.length === 0) return;
     setPhase('running');
     setCurrent(0);
 
@@ -69,30 +63,35 @@ const AutoApplyBtn = () => {
       return;
     }
 
-    setTotal(candidates.length);
+    const totalOps = candidates.length * selectedHashes.length;
+    setTotal(totalOps);
+    let done = 0;
 
-    for (let i = 0; i < candidates.length; i++) {
-      await sleep(2000);
-      const v = candidates[i];
-      setCurrent(i + 1);
+    for (const resumeHash of selectedHashes) {
+      for (const v of candidates) {
+        await sleep(2000);
+        done++;
+        setCurrent(done);
 
-      let success = false;
-      try {
-        const res = await applyVacancy({
-          applyVacancyDto: { vacancyId: v.id },
-        }).unwrap();
-        success = res.ok;
-      } catch {}
+        let success = false;
+        try {
+          const res = await applyVacancy({
+            applyVacancyDto: { vacancyId: v.id, resumeHash },
+          }).unwrap();
+          success = res.ok;
+        } catch {}
 
-      toast[success ? 'success' : 'error'](
-        `${success ? '✓' : '✗'} ${v.name.slice(0, 50)}`,
-      );
-      addHistory({
-        vacancyId: v.id,
-        vacancyName: v.name,
-        employer: v.employer.name,
-        status: success ? 'success' : 'failed',
-      });
+        toast[success ? 'success' : 'error'](
+          `${success ? '✓' : '✗'} ${v.name.slice(0, 50)}`,
+        );
+        addHistory({
+          vacancyId: v.id,
+          vacancyName: v.name,
+          employer: v.employer.name,
+          status: success ? 'success' : 'failed',
+          resumeHash,
+        });
+      }
     }
 
     setPhase('done');
@@ -105,11 +104,11 @@ const AutoApplyBtn = () => {
 
   // #region COMPUTED
   const btnLabel =
-    phase === 'running'
-      ? `${current} / ${total}…`
-      : phase === 'done'
-        ? 'Готово'
-        : 'Запустить';
+    phase === 'running' ? `${current} / ${total}…` :
+    phase === 'done'    ? 'Готово' :
+                          'Запустить';
+
+  const isDisabled = phase === 'running' || !text.trim() || selectedHashes.length === 0;
   // #endregion
 
   // #region STYLES
@@ -133,11 +132,14 @@ const AutoApplyBtn = () => {
         onChange={setCount}
         disabled={phase === 'running'}
       />
+      {selectedHashes.length === 0 && (
+        <p className="auto-apply-btn__hint">Выберите резюме для отклика</p>
+      )}
       <Button
         variant="plain"
         className={btnClass}
         onClick={handleRun}
-        disabled={phase === 'running' || !text.trim()}
+        disabled={isDisabled}
         loading={phase === 'running'}
       >
         {btnLabel}

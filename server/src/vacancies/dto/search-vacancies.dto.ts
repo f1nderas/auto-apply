@@ -27,4 +27,9 @@ export class SearchVacanciesDto {
   @Min(1)
   @Max(100)
   perPage: number = 20;
+
+  @ApiPropertyOptional({ type: String })
+  @IsOptional()
+  @IsString()
+  resumeHash?: string;
 }

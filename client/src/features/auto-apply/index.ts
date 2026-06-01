@@ -1,3 +1,3 @@
-export { AutoApplyBtn } from './ui/auto-apply-btn';
-export { useGetHistoryQuery, useClearHistoryMutation } from './api/history-api';
-export type { HistoryRecord } from './api/history-api';
+export { useGetHistoryQuery, useGetHistoryStatsQuery, useClearHistoryMutation, useAddHistoryMutation } from './api/history-api';
+export type { HistoryRecord, HistoryStats } from './api/history-api';
+export { useLazyGetSuggestionsQuery } from './api/suggestions-api';

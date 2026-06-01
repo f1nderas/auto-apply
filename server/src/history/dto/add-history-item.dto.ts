@@ -1,5 +1,5 @@
-import { IsString, IsIn } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { IsString, IsIn, IsOptional } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 class AddHistoryItemDto {
   @IsString()
@@ -17,6 +17,11 @@ class AddHistoryItemDto {
   @IsIn(['success', 'failed'])
   @ApiProperty({ enum: ['success', 'failed'] })
   status: 'success' | 'failed';
+
+  @IsOptional()
+  @IsString()
+  @ApiPropertyOptional({ type: String })
+  resumeHash?: string;
 }
 
 export { AddHistoryItemDto };

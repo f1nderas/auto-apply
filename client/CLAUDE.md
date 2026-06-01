@@ -2,7 +2,7 @@
 
 ## FSD — импорты
 
-Импорты строго вниз по слоям: `app → pages → features → entities → shared`.  
+Импорты строго вниз по слоям: `app → pages → widgets → features → entities → shared`.  
 Кросс-слойные — через алиасы, внутри слайса — относительные:
 
 ```ts
@@ -16,7 +16,7 @@ import { formatDate } from '../lib/format';      // внутри слайса
 ## Алиасы
 
 ```ts
-@app, @pages, @features, @entities, @shared  // слои
+@app, @pages, @widgets, @features, @entities, @shared  // слои
 @dto  // → shared/api/generatedApi.ts (типы + RTK хуки)
 ```
 

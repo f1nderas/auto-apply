@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
 import { Button } from '@shared/ui/button';
 import { Textarea } from '@shared/ui/textarea';
-import { PROFILES } from '@entities/resume';
-import { cx } from '@shared/lib/cx';
 import { useUpdateSessionMutation } from '../api/sessionApi';
 import './session-update-form.scss';
 
-const SessionUpdateForm = () => {
+interface SessionUpdateFormProps {
+  resumeHash: string;
+}
+
+const SessionUpdateForm = ({ resumeHash }: SessionUpdateFormProps) => {
   // #region STATE
   const [open, setOpen] = useState(false);
   const [curl, setCurl] = useState('');
-  const [selectedHash, setSelectedHash] = useState<string | null>(null);
   // #endregion
 
   // #region HOOK
@@ -47,47 +48,25 @@ const SessionUpdateForm = () => {
   const handleOpen = () => {
     reset();
     setCurl('');
-    setSelectedHash(null);
     setOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const handleClose = () => setOpen(false);
 
   const handleSubmit = () => {
-    updateSession({ curl, ...(selectedHash ? { resumeHash: selectedHash } : {}) });
+    updateSession({ curl, resumeHash });
   };
-  // #endregion
-
-  // #region STYLES
-  const accountBtnClass = (hash: string) =>
-    cx(
-      'session-update-modal__account-btn',
-      hash === selectedHash && 'session-update-modal__account-btn--active',
-    );
-  const noBtnClass = cx(
-    'session-update-modal__account-btn',
-    selectedHash === null && 'session-update-modal__account-btn--active',
-  );
   // #endregion
 
   return (
     <>
-      <Button
-        variant="plain"
-        className="session-update__trigger"
-        onClick={handleOpen}
-      >
+      <Button variant="plain" className="session-update__trigger" onClick={handleOpen}>
         Обновить сессию
       </Button>
 
       {open && (
         <div className="session-update-modal__overlay" onClick={handleClose}>
-          <div
-            className="session-update-modal"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="session-update-modal" onClick={(e) => e.stopPropagation()}>
             <div className="session-update-modal__header">
               <span className="session-update-modal__title">Обновить сессию</span>
               <Button
@@ -97,24 +76,6 @@ const SessionUpdateForm = () => {
               >
                 ✕
               </Button>
-            </div>
-
-            <div className="session-update-modal__accounts">
-              <span className="session-update-modal__accounts-label">Аккаунт</span>
-              <div className="session-update-modal__accounts-btns">
-                {PROFILES.map((p) => (
-                  <button
-                    key={p.hash}
-                    className={accountBtnClass(p.hash)}
-                    onClick={() => setSelectedHash(p.hash)}
-                  >
-                    {p.name}
-                  </button>
-                ))}
-                <button className={noBtnClass} onClick={() => setSelectedHash(null)}>
-                  Без привязки
-                </button>
-              </div>
             </div>
 
             <Textarea

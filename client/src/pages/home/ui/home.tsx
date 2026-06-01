@@ -1,25 +1,114 @@
-import { Link } from 'react-router-dom';
-import { PROFILES } from '@entities/resume';
-import { AutoApplyBtn } from '@features/auto-apply';
+import { useState } from 'react';
+import { toast } from 'react-hot-toast';
+import { Button } from '@shared/ui/button';
+import { Input } from '@shared/ui/input';
+import { Textarea } from '@shared/ui/textarea';
+import { useGetProfilesQuery, useAddProfileMutation, ResumeCard } from '@entities/resume';
+import { AutoApplyBtn } from '@widgets/auto-apply';
 import './home.scss';
 
-// #region CONSTANT
-const EXPERIENCE: Record<string, string> = {
-  '08a5aea1ff1024b7b80039ed1f69426f49744f': '4.7 лет опыта',
-  '5582453fff10341d340039ed1f734d425a7251': '2.8 лет опыта',
-};
-// #endregion
+const Home = () => {
+  // #region STATE
+  const [showForm, setShowForm] = useState(false);
+  const [hash, setHash] = useState('');
+  const [name, setName] = useState('');
+  const [experience, setExperience] = useState<string>('');
+  const [curl, setCurl] = useState('');
+  // #endregion
 
-const Home = () => (
-  <div className="home">
-    <AutoApplyBtn />
-    {PROFILES.map((r) => (
-      <Link key={r.hash} to={`/resume/${r.hash}`} className="home__card">
-        <span className="home__card-name">{r.name}</span>
-        <span className="home__card-exp">{EXPERIENCE[r.hash]}</span>
-      </Link>
-    ))}
-  </div>
-);
+  // #region HOOK
+  const { data: profiles, isLoading } = useGetProfilesQuery();
+  const [addProfile, { isLoading: isAdding }] = useAddProfileMutation();
+  // #endregion
+
+  // #region HANDLER
+  const handleAdd = async () => {
+    const exp = parseFloat(experience);
+    if (!hash.trim() || !name.trim() || isNaN(exp) || exp <= 0 || !curl.trim()) return;
+    try {
+      await addProfile({ hash: hash.trim(), name: name.trim(), experience: exp, curl }).unwrap();
+      toast.success('Резюме добавлено');
+      setHash('');
+      setName('');
+      setExperience('');
+      setCurl('');
+      setShowForm(false);
+    } catch {
+      toast.error('Не удалось добавить резюме');
+    }
+  };
+
+  const handleCancel = () => {
+    setShowForm(false);
+    setHash('');
+    setName('');
+    setExperience('');
+    setCurl('');
+  };
+  // #endregion
+
+  return (
+    <div className="home">
+      <AutoApplyBtn />
+
+      {isLoading && <p className="home__loading">Загрузка…</p>}
+
+      {profiles?.map((r) => (
+        <ResumeCard
+          key={r.hash}
+          hash={r.hash}
+          name={r.name}
+          experience={r.experience}
+        />
+      ))}
+
+      {showForm ? (
+        <div className="home__add-form">
+          <Input
+            placeholder="Hash резюме (из URL на hh.ru)"
+            value={hash}
+            onChange={(e) => setHash(e.target.value)}
+          />
+          <Input
+            placeholder="Имя (например: Иван Иванов)"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <Input
+            type="number"
+            placeholder="Лет опыта (например: 4.5)"
+            value={experience}
+            min={0}
+            step={0.5}
+            onChange={(e) => setExperience(e.target.value)}
+          />
+          <Textarea
+            placeholder="cURL из DevTools → Network → Copy as cURL"
+            value={curl}
+            onChange={(e) => setCurl(e.target.value)}
+            rows={4}
+            spellCheck={false}
+          />
+          <div className="home__add-form-actions">
+            <Button
+              onClick={handleAdd}
+              disabled={isAdding || !hash.trim() || !name.trim() || isNaN(parseFloat(experience)) || parseFloat(experience) <= 0 || !curl.trim()}
+              loading={isAdding}
+            >
+              Добавить
+            </Button>
+            <Button variant="plain" onClick={handleCancel}>
+              Отмена
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <Button variant="plain" className="home__add-btn" onClick={() => setShowForm(true)}>
+          + Добавить резюме
+        </Button>
+      )}
+    </div>
+  );
+};
 
 export { Home };

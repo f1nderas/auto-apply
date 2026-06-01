@@ -1,4 +1,5 @@
 @use '../../../shared/styles/colors';
+@use '../../../shared/styles/typography';
 
 .auto-apply-btn {
   display: flex;
@@ -12,6 +13,11 @@
 
 .auto-apply-btn__query {
   width: 100%;
+}
+
+.auto-apply-btn__hint {
+  @include typography.font-caption;
+  color: colors.$color-text-muted;
 }
 
 .auto-apply-btn__run--done {

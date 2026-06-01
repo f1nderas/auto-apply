@@ -53,8 +53,9 @@ PORT=4200
 
 | Файл | Причина |
 |---|---|
-| `sessions.json` | куки и токены HH.ru |
+| `resumes.json` | профили и куки/токены HH.ru |
 | `apply-history.json` | история откликов |
+| `sessions.json` | устарело — данные перенесены в resumes.json |
 
 ## SessionStore
 

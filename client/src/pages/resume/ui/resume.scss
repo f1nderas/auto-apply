@@ -29,8 +29,6 @@
 }
 
 .resume__name {
-  @include typography.font-heading;
-  color: colors.$color-text;
   margin-bottom: 4px;
 }
 
@@ -53,10 +51,6 @@
   margin-bottom: 12px;
 }
 
-.resume__section-title {
-  @include typography.font-title;
-  color: colors.$color-text;
-}
 
 .resume__edit-btn {
   @include typography.font-caption;
