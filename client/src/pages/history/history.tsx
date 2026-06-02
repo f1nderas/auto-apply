@@ -3,10 +3,12 @@ import { toast } from 'react-hot-toast';
 import { cx } from '@shared/lib/cx';
 import { Badge } from '@shared/ui/badge';
 import { Button } from '@shared/ui/button';
+import { Select } from '@shared/ui/select';
+import type { SelectOption } from '@shared/ui/select';
 import { Title } from '@shared/ui/title';
 import { useGetProfilesQuery } from '@entities/resume';
-import { useGetHistoryQuery, useGetHistoryStatsQuery, useClearHistoryMutation } from '@features/auto-apply';
-import type { HistoryRecord } from '@features/auto-apply';
+import { useGetHistoryQuery, useGetHistoryStatsQuery, useClearHistoryMutation } from '@features/history';
+import type { HistoryRecord } from '@features/history';
 import './history.scss';
 
 type StatusFilter = 'all' | 'success' | 'failed';
@@ -50,16 +52,15 @@ const History = () => {
   const records: HistoryRecord[] = [...(data ?? [])].reverse();
   const filtered = records
     .filter((r) => filter === 'all' || r.status === filter)
-    .filter((r) => {
-      if (resumeFilter === 'all') return true;
-      if (resumeFilter === 'unknown') return !r.resumeHash;
-      return r.resumeHash === resumeFilter;
-    });
+    .filter((r) => resumeFilter === 'all' || r.resumeHash === resumeFilter);
 
-  const resumeName = (hash: string | undefined) => {
-    if (!hash) return 'Неизвестно';
-    return profiles?.find((p) => p.hash === hash)?.name ?? 'Неизвестно';
-  };
+  const resumeName = (hash: string) =>
+    profiles?.find((p) => p.hash === hash)?.name ?? hash;
+
+  const resumeOptions: SelectOption[] = [
+    { value: 'all', label: 'Все резюме' },
+    ...(profiles ?? []).map((p) => ({ value: p.hash, label: p.name })),
+  ];
   // #endregion
 
   // #region STYLES
@@ -96,17 +97,12 @@ const History = () => {
             </Button>
           ))}
         </div>
-        <select
+        <Select
           className="history__resume-select"
+          options={resumeOptions}
           value={resumeFilter}
-          onChange={(e) => setResumeFilter(e.target.value)}
-        >
-          <option value="all">Все резюме</option>
-          {profiles?.map((p) => (
-            <option key={p.hash} value={p.hash}>{p.name}</option>
-          ))}
-          <option value="unknown">Неизвестно</option>
-        </select>
+          onChange={(v) => setResumeFilter(String(v ?? 'all'))}
+        />
         {records.length > 0 && (
           <Button variant="plain" className="history__clear" onClick={handleClear}>
             Очистить

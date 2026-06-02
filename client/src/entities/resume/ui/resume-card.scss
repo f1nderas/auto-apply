@@ -21,11 +21,16 @@
 .resume-card__checkbox {
   width: 18px;
   height: 18px;
-  padding: 0;
-  border: none;
-  background: none;
-  cursor: pointer;
-  accent-color: colors.$color-primary;
+
+  .input {
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    accent-color: colors.$color-primary;
+  }
 }
 
 .resume-card__info {

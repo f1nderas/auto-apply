@@ -21,23 +21,11 @@ interface InputProps {
   isLoading?: boolean;
 }
 
-const Input = ({ className, label, isDisabled, isLoading, ...props }: InputProps) => {
-  const control = (
-    <input
-      className={cx('input', label ? undefined : className)}
-      disabled={isDisabled || isLoading}
-      {...props}
-    />
-  );
-
-  if (!label) return control;
-
-  return (
-    <div className={cx('input-field', className)}>
-      <span className="input-field__label">{label}</span>
-      {control}
-    </div>
-  );
-};
+const Input = ({ className, label, isDisabled, isLoading, ...props }: InputProps) => (
+  <div className={cx('input-field', className)}>
+    {label && <span className="input-field__label">{label}</span>}
+    <input className="input" disabled={isDisabled || isLoading} {...props} />
+  </div>
+);
 
 export { Input };

@@ -1,5 +1,5 @@
-@use '../../../shared/styles/colors';
-@use '../../../shared/styles/typography';
+@use '../../shared/styles/colors';
+@use '../../shared/styles/typography';
 
 .history {
   display: flex;
@@ -22,19 +22,7 @@
 }
 
 .history__resume-select {
-  @include typography.font-secondary;
-  height: 34px;
-  padding: 0 10px;
-  border-radius: 8px;
-  border: 1px solid colors.$color-border;
-  background: colors.$color-surface;
-  color: colors.$color-text;
-  outline: none;
-  cursor: pointer;
-
-  &:focus {
-    border-color: colors.$color-primary;
-  }
+  width: 200px;
 }
 
 .history__td--resume {

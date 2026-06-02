@@ -4,7 +4,7 @@ import { Button } from '@shared/ui/button';
 import { Input } from '@shared/ui/input';
 import { Textarea } from '@shared/ui/textarea';
 import { useGetProfilesQuery, useAddProfileMutation, ResumeCard } from '@entities/resume';
-import { AutoApplyBtn } from '@widgets/auto-apply';
+import { AutoApplyBtn } from './ui/auto-apply-btn';
 import './home.scss';
 
 const Home = () => {

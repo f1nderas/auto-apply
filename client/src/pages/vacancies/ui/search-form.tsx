@@ -3,8 +3,8 @@ import { Button } from '@shared/ui/button';
 import { Select } from '@shared/ui/select';
 import type { SelectOption } from '@shared/ui/select';
 import { useGetProfilesQuery } from '@entities/resume';
-import { SuggestionsCombobox } from '@features/auto-apply';
-import { useGetAreasQuery } from '../api/areas-api';
+import { VacancyInput } from '@features/auto-apply';
+import { useGetAreasQuery } from '@features/suggestions';
 import './search-form.scss';
 
 interface SearchFormProps {
@@ -57,7 +57,7 @@ const SearchForm = ({ onSearch, isLoading }: SearchFormProps) => {
     <form className="search-form" onSubmit={handleSubmit}>
       <div className="search-form__main">
         <div className="search-form__card">
-          <SuggestionsCombobox
+          <VacancyInput
             className="search-form__field"
             label="Должность"
             value={text}

@@ -1,1 +1,1 @@
-export { Users } from './ui/users';
+export { Users } from './users';

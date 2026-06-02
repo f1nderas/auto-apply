@@ -14,16 +14,21 @@ interface SelectProps {
   /** Текущее выбранное значение. null — ничего не выбрано, показывает placeholder. */
   value?: string | number | null;
   onChange?: (value: string | number | null) => void;
-  /** Текст когда ничего не выбрано. */
+  /** Текст-подсказка когда значение не выбрано. */
   placeholder?: string;
+  /** Заблокировать селект. */
   isDisabled?: boolean;
+  /** Показать индикатор загрузки. */
   isLoading?: boolean;
   /**
-   * Без label — идёт на сам контрол (react-select).
-   * С label — идёт на внешний wrapper (.select-field).
+   * Режим свободного ввода текста.
+   * value = введённый текст, options = подсказки для дропдауна.
+   * Клиентская фильтрация отключена — фильтрует вызывающая сторона.
    */
+  isSearchable?: boolean;
+  /** Всегда идёт на внешний wrapper (.select-field). */
   className?: string;
-  /** Текст лейбла над селектом. При наличии рендерит wrapper-div. */
+  /** Текст лейбла над селектом. */
   label?: string;
 }
 
@@ -34,39 +39,44 @@ const Select = ({
   placeholder,
   isDisabled,
   isLoading,
+  isSearchable = false,
   className,
   label,
 }: SelectProps) => {
-  const selected = options.find((o) => o.value === value) ?? null;
+  // #region COMPUTED
+  const selected = isSearchable ? null : (options.find((o) => o.value === value) ?? null);
+  const inputValue = isSearchable ? (value != null ? String(value) : '') : undefined;
+  // #endregion
 
-  const handleChange = (
-    option: SingleValue<SelectOption> | MultiValue<SelectOption>,
-  ) => {
+  // #region HANDLER
+  const handleChange = (option: SingleValue<SelectOption> | MultiValue<SelectOption>) => {
     onChange?.((option as SingleValue<SelectOption>)?.value ?? null);
   };
 
-  const control = (
-    <ReactSelect
-      unstyled
-      classNamePrefix="select"
-      className={label ? undefined : className}
-      options={options}
-      value={selected}
-      onChange={handleChange}
-      placeholder={placeholder}
-      isDisabled={isDisabled}
-      isLoading={isLoading}
-      isSearchable={false}
-      styles={selectStyles}
-    />
-  );
-
-  if (!label) return control;
+  const handleInputChange = (newText: string, meta: { action: string }) => {
+    if (meta.action === 'input-change') onChange?.(newText || null);
+  };
+  // #endregion
 
   return (
     <div className={cx('select-field', className)}>
-      <span className="select-field__label">{label}</span>
-      {control}
+      {label && <span className="select-field__label">{label}</span>}
+      <ReactSelect
+        unstyled                    // убирает все встроенные стили react-select
+        classNamePrefix="select"    // префикс BEM-классов: select__control, select__menu и т.д.
+        options={options}
+        value={selected}            // null в режиме isSearchable — текст живёт в inputValue
+        onChange={handleChange}
+        inputValue={inputValue}     // контролируемый текст поля ввода (только isSearchable)
+        onInputChange={isSearchable ? handleInputChange : undefined}  // вызывается при каждом нажатии клавиши
+        filterOption={isSearchable ? () => true : undefined}          // отключаем клиентскую фильтрацию — подсказки уже отфильтрованы снаружи
+        noOptionsMessage={isSearchable ? () => null : undefined}      // скрываем «No options» когда список пуст
+        placeholder={placeholder}
+        isDisabled={isDisabled}
+        isLoading={isLoading}
+        isSearchable={isSearchable}
+        styles={selectStyles}       // точечные JS-переопределения там где CSS-классов недостаточно
+      />
     </div>
   );
 };

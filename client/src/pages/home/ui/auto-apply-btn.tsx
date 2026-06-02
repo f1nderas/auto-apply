@@ -6,7 +6,8 @@ import { NumberSlider } from '@shared/ui/number-slider';
 import { useAppSelector } from '@shared/store/hooks';
 import { useLazySearchVacanciesQuery, useApplyVacancyMutation } from '@entities/vacancy';
 import { selectSelectedHashes } from '@entities/resume';
-import { useAddHistoryMutation, SuggestionsCombobox } from '@features/auto-apply';
+import { useAddHistoryMutation } from '@features/history';
+import { VacancyInput } from '@features/auto-apply';
 import './auto-apply-btn.scss';
 
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
@@ -111,7 +112,7 @@ const AutoApplyBtn = () => {
 
   return (
     <div className="auto-apply-btn">
-      <SuggestionsCombobox
+      <VacancyInput
         className="auto-apply-btn__query"
         placeholder="Поисковый запрос…"
         value={text}

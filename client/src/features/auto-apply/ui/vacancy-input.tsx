@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Combobox } from '@shared/ui/combobox';
+import { Select } from '@shared/ui/select';
+import type { SelectOption } from '@shared/ui/select';
 import { useDebounce } from '@shared/lib/use-debounce';
-import { useLazyGetSuggestionsQuery } from '../api/suggestions-api';
+import { useLazyGetSuggestionsQuery } from '../../suggestions';
 
-interface SuggestionsComboboxProps {
+interface VacancyInputProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
@@ -12,14 +13,14 @@ interface SuggestionsComboboxProps {
   isDisabled?: boolean;
 }
 
-const SuggestionsCombobox = ({
+const VacancyInput = ({
   value,
   onChange,
   placeholder,
   className,
   label,
   isDisabled,
-}: SuggestionsComboboxProps) => {
+}: VacancyInputProps) => {
   // #region STATE
   const [suggestions, setSuggestions] = useState<string[]>([]);
   // #endregion
@@ -36,11 +37,16 @@ const SuggestionsCombobox = ({
   }, [debouncedValue, fetchSuggestions]);
   // #endregion
 
+  // #region COMPUTED
+  const options: SelectOption[] = suggestions.map((s) => ({ value: s, label: s }));
+  // #endregion
+
   return (
-    <Combobox
-      value={value}
-      onChange={onChange}
-      options={suggestions}
+    <Select
+      isSearchable
+      options={options}
+      value={value || null}
+      onChange={(v) => onChange(String(v ?? ''))}
       placeholder={placeholder}
       className={className}
       label={label}
@@ -49,4 +55,4 @@ const SuggestionsCombobox = ({
   );
 };
 
-export { SuggestionsCombobox };
+export { VacancyInput };

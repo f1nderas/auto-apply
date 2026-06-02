@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { SearchForm } from '@features/vacancy-search';
+import { SearchForm } from './ui/search-form';
 import { VacancyCard, useLazySearchVacanciesQuery } from '@entities/vacancy';
 import { Button } from '@shared/ui/button';
 import { Pagination } from '@shared/ui/pagination';

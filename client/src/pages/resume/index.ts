@@ -1,1 +1,1 @@
-export { Resume } from './ui/resume';
+export { Resume } from './resume';

@@ -5,7 +5,7 @@ interface AddHistoryItemDto {
   vacancyName: string;
   employer: string;
   status: 'success' | 'failed';
-  resumeHash?: string;
+  resumeHash: string;
 }
 
 interface HistoryRecord extends AddHistoryItemDto {

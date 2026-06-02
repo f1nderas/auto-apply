@@ -6,12 +6,23 @@
 Кросс-слойные — через алиасы, внутри слайса — относительные:
 
 ```ts
-import { cx } from '@shared/lib/cx';           // кросс-слойный
-import { VacancyCard } from '@entities/vacancy'; // кросс-слойный
+import { cx } from '@shared/lib/cx';           // кросс-слойный (другой слой)
+import { VacancyCard } from '@entities/vacancy'; // кросс-слойный (другой слой)
 import { formatDate } from '../lib/format';      // внутри слайса
 ```
 
 Импортировать только из публичного `index.ts` слайса, не из внутренних путей.
+
+**Никогда не используй алиас слоя для импорта внутри того же слоя.**  
+Если файл уже находится в `features/` — соседний слайс импортируется относительным путём:
+
+```ts
+// ✓  features/auto-apply/ui/vacancy-input.tsx → features/suggestions
+import { useLazyGetSuggestionsQuery } from '../../suggestions';
+
+// ✗  алиас @features/ внутри features/
+import { useLazyGetSuggestionsQuery } from '@features/suggestions';
+```
 
 ## Алиасы
 
