@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@shared/ui/button';
-import { Select } from '@shared/ui/select';
-import type { SelectOption } from '@shared/ui/select';
+import { Select, type SelectOption } from '@shared/ui/select';
 import { useGetProfilesQuery } from '@entities/resume';
 import { VacancyInput } from '@features/auto-apply';
 import { useGetAreasQuery } from '@features/suggestions';

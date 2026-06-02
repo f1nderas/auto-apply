@@ -1,5 +1,4 @@
-import type { ReactNode } from 'react';
-import { useEffect } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { cx } from '../../lib/cx';
 import './modal.scss';
 

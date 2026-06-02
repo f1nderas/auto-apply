@@ -3,12 +3,10 @@ import { toast } from 'react-hot-toast';
 import { cx } from '@shared/lib/cx';
 import { Badge } from '@shared/ui/badge';
 import { Button } from '@shared/ui/button';
-import { Select } from '@shared/ui/select';
-import type { SelectOption } from '@shared/ui/select';
+import { Select, type SelectOption } from '@shared/ui/select';
 import { Title } from '@shared/ui/title';
 import { useGetProfilesQuery } from '@entities/resume';
-import { useGetHistoryQuery, useGetHistoryStatsQuery, useClearHistoryMutation } from '@features/history';
-import type { HistoryRecord } from '@features/history';
+import { useGetHistoryQuery, useGetHistoryStatsQuery, useClearHistoryMutation, type HistoryRecord } from '@features/history';
 import './history.scss';
 
 type StatusFilter = 'all' | 'success' | 'failed';

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Select } from '@shared/ui/select';
-import type { SelectOption } from '@shared/ui/select';
+import { Select, type SelectOption } from '@shared/ui/select';
 import { useDebounce } from '@shared/lib/use-debounce';
 import { useLazyGetSuggestionsQuery } from '../../suggestions';
 

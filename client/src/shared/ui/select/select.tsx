@@ -1,5 +1,4 @@
-import ReactSelect from 'react-select';
-import type { SingleValue, MultiValue } from 'react-select';
+import ReactSelect, { type SingleValue, type MultiValue } from 'react-select';
 import { cx } from '../../lib/cx';
 import { selectStyles } from './select-styles';
 import './select.scss';
