@@ -8,6 +8,7 @@ import { ResumeModule } from './resume/resume.module';
 import { HistoryModule } from './history/history.module';
 import { SuggestionsModule } from './suggestions/suggestions.module';
 import { AutoApplyModule } from './auto-apply/auto-apply.module';
+import { SearchHistoryModule } from './search-history/search-history.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { AutoApplyModule } from './auto-apply/auto-apply.module';
     HistoryModule,
     SuggestionsModule,
     AutoApplyModule,
+    SearchHistoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

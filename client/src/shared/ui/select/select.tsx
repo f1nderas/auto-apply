@@ -9,8 +9,13 @@ interface SelectOption {
   label: string;
 }
 
-interface SelectProps {
+interface SelectGroup {
+  label: string;
   options: SelectOption[];
+}
+
+interface SelectProps {
+  options: SelectOption[] | SelectGroup[];
   /** Выбранная опция. null — ничего не выбрано, показывает placeholder. */
   value?: SelectOption | null;
   /** Вызывается при выборе опции из списка. */
@@ -31,6 +36,8 @@ interface SelectProps {
   filterOption?: (() => boolean) | null;
   /** Содержимое блока "нет вариантов". () => null — скрыть блок совсем. */
   noOptionsMessage?: () => React.ReactNode;
+  /** Кастомный рендер содержимого опции в дропдауне. */
+  formatOptionLabel?: (data: SelectOption) => React.ReactNode;
   /** className на внешнем wrapper (.select-field). */
   className?: string;
   /** Лейбл над селектом. */
@@ -49,13 +56,12 @@ const SelectBase = ({
   onInputChange,
   filterOption,
   noOptionsMessage,
+  formatOptionLabel,
   className,
   label,
 }: SelectProps) => {
   // #region HANDLER
-  const handleChange = (
-    option: SingleValue<SelectOption> | MultiValue<SelectOption>,
-  ) => {
+  const handleChange = (option: SingleValue<SelectOption> | MultiValue<SelectOption>) => {
     onChange?.((option as SingleValue<SelectOption>) ?? null);
   };
 
@@ -81,6 +87,7 @@ const SelectBase = ({
         isDisabled={isDisabled}
         isLoading={isLoading}
         isSearchable={isSearchable}
+        formatOptionLabel={formatOptionLabel}
         styles={selectStyles}
       />
     </div>
@@ -90,4 +97,4 @@ const SelectBase = ({
 const Select = memo(SelectBase);
 
 export { Select };
-export type { SelectOption };
+export type { SelectOption, SelectGroup };

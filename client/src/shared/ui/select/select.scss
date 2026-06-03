@@ -59,6 +59,14 @@
   z-index: 10;
 }
 
+.select__group-heading {
+  @include typography.font-caption;
+  color: colors.$color-text-muted;
+  padding: 8px 14px 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
 .select__option {
   @include typography.font-body;
   padding: 10px 14px;

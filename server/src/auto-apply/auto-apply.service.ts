@@ -1,6 +1,7 @@
 import { Injectable, ConflictException } from '@nestjs/common';
 import { VacanciesService } from '../vacancies/vacancies.service';
 import { HistoryService } from '../history/history.service';
+import { SearchHistoryService } from '../search-history/search-history.service';
 import { StartAutoApplyDto } from './dto/start-auto-apply.dto';
 
 const APPLY_DELAY_MS = 2000;
@@ -20,6 +21,7 @@ class AutoApplyService {
   constructor(
     private readonly vacanciesService: VacanciesService,
     private readonly historyService: HistoryService,
+    private readonly searchHistoryService: SearchHistoryService,
   ) {}
 
   setEmitter(emit: Emitter): void {
@@ -33,6 +35,7 @@ class AutoApplyService {
   start(dto: StartAutoApplyDto): void {
     if (this.isRunning) throw new ConflictException('Автоотклик уже запущен');
 
+    this.searchHistoryService.add(dto.text);
     this.isRunning = true;
     this.done = 0;
     this.total = 0;
