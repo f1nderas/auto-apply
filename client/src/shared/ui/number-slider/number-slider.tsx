@@ -37,7 +37,7 @@ const NumberSlider = ({ value, min, max, onChange, isDisabled }: NumberSliderPro
         min={min}
         max={max}
         onChange={handleRange}
-        isDisabled={isDisabled}
+        disabled={isDisabled}
       />
     </div>
   );

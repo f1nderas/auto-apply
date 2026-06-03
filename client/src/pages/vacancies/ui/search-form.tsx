@@ -67,8 +67,8 @@ const SearchForm = ({ onSearch, isLoading }: SearchFormProps) => {
             className="search-form__field search-form__field--area"
             label="Регион"
             options={areaOptions}
-            value={area}
-            onChange={(v) => setArea(Number(v))}
+            value={areaOptions.find((o) => o.value === area) ?? null}
+            onChange={(opt) => setArea(Number(opt?.value ?? 1))}
           />
         </div>
         <Button
@@ -85,8 +85,8 @@ const SearchForm = ({ onSearch, isLoading }: SearchFormProps) => {
         <Select
           className="search-form__resume"
           options={resumeOptions}
-          value={resumeHash || null}
-          onChange={(v) => setResumeHash(String(v ?? ''))}
+          value={resumeOptions.find((o) => o.value === resumeHash) ?? null}
+          onChange={(opt) => setResumeHash(String(opt?.value ?? ''))}
           placeholder="Выберите резюме"
         />
       </div>

@@ -98,8 +98,8 @@ const History = () => {
         <Select
           className="history__resume-select"
           options={resumeOptions}
-          value={resumeFilter}
-          onChange={(v) => setResumeFilter(String(v ?? 'all'))}
+          value={resumeOptions.find((o) => o.value === resumeFilter) ?? null}
+          onChange={(opt) => setResumeFilter(String(opt?.value ?? 'all'))}
         />
         {records.length > 0 && (
           <Button variant="plain" className="history__clear" onClick={handleClear}>

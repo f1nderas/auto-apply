@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Select, type SelectOption } from '@shared/ui/select';
+import { Select } from '@shared/ui/select';
 import { useDebounce } from '@shared/lib/use-debounce';
 import { useLazyGetSuggestionsQuery } from '../../suggestions';
 
@@ -31,21 +31,29 @@ const VacancyInput = ({
 
   // #region EFFECT
   useEffect(() => {
-    const params = debouncedValue.trim() ? { query: debouncedValue.trim() } : undefined;
-    void fetchSuggestions(params).unwrap().then(setSuggestions).catch(() => {});
+    const params = debouncedValue.trim()
+      ? { query: debouncedValue.trim() }
+      : undefined;
+    void fetchSuggestions(params)
+      .unwrap()
+      .then(setSuggestions)
+      .catch(() => {});
   }, [debouncedValue, fetchSuggestions]);
   // #endregion
 
   // #region COMPUTED
-  const options: SelectOption[] = suggestions.map((s) => ({ value: s, label: s }));
+  const options = suggestions.map((s) => ({ value: s, label: s }));
   // #endregion
 
   return (
     <Select
       isSearchable
       options={options}
-      value={value || null}
-      onChange={(v) => onChange(String(v ?? ''))}
+      value={value ? { value, label: value } : null}
+      onChange={(opt) => onChange(String(opt?.value ?? ''))}
+      onInputChange={onChange}
+      filterOption={null}
+      noOptionsMessage={() => null}
       placeholder={placeholder}
       className={className}
       label={label}

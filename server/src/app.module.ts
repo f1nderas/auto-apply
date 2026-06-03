@@ -7,6 +7,7 @@ import { AdminModule } from './admin/admin.module';
 import { ResumeModule } from './resume/resume.module';
 import { HistoryModule } from './history/history.module';
 import { SuggestionsModule } from './suggestions/suggestions.module';
+import { AutoApplyModule } from './auto-apply/auto-apply.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { SuggestionsModule } from './suggestions/suggestions.module';
     ResumeModule,
     HistoryModule,
     SuggestionsModule,
+    AutoApplyModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import ReactSelect, { type SingleValue, type MultiValue } from 'react-select';
 import { cx } from '../../lib/cx';
 import { selectStyles } from './select-styles';
@@ -10,50 +11,56 @@ interface SelectOption {
 
 interface SelectProps {
   options: SelectOption[];
-  /** Текущее выбранное значение. null — ничего не выбрано, показывает placeholder. */
-  value?: string | number | null;
-  onChange?: (value: string | number | null) => void;
+  /** Выбранная опция. null — ничего не выбрано, показывает placeholder. */
+  value?: SelectOption | null;
+  /** Вызывается при выборе опции из списка. */
+  onChange?: (option: SelectOption | null) => void;
   /** Текст-подсказка когда значение не выбрано. */
   placeholder?: string;
-  /** Заблокировать селект. */
+  /** Показывает крестик для сброса выбранного значения. */
+  isClearable?: boolean;
+  /** Блокирует взаимодействие с компонентом. */
   isDisabled?: boolean;
-  /** Показать индикатор загрузки. */
+  /** Показывает спиннер загрузки в индикаторе. */
   isLoading?: boolean;
-  /**
-   * Режим свободного ввода текста.
-   * value = введённый текст, options = подсказки для дропдауна.
-   * Клиентская фильтрация отключена — фильтрует вызывающая сторона.
-   */
+  /** Разрешает печать в поле — для поиска по списку или свободного ввода. */
   isSearchable?: boolean;
-  /** Всегда идёт на внешний wrapper (.select-field). */
+  /** Вызывается на каждое нажатие клавиши в режиме isSearchable. */
+  onInputChange?: (text: string) => void;
+  /** Функция фильтрации опций. null — отключить встроенную фильтрацию. */
+  filterOption?: (() => boolean) | null;
+  /** Содержимое блока "нет вариантов". () => null — скрыть блок совсем. */
+  noOptionsMessage?: () => React.ReactNode;
+  /** className на внешнем wrapper (.select-field). */
   className?: string;
-  /** Текст лейбла над селектом. */
+  /** Лейбл над селектом. */
   label?: string;
 }
 
-const Select = ({
+const SelectBase = ({
   options,
   value,
   onChange,
   placeholder,
+  isClearable = false,
   isDisabled,
   isLoading,
   isSearchable = false,
+  onInputChange,
+  filterOption,
+  noOptionsMessage,
   className,
   label,
 }: SelectProps) => {
-  // #region COMPUTED
-  const selected = isSearchable ? null : (options.find((o) => o.value === value) ?? null);
-  const inputValue = isSearchable ? (value != null ? String(value) : '') : undefined;
-  // #endregion
-
   // #region HANDLER
-  const handleChange = (option: SingleValue<SelectOption> | MultiValue<SelectOption>) => {
-    onChange?.((option as SingleValue<SelectOption>)?.value ?? null);
+  const handleChange = (
+    option: SingleValue<SelectOption> | MultiValue<SelectOption>,
+  ) => {
+    onChange?.((option as SingleValue<SelectOption>) ?? null);
   };
 
-  const handleInputChange = (newText: string, meta: { action: string }) => {
-    if (meta.action === 'input-change') onChange?.(newText || null);
+  const handleInputChange = (text: string, meta: { action: string }) => {
+    if (meta.action === 'input-change') onInputChange?.(text);
   };
   // #endregion
 
@@ -61,24 +68,26 @@ const Select = ({
     <div className={cx('select-field', className)}>
       {label && <span className="select-field__label">{label}</span>}
       <ReactSelect
-        unstyled                    // убирает все встроенные стили react-select
-        classNamePrefix="select"    // префикс BEM-классов: select__control, select__menu и т.д.
+        unstyled
+        classNamePrefix="select"
         options={options}
-        value={selected}            // null в режиме isSearchable — текст живёт в inputValue
+        value={value}
         onChange={handleChange}
-        inputValue={inputValue}     // контролируемый текст поля ввода (только isSearchable)
-        onInputChange={isSearchable ? handleInputChange : undefined}  // вызывается при каждом нажатии клавиши
-        filterOption={isSearchable ? () => true : undefined}          // отключаем клиентскую фильтрацию — подсказки уже отфильтрованы снаружи
-        noOptionsMessage={isSearchable ? () => null : undefined}      // скрываем «No options» когда список пуст
+        onInputChange={isSearchable ? handleInputChange : undefined}
+        filterOption={filterOption}
+        noOptionsMessage={noOptionsMessage}
         placeholder={placeholder}
+        isClearable={isClearable}
         isDisabled={isDisabled}
         isLoading={isLoading}
         isSearchable={isSearchable}
-        styles={selectStyles}       // точечные JS-переопределения там где CSS-классов недостаточно
+        styles={selectStyles}
       />
     </div>
   );
 };
+
+const Select = memo(SelectBase);
 
 export { Select };
 export type { SelectOption };

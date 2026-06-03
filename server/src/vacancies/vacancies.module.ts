@@ -6,6 +6,6 @@ import { ResumeStore } from './resume-store.service';
 @Module({
   controllers: [VacanciesController],
   providers: [VacanciesService, ResumeStore],
-  exports: [ResumeStore],
+  exports: [VacanciesService, ResumeStore],
 })
 export class VacanciesModule {}

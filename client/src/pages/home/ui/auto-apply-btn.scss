@@ -20,6 +20,25 @@
   color: colors.$color-text-muted;
 }
 
+.auto-apply-btn__actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.auto-apply-btn__progress {
+  @include typography.font-strong;
+  color: colors.$color-text;
+}
+
+.auto-apply-btn__results {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
 .auto-apply-btn__run--done {
   color: colors.$color-success !important;
   border-color: colors.$color-success !important;
