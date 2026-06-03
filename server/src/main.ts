@@ -21,6 +21,7 @@ async function bootstrap() {
   );
   SwaggerModule.setup('api', app, document);
 
+  app.enableShutdownHooks();
   app.enableCors({ origin: CLIENT_URL });
   await app.listen(SERVER_PORT);
 }

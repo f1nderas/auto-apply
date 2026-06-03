@@ -88,6 +88,7 @@ const SelectBase = ({
         isLoading={isLoading}
         isSearchable={isSearchable}
         formatOptionLabel={formatOptionLabel}
+        components={isSearchable ? { DropdownIndicator: null } : undefined}
         styles={selectStyles}
       />
     </div>

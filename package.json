@@ -3,12 +3,13 @@
   "private": true,
   "workspaces": ["server", "client"],
   "scripts": {
-    "dev": "bun run --filter '*' dev",
+    "dev": "concurrently -k \"bun run dev:server\" \"bun run dev:client\"",
     "dev:server": "bun run --cwd server dev",
     "dev:client": "bun run --cwd client dev",
     "gen:api": "rtk-query-codegen-openapi scripts/codegen.json"
   },
   "devDependencies": {
-    "@rtk-query/codegen-openapi": "^2.2.0"
+    "@rtk-query/codegen-openapi": "^2.2.0",
+    "concurrently": "^10.0.3"
   }
 }
