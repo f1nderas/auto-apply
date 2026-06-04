@@ -106,7 +106,7 @@ export class ResumeStore {
           this.resumes.set(hash, {
             hash,
             name: existing?.name ?? '',
-            experience: existing?.experience ?? '',
+            experience: existing?.experience ?? 0,
             ...EMPTY_SESSION,
             ...session,
           });

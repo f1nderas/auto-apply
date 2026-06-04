@@ -5,6 +5,7 @@ import {
   IsInt,
   IsArray,
   IsOptional,
+  IsBoolean,
   Min,
 } from 'class-validator';
 
@@ -37,6 +38,19 @@ class StartAutoApplyDto {
   @IsOptional()
   @IsString()
   workFormat?: string;
+
+  @ApiPropertyOptional({
+    type: String,
+    description: 'Шаблон письма для вакансий с обязательным сопроводительным',
+  })
+  @IsOptional()
+  @IsString()
+  coverLetter?: string;
+
+  @ApiPropertyOptional({ type: Boolean, description: 'Прикладывать письмо ко всем вакансиям через edit_ajax' })
+  @IsOptional()
+  @IsBoolean()
+  sendLetterToAll?: boolean;
 }
 
 export { StartAutoApplyDto };

@@ -36,8 +36,7 @@ const parseCurl = (input: string) => {
     new RegExp(`-H\\s+(?:'x-static-version:\\s*([^']*)'|"x-static-version:\\s*([^"]*)")`, 'i'),
   );
   const versionFromHeader = (versionMatch?.[1] ?? versionMatch?.[2])?.trim() ?? null;
-  const versionFromBaggage =
-    s.match(/sentry-release=xhh(?:%40|@)([0-9.]+)/i)?.[1] ?? null;
+  const versionFromBaggage = s.match(/sentry-release=xhh(?:%40|@)([0-9.]+)/i)?.[1] ?? null;
   const staticVersion = versionFromHeader ?? versionFromBaggage;
 
   const urlMatch = s.match(/curl\s+['"]?(https?:\/\/[^/?#'"\s]+)/i);

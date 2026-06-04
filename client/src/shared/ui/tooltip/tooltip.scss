@@ -1,0 +1,28 @@
+@use '../../styles/colors';
+@use '../../styles/typography';
+
+.tooltip__trigger {
+  display: inline-flex;
+}
+
+// Переопределяем стили MUI через глобальные классы
+:global(.tooltip) {
+  @include typography.font-caption;
+  background: colors.$color-text !important;
+  color: colors.$color-surface !important;
+  border-radius: 6px !important;
+  padding: 8px 12px !important;
+  max-width: 240px !important;
+}
+
+:global(.tooltip__arrow) {
+  color: colors.$color-text !important;
+}
+
+.tooltip__list {
+  margin: 0;
+  padding: 0 0 0 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}

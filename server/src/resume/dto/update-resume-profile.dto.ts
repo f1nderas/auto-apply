@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsString, IsOptional } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 class UpdateResumeProfileDto {
@@ -12,8 +12,25 @@ class UpdateResumeProfileDto {
 
   @IsOptional()
   @IsString()
-  @ApiPropertyOptional({ description: 'cURL из DevTools — обновляет сессию если передан' })
-  curl?: string;
+  @ApiPropertyOptional({
+    description: 'Строка кук — обновляет сессию если передана',
+  })
+  cookie?: string;
+
+  @IsOptional()
+  @IsString()
+  @ApiPropertyOptional()
+  xsrfToken?: string;
+
+  @IsOptional()
+  @IsString()
+  @ApiPropertyOptional()
+  staticVersion?: string;
+
+  @IsOptional()
+  @IsString()
+  @ApiPropertyOptional()
+  baseUrl?: string;
 }
 
 export { UpdateResumeProfileDto };

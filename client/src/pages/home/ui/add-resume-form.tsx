@@ -4,6 +4,7 @@ import { Button } from '@shared/ui/button';
 import { Input } from '@shared/ui/input';
 import { Textarea } from '@shared/ui/textarea';
 import { useAddProfileMutation } from '@entities/resume';
+import { parseCurl } from '@shared/lib/parse-curl';
 import './add-resume-form.scss';
 
 interface AddResumeFormProps {
@@ -42,8 +43,25 @@ const AddResumeForm = ({ onSuccess, onCancel }: AddResumeFormProps) => {
 
   const handleSubmit = async () => {
     if (isSubmitDisabled) return;
+    const parsed = parseCurl(form.curl);
+    if (!parsed.cookie || !parsed.xsrfToken) {
+      toast.error('Не удалось распарсить cURL: не найдены cookie или xsrf-токен');
+      return;
+    }
+    if (!parsed.baseUrl?.includes('hh.ru')) {
+      toast.error('Нужен cURL с hh.ru');
+      return;
+    }
     try {
-      await addProfile({ hash: form.hash.trim(), name: form.name.trim(), experience: exp, curl: form.curl }).unwrap();
+      await addProfile({
+        hash: form.hash.trim(),
+        name: form.name.trim(),
+        experience: exp,
+        cookie: parsed.cookie,
+        xsrfToken: parsed.xsrfToken,
+        ...(parsed.staticVersion && { staticVersion: parsed.staticVersion }),
+        ...(parsed.baseUrl && { baseUrl: parsed.baseUrl }),
+      }).unwrap();
       toast.success('Резюме добавлено');
       setForm(EMPTY_FORM);
       onSuccess();

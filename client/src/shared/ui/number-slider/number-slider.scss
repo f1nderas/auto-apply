@@ -1,4 +1,17 @@
 @use '../../styles/colors';
+@use '../../styles/typography';
+
+.number-slider-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.number-slider-field__label {
+  @include typography.font-secondary;
+  color: colors.$color-text-secondary;
+}
 
 .number-slider {
   display: flex;

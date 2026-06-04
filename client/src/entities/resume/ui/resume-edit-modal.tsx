@@ -5,6 +5,7 @@ import { Input } from '@shared/ui/input';
 import { Modal } from '@shared/ui/modal';
 import { Textarea } from '@shared/ui/textarea';
 import { useUpdateProfileMutation } from '../api/resumeApi';
+import { parseCurl } from '@shared/lib/parse-curl';
 import './resume-edit-modal.scss';
 
 interface ResumeEditModalProps {
@@ -45,13 +46,28 @@ const ResumeEditModal = ({
   const handleSave = async () => {
     const exp = parseFloat(experience);
     if (!name.trim() || isNaN(exp) || exp <= 0) return;
+
+    let sessionFields = {};
+    if (curl.trim()) {
+      const parsed = parseCurl(curl.trim());
+      if (!parsed.cookie || !parsed.xsrfToken) {
+        toast.error('Не удалось распарсить cURL: не найдены cookie или xsrf-токен');
+        return;
+      }
+      if (!parsed.baseUrl?.includes('hh.ru')) {
+        toast.error('Нужен cURL с hh.ru');
+        return;
+      }
+      sessionFields = {
+        cookie: parsed.cookie,
+        xsrfToken: parsed.xsrfToken,
+        ...(parsed.staticVersion && { staticVersion: parsed.staticVersion }),
+        ...(parsed.baseUrl && { baseUrl: parsed.baseUrl }),
+      };
+    }
+
     try {
-      await updateProfile({
-        hash,
-        name: name.trim(),
-        experience: exp,
-        ...(curl.trim() ? { curl: curl.trim() } : {}),
-      }).unwrap();
+      await updateProfile({ hash, name: name.trim(), experience: exp, ...sessionFields }).unwrap();
       toast.success('Резюме обновлено');
       handleClose();
     } catch {

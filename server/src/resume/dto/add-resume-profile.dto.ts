@@ -1,5 +1,5 @@
-import { IsNumber, IsString } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { IsNumber, IsString, IsOptional } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 class AddResumeProfileDto {
   @IsString()
@@ -15,8 +15,22 @@ class AddResumeProfileDto {
   experience: number;
 
   @IsString()
-  @ApiProperty({ description: 'cURL из DevTools для привязки сессии' })
-  curl: string;
+  @ApiProperty({ description: 'Строка кук из DevTools' })
+  cookie: string;
+
+  @IsString()
+  @ApiProperty({ description: 'Значение x-xsrftoken заголовка' })
+  xsrfToken: string;
+
+  @IsOptional()
+  @IsString()
+  @ApiPropertyOptional({ description: 'Значение x-static-version заголовка' })
+  staticVersion?: string;
+
+  @IsOptional()
+  @IsString()
+  @ApiPropertyOptional({ description: 'Базовый URL (например https://hh.ru)' })
+  baseUrl?: string;
 }
 
 export { AddResumeProfileDto };

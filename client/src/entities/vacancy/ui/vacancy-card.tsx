@@ -15,7 +15,7 @@ const APPLICATION_STATUS_MAP: Record<string, { label: string; variant: 'green' |
   DISCARD:  { label: 'Вам отказали',    variant: 'red' },
 };
 
-const VacancyCard = ({ vacancy }: { vacancy: VacancyDto }) => {
+const VacancyCard = ({ vacancy, resumeHash }: { vacancy: VacancyDto; resumeHash?: string }) => {
   // #region STATE
   const [letter, setLetter] = useState('');
   const [applied, setApplied] = useState(false);
@@ -49,6 +49,7 @@ const VacancyCard = ({ vacancy }: { vacancy: VacancyDto }) => {
       const result = await apply({
         applyVacancyDto: {
           vacancyId: vacancy.id,
+          ...(resumeHash ? { resumeHash } : {}),
           ...(needsLetter ? { letter: letter.trim() } : {}),
         },
       }).unwrap();

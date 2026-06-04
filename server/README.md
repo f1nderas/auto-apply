@@ -81,6 +81,22 @@ PORT=4200
 2. Найти любой запрос, нажать Copy as cURL
 3. Вставить в форму «Обновить сессию» в UI
 
+## Механика отклика на вакансию
+
+Отклик — один POST запрос к внутреннему API HH.ru.
+
+```
+POST /applicant/vacancy_response/popup
+FormData: _xsrf, vacancy_id, resume_hash, ignore_postponed: true,
+          incomplete: false, country_ids: [], lux: true,
+          withoutTest: no, hhtmFromLabel: "", hhtmSourceLabel: "",
+          [letter: "..."]  ← только если требуется письмо
+```
+
+Поле `letter` включается когда `responseLetterRequired: true` в данных вакансии.
+
+> При 403 с `{"redirectConfig": ...}` в теле — протухли GIB-куки. Нужно обновить сессию через UI.
+
 ## Куки hh.ru — частота ротации
 
 | Cookie | Как часто меняется | Причина |

@@ -7,7 +7,6 @@ import { ResumeDto } from './dto/resume.dto';
 import { ResumeProfileDto } from './dto/resume-profile.dto';
 import { AddResumeProfileDto } from './dto/add-resume-profile.dto';
 import { UpdateResumeProfileDto } from './dto/update-resume-profile.dto';
-import { parseCurl } from '../utils/parse-curl';
 
 const UA =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36';
@@ -34,27 +33,13 @@ export class ResumeService {
   }
 
   addProfile(dto: AddResumeProfileDto): void {
-    const parsed = parseCurl(dto.curl);
-    if (!parsed.baseUrl?.includes('hh.ru')) {
-      throw new HttpException(
-        'Нужен cURL с hh.ru, а не со стороннего сайта',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-    if (!parsed.cookie || !parsed.xsrfToken) {
-      throw new HttpException(
-        'Не удалось распарсить cURL: не найдены cookie или x-xsrftoken',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-
     this.resumeStore.upsert(dto.hash, {
       name: dto.name,
       experience: dto.experience,
-      cookie: parsed.cookie,
-      xsrfToken: parsed.xsrfToken,
-      ...(parsed.staticVersion && { staticVersion: parsed.staticVersion }),
-      ...(parsed.baseUrl && { baseUrl: parsed.baseUrl }),
+      cookie: dto.cookie,
+      xsrfToken: dto.xsrfToken,
+      ...(dto.staticVersion && { staticVersion: dto.staticVersion }),
+      ...(dto.baseUrl && { baseUrl: dto.baseUrl }),
     });
   }
 
@@ -64,24 +49,11 @@ export class ResumeService {
       experience: dto.experience,
     };
 
-    if (dto.curl) {
-      const parsed = parseCurl(dto.curl);
-      if (!parsed.baseUrl?.includes('hh.ru')) {
-        throw new HttpException(
-          'Нужен cURL с hh.ru, а не со стороннего сайта',
-          HttpStatus.BAD_REQUEST,
-        );
-      }
-      if (!parsed.cookie || !parsed.xsrfToken) {
-        throw new HttpException(
-          'Не удалось распарсить cURL: не найдены cookie или x-xsrftoken',
-          HttpStatus.BAD_REQUEST,
-        );
-      }
-      patch.cookie = parsed.cookie;
-      patch.xsrfToken = parsed.xsrfToken;
-      if (parsed.staticVersion) patch.staticVersion = parsed.staticVersion;
-      if (parsed.baseUrl) patch.baseUrl = parsed.baseUrl;
+    if (dto.cookie) {
+      patch.cookie = dto.cookie;
+      patch.xsrfToken = dto.xsrfToken;
+      if (dto.staticVersion) patch.staticVersion = dto.staticVersion;
+      if (dto.baseUrl) patch.baseUrl = dto.baseUrl;
     }
 
     this.resumeStore.upsert(hash, patch);
@@ -134,17 +106,13 @@ export class ResumeService {
       };
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.error('[getResume] HH status =', error.response?.status);
-        const body: unknown = error.response?.data;
-        const preview =
-          typeof body === 'string'
-            ? body.slice(0, 200)
-            : JSON.stringify(body)?.slice(0, 200);
-        console.error('[getResume] HH response preview =', preview);
-        throw new HttpException(
-          error.response?.data ?? 'Ошибка получения резюме',
-          error.response?.status ?? HttpStatus.BAD_GATEWAY,
-        );
+        const data: unknown = error.response?.data;
+        const message = typeof data === 'object' && data !== null
+          ? ((data as Record<string, unknown>).description as string | undefined)
+            ?? ((data as Record<string, unknown>).message as string | undefined)
+            ?? 'Ошибка получения резюме'
+          : 'Ошибка получения резюме';
+        throw new HttpException(message, error.response?.status ?? HttpStatus.BAD_GATEWAY);
       }
       throw error;
     }

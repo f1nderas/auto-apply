@@ -7,6 +7,8 @@ interface StartAutoApplyPayload {
   resumeHashes: string[];
   searchFields: string[];
   workFormat?: string;
+  coverLetter?: string;
+  sendLetterToAll?: boolean;
 }
 
 const autoApplyApi = baseApi.injectEndpoints({

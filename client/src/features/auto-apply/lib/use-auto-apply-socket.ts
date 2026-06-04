@@ -7,6 +7,8 @@ interface ApplyResult {
   vacancyName: string;
   resumeHash: string;
   success: boolean;
+  /** true — письмо добавлено, false — notEditable (уже просмотрено), undefined — не отправлялось */
+  letterAdded?: boolean;
 }
 
 interface AutoApplySocketState {

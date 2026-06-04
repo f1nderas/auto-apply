@@ -7,17 +7,26 @@ interface ResumeProfile {
   experience: number;
 }
 
-interface AddProfileDto {
+interface SessionFields {
+  cookie: string;
+  xsrfToken: string;
+  staticVersion?: string;
+  baseUrl?: string;
+}
+
+interface AddProfileDto extends SessionFields {
   hash: string;
   name: string;
   experience: number;
-  curl: string;
 }
 
 interface UpdateProfileDto {
   name: string;
   experience: number;
-  curl?: string;
+  cookie?: string;
+  xsrfToken?: string;
+  staticVersion?: string;
+  baseUrl?: string;
 }
 
 const resumeApi = baseApi.injectEndpoints({

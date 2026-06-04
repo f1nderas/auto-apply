@@ -1,4 +1,19 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+
+const extractHhMessage = (data: unknown, fallback: string): string => {
+  if (typeof data === 'string') return data || fallback;
+  if (data && typeof data === 'object') {
+    const d = data as Record<string, unknown>;
+    if (typeof d.description === 'string') return d.description;
+    if (typeof d.message === 'string') return d.message;
+    if (
+      Array.isArray(d.errors) &&
+      typeof (d.errors[0] as Record<string, unknown>)?.value === 'string'
+    )
+      return (d.errors[0] as Record<string, unknown>).value as string;
+  }
+  return fallback;
+};
 import axios from 'axios';
 import { SearchVacanciesDto } from './dto/search-vacancies.dto';
 import {
@@ -93,13 +108,8 @@ export class VacanciesService {
       };
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.error(
-          '[search] HH error',
-          error.response?.status,
-          JSON.stringify(error.response?.data),
-        );
         throw new HttpException(
-          error.response?.data ?? 'Ошибка запроса к HH.ru',
+          extractHhMessage(error.response?.data, 'Ошибка запроса к HH.ru'),
           error.response?.status ?? HttpStatus.BAD_GATEWAY,
         );
       }
@@ -132,32 +142,7 @@ export class VacanciesService {
 
     const referer = `${baseUrl}/vacancy/${vacancyId}`;
 
-    console.log('[apply] vacancyId    =', vacancyId);
-    console.log('[apply] resumeHash   =', resumeHash || '(empty)');
-    console.log(
-      '[apply] letter       =',
-      letter ? `"${letter.slice(0, 40)}…"` : '(none)',
-    );
-    console.log('[apply] xsrfToken    =', xsrfToken || '(empty)');
-    console.log('[apply] fgsscgib     =', fgsscgib || '(empty)');
-
     try {
-      // Step 1: register interaction (fire-and-forget, errors are ignored)
-      await axios
-        .post(
-          `${baseUrl}/shards/vacancy/register_interaction`,
-          { vacancyId: Number(vacancyId) },
-          {
-            headers: {
-              ...baseHeaders,
-              'content-type': 'application/json',
-              'x-hhtmsource': 'vacancy',
-              referer,
-            },
-          },
-        )
-        .catch(() => undefined);
-
       const form = new FormData();
       form.append('_xsrf', xsrfToken);
       form.append('vacancy_id', vacancyId);
@@ -185,17 +170,6 @@ export class VacanciesService {
           },
         },
       );
-      console.log(
-        '[apply] POST response =',
-        JSON.stringify(applyData).slice(0, 300),
-      );
-
-      console.log(
-        '[apply] success      =',
-        applyData.success,
-        '→ ok =',
-        applyData.success === 'true',
-      );
       return {
         ok: applyData.success === 'true',
         topicId: applyData.topic_id ?? null,
@@ -203,17 +177,52 @@ export class VacanciesService {
       };
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.error(
-          '[apply] HH error',
-          error.response?.status,
-          JSON.stringify(error.response?.data),
-        );
         throw new HttpException(
-          error.response?.data ?? 'Ошибка отклика на вакансию',
+          extractHhMessage(error.response?.data, 'Ошибка отклика на вакансию'),
           error.response?.status ?? HttpStatus.BAD_GATEWAY,
         );
       }
       throw error;
+    }
+  }
+
+  /** Добавляет письмо к уже отправленному отклику через edit_ajax.
+   *  Возвращает false если работодатель уже просмотрел (notEditable). */
+  async addLetterToResponse(
+    topicId: string,
+    text: string,
+    resumeHash: string | undefined,
+  ): Promise<boolean> {
+    const { cookie: rawCookie, xsrfToken, baseUrl } =
+      this.resumeStore.getSession(resumeHash);
+    const cookie = this.filterCookies(rawCookie);
+    const fgsscgib = this.extractCookie(rawCookie, 'fgsscgib-w-hh');
+    const gsscgib = this.extractCookie(rawCookie, 'gsscgib-w-hh');
+
+    const form = new FormData();
+    form.append('_xsrf', xsrfToken);
+    form.append('text', text);
+    form.append('topicId', topicId);
+
+    try {
+      const { data } = await axios.post<{ success?: string; error?: string }>(
+        `${baseUrl}/applicant/vacancy_response/edit_ajax`,
+        form,
+        {
+          headers: {
+            accept: 'application/json',
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36',
+            'x-gib-fgsscgib-w-hh': fgsscgib,
+            'x-gib-gsscgib-w-hh': gsscgib,
+            'x-requested-with': 'XMLHttpRequest',
+            cookie,
+            'x-xsrftoken': xsrfToken,
+          },
+        },
+      );
+      return data.success === 'true';
+    } catch {
+      return false;
     }
   }
 

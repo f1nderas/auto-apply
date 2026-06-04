@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { cx } from '@shared/lib/cx';
-import { useEffect } from 'react';
 import { Button } from '@shared/ui/button';
 import { Checkbox } from '@shared/ui/checkbox';
+import { Tooltip } from '@shared/ui/tooltip';
 import { NumberSlider } from '@shared/ui/number-slider';
 import { Select, type SelectOption } from '@shared/ui/select';
+import { Textarea } from '@shared/ui/textarea';
 import { useAppSelector } from '@shared/store/hooks';
 import { selectSelectedHashes } from '@entities/resume';
 import {
@@ -31,6 +32,8 @@ const AutoApplyBtn = () => {
   const [searchInTitle, setSearchInTitle] = useState(true);
   const [searchInDescription, setSearchInDescription] = useState(true);
   const [isRemote, setIsRemote] = useState(false);
+  const [coverLetter, setCoverLetter] = useState('');
+  const [sendLetterToAll, setSendLetterToAll] = useState(false);
   // #endregion
 
   // #region HOOK
@@ -56,6 +59,12 @@ const AutoApplyBtn = () => {
   ];
   const areaOptions: SelectOption[] = (areas ?? []).map((a) => ({ value: a.value, label: a.label }));
   const canStart = !!text.trim() && area !== null && selectedHashes.length > 0 && !isRunning && searchFields.length > 0;
+
+  const startBlockReasons = !canStart && !isRunning ? [
+    !text.trim() && 'Введите поисковый запрос',
+    selectedHashes.length === 0 && 'Выберите хотя бы одно резюме',
+    searchFields.length === 0 && 'Выберите хотя бы одно поле поиска',
+  ].filter(Boolean) as string[] : [];
   const isDone = !isRunning && total > 0;
   const isCompleted = isDone && done === total;
   // #endregion
@@ -72,6 +81,8 @@ const AutoApplyBtn = () => {
         resumeHashes: selectedHashes,
         searchFields,
         workFormat: isRemote ? 'REMOTE' : undefined,
+        coverLetter: coverLetter.trim() || undefined,
+        sendLetterToAll: sendLetterToAll && !!coverLetter.trim(),
       }).unwrap();
     } catch {
       toast.error('Не удалось запустить авто-отклик');
@@ -104,6 +115,7 @@ const AutoApplyBtn = () => {
         label="Регион"
       />
       <NumberSlider
+        label="Количество вакансий для отклика"
         value={count}
         min={1}
         max={50}
@@ -117,9 +129,22 @@ const AutoApplyBtn = () => {
         <Checkbox className="auto-apply-btn__filter" checked={isRemote} onChange={setIsRemote} isDisabled={isRunning} label="Удалённая" />
       </div>
 
-      {selectedHashes.length === 0 && (
-        <p className="auto-apply-btn__hint">Выберите резюме для отклика</p>
-      )}
+      <Textarea
+        className="auto-apply-btn__letter"
+        placeholder="Сопроводительное письмо (для вакансий где оно обязательно)"
+        value={coverLetter}
+        onChange={(e) => setCoverLetter(e.target.value)}
+        rows={3}
+        disabled={isRunning}
+        spellCheck={false}
+      />
+      <Checkbox
+        className="auto-apply-btn__filter"
+        checked={sendLetterToAll}
+        onChange={setSendLetterToAll}
+        isDisabled={isRunning || !coverLetter.trim()}
+        label="Прикладывать письмо ко всем вакансиям"
+      />
 
       {error && <p className="auto-apply-btn__hint">{error}</p>}
 
@@ -129,9 +154,17 @@ const AutoApplyBtn = () => {
         )}
 
         {!isRunning && (
-          <Button variant="plain" className={runBtnClass} onClick={handleStart} isDisabled={!canStart}>
-            {isDone ? 'Запустить снова' : 'Запустить'}
-          </Button>
+          <Tooltip
+            content={startBlockReasons.length > 0 ? (
+              <ul className="tooltip__list">
+                {startBlockReasons.map((r) => <li key={r}>{r}</li>)}
+              </ul>
+            ) : null}
+          >
+            <Button variant="plain" className={runBtnClass} onClick={handleStart} isDisabled={!canStart}>
+              {isDone ? 'Запустить снова' : 'Запустить'}
+            </Button>
+          </Tooltip>
         )}
 
         {isRunning && (
@@ -144,6 +177,7 @@ const AutoApplyBtn = () => {
           {results.map((r, i) => (
             <p key={`${r.vacancyId}-${i}`} className="auto-apply-btn__hint">
               {r.success ? '✓' : '✗'} {r.vacancyName.slice(0, 50)}
+              {r.letterAdded === false && ' · письмо не доставлено'}
             </p>
           ))}
         </div>

@@ -75,3 +75,13 @@ export interface HhApplyResponse {
   topic_id?: string;
   chat_id?: string;
 }
+
+export interface HhPopupResponse {
+  type: 'quickResponse' | 'modal' | (string & {});
+  /** Готовый body для quickResponse POST */
+  body?: Record<string, unknown>;
+  responsePopup?: {
+    type: string;
+    responseLetterRequired: boolean;
+  };
+}

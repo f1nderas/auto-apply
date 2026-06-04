@@ -94,7 +94,7 @@ const Vacancies = () => {
 
       <div className="vacancies__list">
         {data?.vacancies.map((v) => (
-          <VacancyCard key={v.id} vacancy={v} />
+          <VacancyCard key={v.id} vacancy={v} resumeHash={lastQuery?.resumeHash} />
         ))}
       </div>
 

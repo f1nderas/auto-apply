@@ -3,9 +3,9 @@ import { AreaDto } from './dto/area.dto';
 
 const AREAS: AreaDto[] = [
   { value: 0, label: 'Без региона' },
+  { value: 113, label: 'Россия' },
   { value: 1, label: 'Москва' },
   { value: 2, label: 'Санкт-Петербург' },
-  { value: 113, label: 'Россия' },
 ];
 
 const GRADES = ['Junior', 'Middle', 'Senior'] as const;
