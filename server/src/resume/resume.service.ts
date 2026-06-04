@@ -88,8 +88,12 @@ export class ResumeService {
   }
 
   async getResume(hash: string): Promise<ResumeDto> {
-    const { cookie: rawCookie, xsrfToken, baseUrl, staticVersion } =
-      this.resumeStore.getSession(hash);
+    const {
+      cookie: rawCookie,
+      xsrfToken,
+      baseUrl,
+      staticVersion,
+    } = this.resumeStore.getSession(hash);
     const cookie = this.filterCookies(rawCookie);
     const fgsscgib = this.extractCookie(rawCookie, 'fgsscgib-w-hh');
     const gsscgib = this.extractCookie(rawCookie, 'gsscgib-w-hh');
@@ -147,8 +151,11 @@ export class ResumeService {
   }
 
   async updateAbout(hash: string, text: string): Promise<void> {
-    const { cookie: rawCookie, xsrfToken, baseUrl } =
-      this.resumeStore.getSession(hash);
+    const {
+      cookie: rawCookie,
+      xsrfToken,
+      baseUrl,
+    } = this.resumeStore.getSession(hash);
     const cookie = this.filterCookies(rawCookie);
     const fgsscgib = this.extractCookie(rawCookie, 'fgsscgib-w-hh');
     const gsscgib = this.extractCookie(rawCookie, 'gsscgib-w-hh');

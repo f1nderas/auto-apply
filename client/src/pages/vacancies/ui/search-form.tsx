@@ -1,13 +1,22 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@shared/ui/button';
+import { Checkbox } from '@shared/ui/checkbox';
 import { Select, type SelectOption } from '@shared/ui/select';
 import { useGetProfilesQuery } from '@entities/resume';
 import { VacancyInput } from '@features/auto-apply';
 import { useGetAreasQuery } from '@features/suggestions';
 import './search-form.scss';
 
+interface SearchParams {
+  text: string;
+  area: number;
+  resumeHash: string;
+  searchFields: string[];
+  isRemote: boolean;
+}
+
 interface SearchFormProps {
-  onSearch: (text: string, area: number, resumeHash: string) => void;
+  onSearch: (params: SearchParams) => void;
   isLoading: boolean;
 }
 
@@ -16,6 +25,9 @@ const SearchForm = ({ onSearch, isLoading }: SearchFormProps) => {
   const [text, setText] = useState('');
   const [area, setArea] = useState<number | null>(null);
   const [resumeHash, setResumeHash] = useState('');
+  const [searchInTitle, setSearchInTitle] = useState(true);
+  const [searchInDescription, setSearchInDescription] = useState(true);
+  const [isRemote, setIsRemote] = useState(false);
   // #endregion
 
   // #region HOOK
@@ -38,17 +50,22 @@ const SearchForm = ({ onSearch, isLoading }: SearchFormProps) => {
   // #endregion
 
   // #region COMPUTED
-  const areaOptions: SelectOption[] = areas ?? [];
+  const areaOptions: SelectOption[] = (areas ?? []).map((a) => ({ value: a.value, label: a.label }));
   const resumeOptions: SelectOption[] = (profiles ?? []).map((p) => ({
     value: p.hash,
     label: p.name,
   }));
+  const searchFields = [
+    ...(searchInTitle ? ['name'] : []),
+    ...(searchInDescription ? ['description'] : []),
+  ];
   // #endregion
 
   // #region HANDLER
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (area !== null) onSearch(text, area, resumeHash);
+    if (area === null) return;
+    onSearch({ text, area, resumeHash, searchFields, isRemote });
   };
   // #endregion
 
@@ -68,18 +85,25 @@ const SearchForm = ({ onSearch, isLoading }: SearchFormProps) => {
             label="Регион"
             options={areaOptions}
             value={areaOptions.find((o) => o.value === area) ?? null}
-            onChange={(opt) => setArea(Number(opt?.value ?? 1))}
+            onChange={(opt) => setArea(opt ? Number(opt.value) : 0)}
           />
         </div>
         <Button
           type="submit"
           className="search-form__btn"
           isLoading={isLoading}
-          isDisabled={!text.trim() || area === null || !resumeHash}
+          isDisabled={!text.trim() || area === null || !resumeHash || searchFields.length === 0}
         >
           Найти
         </Button>
       </div>
+
+      <div className="search-form__filters">
+        <Checkbox className="search-form__filter" checked={searchInTitle} onChange={setSearchInTitle} label="В названии вакансии" />
+        <Checkbox className="search-form__filter" checked={searchInDescription} onChange={setSearchInDescription} label="В описании вакансии" />
+        <Checkbox className="search-form__filter" checked={isRemote} onChange={setIsRemote} label="Удалённая работа" />
+      </div>
+
       <div className="search-form__footer">
         <span className="search-form__resume-prefix">Резюме:</span>
         <Select
@@ -95,3 +119,4 @@ const SearchForm = ({ onSearch, isLoading }: SearchFormProps) => {
 };
 
 export { SearchForm };
+export type { SearchParams };

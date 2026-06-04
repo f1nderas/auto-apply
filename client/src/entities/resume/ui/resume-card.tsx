@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@shared/ui/button';
-import { Input } from '@shared/ui/input';
+import { Checkbox } from '@shared/ui/checkbox';
 import { useAppDispatch, useAppSelector } from '@shared/store/hooks';
 import { toggleHash, selectSelectedHashes } from '../model/resume-select-slice';
 import { ResumeEditModal } from './resume-edit-modal';
@@ -34,14 +34,11 @@ const ResumeCard = ({ hash, name, experience }: ResumeCardProps) => {
   return (
     <>
       <div className="resume-card">
-        <label className="resume-card__checkbox-label">
-          <Input
-            type="checkbox"
-            className="resume-card__checkbox"
-            checked={isSelected}
-            onChange={handleToggle}
-          />
-        </label>
+        <Checkbox
+          className="resume-card__checkbox"
+          checked={isSelected}
+          onChange={handleToggle}
+        />
         <div className="resume-card__info">
           <span className="resume-card__name">{name}</span>
           <span className="resume-card__exp">{experience} лет опыта</span>

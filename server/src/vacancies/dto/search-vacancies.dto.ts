@@ -1,5 +1,12 @@
-import { IsString, IsOptional, IsInt, Min, Max } from 'class-validator';
-import { Type } from 'class-transformer';
+import {
+  IsString,
+  IsOptional,
+  IsInt,
+  Min,
+  Max,
+  IsArray,
+} from 'class-validator';
+import { Type, Transform, type TransformFnParams } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class SearchVacanciesDto {
@@ -7,11 +14,15 @@ export class SearchVacanciesDto {
   @IsString()
   text: string;
 
-  @ApiPropertyOptional({ type: Number, default: 1, example: 1 })
+  @ApiPropertyOptional({
+    type: Number,
+    example: 1,
+    description: '0 = без фильтра по региону',
+  })
   @IsOptional()
   @Type(() => Number)
   @IsInt()
-  area?: number = 1;
+  area?: number;
 
   @ApiPropertyOptional({ type: Number, default: 0, minimum: 0 })
   @IsOptional()
@@ -32,4 +43,18 @@ export class SearchVacanciesDto {
   @IsOptional()
   @IsString()
   resumeHash?: string;
+
+  @ApiPropertyOptional({ type: [String], example: ['name', 'description'] })
+  @IsOptional()
+  @Transform(({ value }: TransformFnParams): string[] =>
+    Array.isArray(value) ? (value as string[]) : [value as string],
+  )
+  @IsArray()
+  @IsString({ each: true })
+  searchFields?: string[];
+
+  @ApiPropertyOptional({ type: String, example: 'REMOTE' })
+  @IsOptional()
+  @IsString()
+  workFormat?: string;
 }

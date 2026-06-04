@@ -24,7 +24,8 @@ export class VacanciesService {
   constructor(private readonly resumeStore: ResumeStore) {}
 
   async search(params: SearchVacanciesDto): Promise<VacanciesResponseDto> {
-    const { text, area, page, perPage, resumeHash } = params;
+    const { text, area, page, perPage, resumeHash, searchFields, workFormat } =
+      params;
     const {
       cookie: rawCookie,
       xsrfToken,
@@ -37,21 +38,28 @@ export class VacanciesService {
     const fgsscgib = this.extractCookie(rawCookie, 'fgsscgib-w-hh');
     const gsscgib = this.extractCookie(rawCookie, 'gsscgib-w-hh');
 
+    // URLSearchParams нужен для search_field=name&search_field=description (повторяющиеся ключи)
+    const qs = new URLSearchParams();
+    qs.append('text', text);
+    qs.append('page', String(page + 1));
+    qs.append('items_on_page', String(perPage));
+    qs.append('from', 'suggest_post');
+    qs.append('ored_clusters', 'true');
+    qs.append('enable_snippets', 'false');
+    if (area) qs.append('area', String(area));
+    if (workFormat) qs.append('work_format', workFormat);
+    const fields = searchFields?.length
+      ? searchFields
+      : ['name', 'description'];
+    fields.forEach((f) => qs.append('search_field', f));
+
     try {
       const { data } = await axios.get<HhWebSearchResponse>(
-        `${baseUrl}/search/vacancy`,
+        `${baseUrl}/search/vacancy?${qs.toString()}`,
         {
-          params: {
-            text,
-            area,
-            page: page + 1,
-            items_on_page: perPage,
-            from: 'suggest_post',
-            ored_clusters: true,
-          },
           headers: {
             accept: 'application/json',
-            referer: `${baseUrl}/search/vacancy`,
+            referer: `${baseUrl}/search/vacancy?${qs.toString()}`,
             'user-agent':
               'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36',
             'x-gib-fgsscgib-w-hh': fgsscgib,
@@ -101,7 +109,11 @@ export class VacanciesService {
 
   async apply(dto: ApplyVacancyDto): Promise<ApplyResponseDto> {
     const { vacancyId, letter, resumeHash: dtoResumeHash } = dto;
-    const { cookie: rawCookie, xsrfToken, baseUrl } = this.resumeStore.getSession(dtoResumeHash);
+    const {
+      cookie: rawCookie,
+      xsrfToken,
+      baseUrl,
+    } = this.resumeStore.getSession(dtoResumeHash);
     const resumeHash = dtoResumeHash ?? '';
     const cookie = this.filterCookies(rawCookie);
     const fgsscgib = this.extractCookie(rawCookie, 'fgsscgib-w-hh');

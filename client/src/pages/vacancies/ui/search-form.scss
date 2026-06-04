@@ -101,6 +101,34 @@
   }
 }
 
+.search-form__filters {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.search-form__filter {
+  // Checkbox на синем фоне: белая рамка, белая галочка
+  .checkbox__box {
+    border-color: rgb(255 255 255 / 60%);
+    background: transparent;
+
+    &--checked {
+      background: colors.$color-surface;
+      border-color: colors.$color-surface;
+
+      &::after {
+        border-color: colors.$color-primary;
+      }
+    }
+  }
+
+  .checkbox__label {
+    @include typography.font-caption;
+    color: rgb(255 255 255 / 80%);
+  }
+}
+
 .search-form__footer {
   display: flex;
   align-items: center;

@@ -25,4 +25,4 @@ async function bootstrap() {
   app.enableCors({ origin: CLIENT_URL });
   await app.listen(SERVER_PORT);
 }
-bootstrap();
+void bootstrap();

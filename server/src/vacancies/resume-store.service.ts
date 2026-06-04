@@ -35,7 +35,7 @@ export class ResumeStore {
     this.migrateFromSessionsJson();
   }
 
-  getAll(): Array<{ hash: string; name: string; experience: string }> {
+  getAll(): Array<{ hash: string; name: string; experience: number }> {
     return [...this.resumes.values()].map(({ hash, name, experience }) => ({
       hash,
       name,
@@ -77,9 +77,14 @@ export class ResumeStore {
   private load(): void {
     if (!existsSync(RESUMES_FILE)) return;
     try {
-      const data = JSON.parse(readFileSync(RESUMES_FILE, 'utf8')) as StoredResume[];
+      const data = JSON.parse(
+        readFileSync(RESUMES_FILE, 'utf8'),
+      ) as StoredResume[];
       for (const r of data) {
-        this.resumes.set(r.hash, { ...{ ...EMPTY_SESSION, name: '', experience: 0 }, ...r });
+        this.resumes.set(r.hash, {
+          ...{ ...EMPTY_SESSION, name: '', experience: 0 },
+          ...r,
+        });
       }
     } catch {
       // повреждённый файл — стартуем с пустого состояния

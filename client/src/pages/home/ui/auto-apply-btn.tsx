@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { cx } from '@shared/lib/cx';
+import { useEffect } from 'react';
 import { Button } from '@shared/ui/button';
+import { Checkbox } from '@shared/ui/checkbox';
 import { NumberSlider } from '@shared/ui/number-slider';
+import { Select, type SelectOption } from '@shared/ui/select';
 import { useAppSelector } from '@shared/store/hooks';
 import { selectSelectedHashes } from '@entities/resume';
 import {
@@ -11,23 +14,48 @@ import {
   useStopAutoApplyMutation,
   useAutoApplySocket,
 } from '@features/auto-apply';
+import { useGetAreasQuery } from '@features/suggestions';
 import './auto-apply-btn.scss';
+
+const enum Phase {
+  Idle = 'idle',
+  Running = 'running',
+  Done = 'done',
+}
 
 const AutoApplyBtn = () => {
   // #region STATE
   const [text, setText] = useState('');
+  const [area, setArea] = useState<number | null>(null);
   const [count, setCount] = useState(3);
+  const [searchInTitle, setSearchInTitle] = useState(true);
+  const [searchInDescription, setSearchInDescription] = useState(true);
+  const [isRemote, setIsRemote] = useState(false);
   // #endregion
 
   // #region HOOK
   const selectedHashes = useAppSelector(selectSelectedHashes);
+  const { data: areas } = useGetAreasQuery();
   const [startAutoApply] = useStartAutoApplyMutation();
   const [stopAutoApply] = useStopAutoApplyMutation();
   const { isRunning, done, total, results, error, reset } = useAutoApplySocket();
   // #endregion
 
+  // #region EFFECT
+  useEffect(() => {
+    if (areas && areas.length > 0 && area === null) {
+      setArea(areas[0].value);
+    }
+  }, [areas]);
+  // #endregion
+
   // #region COMPUTED
-  const canStart = !!text.trim() && selectedHashes.length > 0 && !isRunning;
+  const searchFields = [
+    ...(searchInTitle ? ['name'] : []),
+    ...(searchInDescription ? ['description'] : []),
+  ];
+  const areaOptions: SelectOption[] = (areas ?? []).map((a) => ({ value: a.value, label: a.label }));
+  const canStart = !!text.trim() && area !== null && selectedHashes.length > 0 && !isRunning && searchFields.length > 0;
   const isDone = !isRunning && total > 0;
   const isCompleted = isDone && done === total;
   // #endregion
@@ -37,7 +65,14 @@ const AutoApplyBtn = () => {
     if (!canStart) return;
     reset();
     try {
-      await startAutoApply({ text: text.trim(), area: 1, count, resumeHashes: selectedHashes }).unwrap();
+      await startAutoApply({
+        text: text.trim(),
+        area: area ?? 0,
+        count,
+        resumeHashes: selectedHashes,
+        searchFields,
+        workFormat: isRemote ? 'REMOTE' : undefined,
+      }).unwrap();
     } catch {
       toast.error('Не удалось запустить авто-отклик');
     }
@@ -61,6 +96,13 @@ const AutoApplyBtn = () => {
         onChange={setText}
         isDisabled={isRunning}
       />
+      <Select
+        options={areaOptions}
+        value={areaOptions.find((o) => o.value === area) ?? null}
+        onChange={(opt) => setArea(opt ? Number(opt.value) : 0)}
+        isDisabled={isRunning}
+        label="Регион"
+      />
       <NumberSlider
         value={count}
         min={1}
@@ -69,13 +111,17 @@ const AutoApplyBtn = () => {
         isDisabled={isRunning}
       />
 
+      <div className="auto-apply-btn__filters">
+        <Checkbox className="auto-apply-btn__filter" checked={searchInTitle} onChange={setSearchInTitle} isDisabled={isRunning} label="В названии" />
+        <Checkbox className="auto-apply-btn__filter" checked={searchInDescription} onChange={setSearchInDescription} isDisabled={isRunning} label="В описании" />
+        <Checkbox className="auto-apply-btn__filter" checked={isRemote} onChange={setIsRemote} isDisabled={isRunning} label="Удалённая" />
+      </div>
+
       {selectedHashes.length === 0 && (
         <p className="auto-apply-btn__hint">Выберите резюме для отклика</p>
       )}
 
-      {error && (
-        <p className="auto-apply-btn__hint">{error}</p>
-      )}
+      {error && <p className="auto-apply-btn__hint">{error}</p>}
 
       <div className="auto-apply-btn__actions">
         {total > 0 && (
@@ -83,20 +129,13 @@ const AutoApplyBtn = () => {
         )}
 
         {!isRunning && (
-          <Button
-            variant="plain"
-            className={runBtnClass}
-            onClick={handleStart}
-            isDisabled={!canStart}
-          >
+          <Button variant="plain" className={runBtnClass} onClick={handleStart} isDisabled={!canStart}>
             {isDone ? 'Запустить снова' : 'Запустить'}
           </Button>
         )}
 
         {isRunning && (
-          <Button variant="plain" onClick={handleStop}>
-            Стоп
-          </Button>
+          <Button variant="plain" onClick={handleStop}>Стоп</Button>
         )}
       </div>
 

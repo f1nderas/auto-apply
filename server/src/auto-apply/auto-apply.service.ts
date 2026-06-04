@@ -58,10 +58,12 @@ class AutoApplyService {
     try {
       const searchResult = await this.vacanciesService.search({
         text: dto.text,
-        area: dto.area,
+        area: dto.area || undefined,
         page: 0,
         perPage: Math.min(dto.count * 2 + 20, 100),
         resumeHash: dto.resumeHashes[0],
+        searchFields: dto.searchFields,
+        workFormat: dto.workFormat,
       });
 
       const candidates = searchResult.vacancies

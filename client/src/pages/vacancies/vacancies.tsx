@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { SearchForm } from './ui/search-form';
+import { SearchForm, type SearchParams } from './ui/search-form';
 import { VacancyCard, useLazySearchVacanciesQuery } from '@entities/vacancy';
 import { Button } from '@shared/ui/button';
 import { Pagination } from '@shared/ui/pagination';
@@ -14,6 +14,8 @@ const Vacancies = () => {
     text: string;
     area: number;
     resumeHash: string;
+    searchFields: string[];
+    workFormat?: string;
   } | null>(null);
   // #endregion
 
@@ -31,10 +33,12 @@ const Vacancies = () => {
   // #endregion
 
   // #region HANDLER
-  const handleSearch = (text: string, area: number, resumeHash: string) => {
-    setLastQuery({ text, area, resumeHash });
+  const handleSearch = ({ text, area, resumeHash, searchFields, isRemote }: SearchParams) => {
+    const workFormat = isRemote ? 'REMOTE' : undefined;
+    const q = { text, area: area || undefined, resumeHash, searchFields, workFormat };
+    setLastQuery({ text, area, resumeHash, searchFields, workFormat });
     setPage(0);
-    search({ text, area, page: 0, perPage, ...(resumeHash ? { resumeHash } : {}) });
+    search({ ...q, page: 0, perPage });
   };
 
   const handlePageChange = (newPage: number) => {

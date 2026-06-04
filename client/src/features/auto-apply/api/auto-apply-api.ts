@@ -5,6 +5,8 @@ interface StartAutoApplyPayload {
   area: number;
   count: number;
   resumeHashes: string[];
+  searchFields: string[];
+  workFormat?: string;
 }
 
 const autoApplyApi = baseApi.injectEndpoints({

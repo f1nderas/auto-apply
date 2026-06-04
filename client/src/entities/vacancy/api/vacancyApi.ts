@@ -8,6 +8,8 @@ import type {
 
 interface SearchParams extends VacanciesControllerSearchApiArg {
   resumeHash?: string;
+  searchFields?: string[];
+  workFormat?: string;
 }
 
 interface ApplyParams extends VacanciesControllerApplyApiArg {

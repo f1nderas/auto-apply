@@ -2,9 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { AreaDto } from './dto/area.dto';
 
 const AREAS: AreaDto[] = [
+  { value: 0, label: 'Без региона' },
   { value: 1, label: 'Москва' },
   { value: 2, label: 'Санкт-Петербург' },
-  { value: 0, label: 'Все регионы' },
+  { value: 113, label: 'Россия' },
 ];
 
 const GRADES = ['Junior', 'Middle', 'Senior'] as const;
