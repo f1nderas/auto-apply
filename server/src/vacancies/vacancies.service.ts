@@ -193,8 +193,11 @@ export class VacanciesService {
     text: string,
     resumeHash: string | undefined,
   ): Promise<boolean> {
-    const { cookie: rawCookie, xsrfToken, baseUrl } =
-      this.resumeStore.getSession(resumeHash);
+    const {
+      cookie: rawCookie,
+      xsrfToken,
+      baseUrl,
+    } = this.resumeStore.getSession(resumeHash);
     const cookie = this.filterCookies(rawCookie);
     const fgsscgib = this.extractCookie(rawCookie, 'fgsscgib-w-hh');
     const gsscgib = this.extractCookie(rawCookie, 'gsscgib-w-hh');
@@ -211,7 +214,8 @@ export class VacanciesService {
         {
           headers: {
             accept: 'application/json',
-            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36',
+            'user-agent':
+              'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36',
             'x-gib-fgsscgib-w-hh': fgsscgib,
             'x-gib-gsscgib-w-hh': gsscgib,
             'x-requested-with': 'XMLHttpRequest',

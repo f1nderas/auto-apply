@@ -111,7 +111,12 @@ class AutoApplyService {
         }
 
         await sleep(APPLY_DELAY_MS);
-        await this.applyAndRecord(vacancy, resumeHash, coverLetter, sendLetterToAll === true);
+        await this.applyAndRecord(
+          vacancy,
+          resumeHash,
+          coverLetter,
+          sendLetterToAll === true,
+        );
       }
 
       this.emit('done', { done: this.done, total: this.total, aborted: false });
@@ -144,8 +149,18 @@ class AutoApplyService {
 
     // Для quickResponse + sendLetterToAll: добавляем письмо через edit_ajax
     let letterAdded: boolean | undefined;
-    if (success && !vacancy.responseLetterRequired && sendLetterToAll && coverLetter && topicId) {
-      letterAdded = await this.vacanciesService.addLetterToResponse(topicId, coverLetter, resumeHash);
+    if (
+      success &&
+      !vacancy.responseLetterRequired &&
+      sendLetterToAll &&
+      coverLetter &&
+      topicId
+    ) {
+      letterAdded = await this.vacanciesService.addLetterToResponse(
+        topicId,
+        coverLetter,
+        resumeHash,
+      );
     }
 
     this.historyService.add({
