@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { Nav } from './nav/nav';
+import { Nav } from '../nav';
 import './panel-layout.scss';
 
 const PanelLayout = ({ children }: { children: ReactNode }) => (

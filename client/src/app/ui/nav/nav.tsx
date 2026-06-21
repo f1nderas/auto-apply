@@ -1,13 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { cx } from '@shared/lib/cx';
+import { ROUTES, PANEL_PREFIX } from '../../routes-config';
 import './nav.scss';
-
-const NAV_ITEMS = [
-  { to: '/panel/apply', label: 'Автоотклики' },
-  { to: '/panel/vacancies', label: 'Вакансии' },
-  { to: '/panel/history', label: 'История' },
-  { to: '/panel/resumes', label: 'Резюме' },
-] as const;
 
 const Nav = () => {
   // #region STYLES
@@ -17,10 +11,10 @@ const Nav = () => {
 
   return (
     <nav className="nav">
-      {NAV_ITEMS.map(({ to, label }) => (
+      {ROUTES.filter((r) => r.layout === 'panel' && r.label).map(({ path, label }) => (
         <NavLink
-          key={to}
-          to={to}
+          key={path}
+          to={`${PANEL_PREFIX}/${path}`}
           end
           className={({ isActive }) => navLinkClass(isActive)}
         >

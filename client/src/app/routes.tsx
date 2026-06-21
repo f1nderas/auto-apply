@@ -1,14 +1,15 @@
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
-import { Landing } from '@pages/landing';
-import { Apply } from '@pages/panel/apply';
-import { Resume } from '@pages/panel/resume';
-import { Vacancies } from '@pages/panel/vacancies';
-import { History } from '@pages/panel/history';
-import { Resumes } from '@pages/panel/resumes';
 import { PanelLayout } from './ui/panel-layout';
 import { LandingLayout } from './ui/landing-layout';
+import { ROUTES, PANEL_PREFIX } from './routes-config';
 
-const AppLayout = () => (
+const LandingWrapper = () => (
+  <LandingLayout>
+    <Outlet />
+  </LandingLayout>
+);
+
+const PanelWrapper = () => (
   <PanelLayout>
     <Outlet />
   </PanelLayout>
@@ -16,19 +17,13 @@ const AppLayout = () => (
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: <LandingLayout><Landing /></LandingLayout>,
+    element: <LandingWrapper />,
+    children: ROUTES.filter((r) => r.layout === 'landing'),
   },
   {
-    path: '/panel',
-    element: <AppLayout />,
-    children: [
-      { path: 'apply',         element: <Apply /> },
-      { path: 'resume/:hash',  element: <Resume /> },
-      { path: 'vacancies',     element: <Vacancies /> },
-      { path: 'history',       element: <History /> },
-      { path: 'resumes',       element: <Resumes /> },
-    ],
+    path: PANEL_PREFIX,
+    element: <PanelWrapper />,
+    children: ROUTES.filter((r) => r.layout === 'panel').map(({ path, element }) => ({ path, element })),
   },
   {
     path: '*',
