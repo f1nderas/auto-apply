@@ -54,7 +54,7 @@ const AddResumeForm = ({ onSuccess, onCancel }: AddResumeFormProps) => {
   // #endregion
 
   return (
-    <div className="home__add-form">
+    <div className="resumes__add-form">
       <Input
         placeholder="Hash резюме (из URL на hh.ru)"
         value={form.hash}
@@ -80,7 +80,7 @@ const AddResumeForm = ({ onSuccess, onCancel }: AddResumeFormProps) => {
         rows={4}
         spellCheck={false}
       />
-      <div className="home__add-form-actions">
+      <div className="resumes__add-form-actions">
         <Button onClick={handleSubmit} isDisabled={isSubmitDisabled} isLoading={isLoading}>
           Добавить
         </Button>

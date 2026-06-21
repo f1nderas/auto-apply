@@ -94,7 +94,7 @@ const ResumeEditModal = ({
             onChange={(e) => setCurl(e.target.value)}
             rows={5}
             spellCheck={false}
-            isDisabled={isLoading}
+            disabled={isLoading}
           />
         )}
       </div>
@@ -103,7 +103,7 @@ const ResumeEditModal = ({
         <Button
           onClick={handleSave}
           isDisabled={isLoading || !name.trim() || isNaN(parseFloat(experience)) || parseFloat(experience) <= 0}
-          loading={isLoading}
+          isLoading={isLoading}
         >
           Сохранить
         </Button>

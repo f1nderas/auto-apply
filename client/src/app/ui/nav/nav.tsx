@@ -3,10 +3,10 @@ import { cx } from '@shared/lib/cx';
 import './nav.scss';
 
 const NAV_ITEMS = [
-  { to: '/', label: 'Главная' },
-  { to: '/vacancies', label: 'Вакансии' },
-  { to: '/history', label: 'История' },
-  { to: '/users', label: 'Пользователи' },
+  { to: '/panel/apply', label: 'Автоотклики' },
+  { to: '/panel/vacancies', label: 'Вакансии' },
+  { to: '/panel/history', label: 'История' },
+  { to: '/panel/resumes', label: 'Резюме' },
 ] as const;
 
 const Nav = () => {

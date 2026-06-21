@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { Button } from '@shared/ui/button';
 import { useGetProfilesQuery, ResumeCard } from '@entities/resume';
-import { AutoApplyBtn } from './ui/auto-apply-btn';
 import { AddResumeForm } from './ui/add-resume-form';
-import './home.scss';
+import './resumes.scss';
 
-const Home = () => {
+const Resumes = () => {
   // #region STATE
   const [showForm, setShowForm] = useState(false);
   // #endregion
@@ -20,10 +19,8 @@ const Home = () => {
   // #endregion
 
   return (
-    <div className="home">
-      <AutoApplyBtn />
-
-      {isLoading && <p className="home__loading">Загрузка…</p>}
+    <div className="resumes">
+      {isLoading && <p className="resumes__loading">Загрузка…</p>}
 
       {profiles?.map((r) => (
         <ResumeCard key={r.hash} hash={r.hash} name={r.name} experience={r.experience} />
@@ -32,7 +29,7 @@ const Home = () => {
       {showForm ? (
         <AddResumeForm onSuccess={handleSuccess} onCancel={handleCancel} />
       ) : (
-        <Button variant="plain" className="home__add-btn" onClick={() => setShowForm(true)}>
+        <Button variant="plain" className="resumes__add-btn" onClick={() => setShowForm(true)}>
           + Добавить резюме
         </Button>
       )}
@@ -40,4 +37,4 @@ const Home = () => {
   );
 };
 
-export { Home };
+export { Resumes };

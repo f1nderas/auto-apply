@@ -23,6 +23,7 @@
 .layout__title {
   @include typography.font-heading;
   color: colors.$color-text;
+  text-decoration: none;
 }
 
 .layout__header-actions {

@@ -1,18 +1,17 @@
 @use '../../shared/styles/colors';
 @use '../../shared/styles/typography';
 
-.home {
+.resumes {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.home__loading {
+.resumes__loading {
   @include typography.font-body;
   color: colors.$color-text-muted;
 }
 
-.home__add-btn {
+.resumes__add-btn {
   align-self: flex-start;
 }
-

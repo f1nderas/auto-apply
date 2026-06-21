@@ -1,6 +1,6 @@
 @use '../../../shared/styles/colors';
 
-.home__add-form {
+.resumes__add-form {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -10,7 +10,7 @@
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
 }
 
-.home__add-form-actions {
+.resumes__add-form-actions {
   display: flex;
   gap: 8px;
 }
