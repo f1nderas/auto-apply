@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { Nav } from './nav/nav';
-import './layout.scss';
+import './panel-layout.scss';
 
-const Layout = ({ children }: { children: ReactNode }) => (
+const PanelLayout = ({ children }: { children: ReactNode }) => (
   <div className="layout">
     <header className="layout__header">
       <Link to="/" className="layout__title">Auto Apply</Link>
@@ -17,4 +17,4 @@ const Layout = ({ children }: { children: ReactNode }) => (
   </div>
 );
 
-export { Layout };
+export { PanelLayout };

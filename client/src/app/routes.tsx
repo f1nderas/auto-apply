@@ -1,17 +1,17 @@
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 import { Landing } from '@pages/landing';
-import { Apply } from '@pages/apply';
-import { Resume } from '@pages/resume';
-import { Vacancies } from '@pages/vacancies';
-import { History } from '@pages/history';
-import { Resumes } from '@pages/resumes';
-import { Layout } from './ui/layout';
+import { Apply } from '@pages/panel/apply';
+import { Resume } from '@pages/panel/resume';
+import { Vacancies } from '@pages/panel/vacancies';
+import { History } from '@pages/panel/history';
+import { Resumes } from '@pages/panel/resumes';
+import { PanelLayout } from './ui/panel-layout';
 import { LandingLayout } from './ui/landing-layout';
 
 const AppLayout = () => (
-  <Layout>
+  <PanelLayout>
     <Outlet />
-  </Layout>
+  </PanelLayout>
 );
 
 const router = createBrowserRouter([
