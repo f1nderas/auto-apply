@@ -1,6 +1,6 @@
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 import { Landing } from '@pages/landing';
-import { Apply } from '@pages/home';
+import { Apply } from '@pages/apply';
 import { Resume } from '@pages/resume';
 import { Vacancies } from '@pages/vacancies';
 import { History } from '@pages/history';
