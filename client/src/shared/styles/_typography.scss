@@ -1,10 +1,11 @@
 // Font size
-$font-size-xs:   12px;
-$font-size-sm:   13px;
-$font-size-md:   14px;
-$font-size-base: 15px;
-$font-size-lg:   16px;
-$font-size-xl:   20px;
+$font-size-xs:      12px;
+$font-size-sm:      13px;
+$font-size-md:      14px;
+$font-size-base:    15px;
+$font-size-lg:      16px;
+$font-size-xl:      20px;
+$font-size-display: 36px;
 
 // Font weight
 $font-weight-normal:   400;
@@ -13,7 +14,8 @@ $font-weight-semibold: 600;
 $font-weight-bold:     700;
 
 // Mixins
-@mixin font-heading   { font-size: $font-size-xl;   font-weight: $font-weight-bold; }
+@mixin font-display   { font-size: $font-size-display; font-weight: $font-weight-bold; }
+@mixin font-heading   { font-size: $font-size-xl;     font-weight: $font-weight-bold; }
 @mixin font-title     { font-size: $font-size-lg;   font-weight: $font-weight-semibold; }
 @mixin font-strong    { font-size: $font-size-base; font-weight: $font-weight-semibold; }
 @mixin font-body      { font-size: $font-size-base; font-weight: $font-weight-normal; }

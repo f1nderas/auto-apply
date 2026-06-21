@@ -47,7 +47,7 @@ const ResumeCard = ({ hash, name, experience }: ResumeCardProps) => {
           <Button variant="plain" onClick={() => setEditOpen(true)}>
             Изменить
           </Button>
-          <Link to={`/resume/${hash}`} className="resume-card__btn">
+          <Link to={`/panel/resume/${hash}`} className="resume-card__btn">
             Подробнее
           </Link>
         </div>

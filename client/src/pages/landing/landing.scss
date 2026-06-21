@@ -1,0 +1,84 @@
+@use '../../shared/styles/colors';
+@use '../../shared/styles/typography';
+
+.landing {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 80px 32px 64px;
+}
+
+// Hero
+
+.landing__hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 72px;
+}
+
+.landing__title {
+  @include typography.font-display;
+  color: colors.$color-text;
+  margin-bottom: 16px;
+}
+
+.landing__subtitle {
+  @include typography.font-body;
+  color: colors.$color-text-secondary;
+  max-width: 520px;
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+
+.landing__cta {
+  min-width: 140px;
+}
+
+// Features grid
+
+.landing__features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.landing__card {
+  background: colors.$color-surface;
+  border: 1px solid colors.$color-border-light;
+  border-radius: 16px;
+  padding: 28px 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: box-shadow 0.15s, border-color 0.15s;
+
+  &:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    border-color: colors.$color-border;
+  }
+}
+
+.landing__card-icon {
+  font-size: 28px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.landing__card-title {
+  @include typography.font-title;
+  color: colors.$color-text;
+}
+
+.landing__card-desc {
+  @include typography.font-secondary;
+  color: colors.$color-text-secondary;
+  line-height: 1.5;
+  flex: 1;
+}
+
+.landing__card-btn {
+  align-self: flex-start;
+  margin-top: 8px;
+  color: colors.$color-primary;
+}

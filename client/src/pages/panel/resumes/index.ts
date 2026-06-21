@@ -1,0 +1,1 @@
+export { Resumes } from './resumes';

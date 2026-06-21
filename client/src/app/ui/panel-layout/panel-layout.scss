@@ -1,5 +1,5 @@
-@use '../../shared/styles/colors';
-@use '../../shared/styles/typography';
+@use '../../../shared/styles/colors';
+@use '../../../shared/styles/typography';
 
 .layout {
   min-height: 100vh;
@@ -23,6 +23,7 @@
 .layout__title {
   @include typography.font-heading;
   color: colors.$color-text;
+  text-decoration: none;
 }
 
 .layout__header-actions {
